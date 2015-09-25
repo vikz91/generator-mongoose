@@ -80,8 +80,9 @@ MongooseGenerator.prototype.app = function app() {
   this.template('_package.json', 'package.json');
   this.template('_app.js', 'app.js');
   this.fs.copy(this.templatePath('Gruntfile.js'), this.destinationPath('Gruntfile.js'));
-  this.fs.copy(this.templatePath('bowerrc'), this.destinationPath('.bowerrc'));
+  this.fs.copy(this.templatePath('bowerrc'), this.destinationPath('.bowerrc'));  
   this.template('_bower.json', 'bower.json');
+  this.fs.copy(this.templatePath('.gitignore'), this.destinationPath('.gitignore'));
 };
 
 MongooseGenerator.prototype.routes = function routes() {
