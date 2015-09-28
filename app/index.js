@@ -1,10 +1,10 @@
 'use strict';
 var util = require('util'),
-    path = require('path'),
-    yeoman = require('yeoman-generator'),
-    monty = require('./yo-ascii'),
-    _s = require('underscore.string'),
-    mkdirp = require('mkdirp');
+path = require('path'),
+yeoman = require('yeoman-generator'),
+monty = require('./yo-ascii'),
+_s = require('underscore.string'),
+mkdirp = require('mkdirp');
 
 
 var MongooseGenerator = module.exports = function MongooseGenerator(args, options, config) {
@@ -27,38 +27,32 @@ MongooseGenerator.prototype.askFor = function askFor() {
 
 
   var prompts = [
-    {
-      name: 'dbName',
-      message: 'Database Name',
-      default: 'myDb'
-    },
-    {
-      name: 'dbHost',
-      message: 'Database Host',
-      default: 'localhost'
-    },
-    {
-      name: 'dbUser',
-      message: 'Database User',
-      default: ''
-    },
-    {
-      type: 'password',
-      name: 'dbPassword',
-      message: 'Database Password',
-      default: ''
-    },
-    {
-      name: 'dbPort',
-      message: 'Database Port',
-      default: 27017
-    },
-    {
-      type: 'confirm',
-      name: 'useHeroku',
-      message: 'Will you be using heroku?',
-      default: true
-    }
+  {
+    name: 'dbName',
+    message: 'Database Name',
+    default: 'myDb'
+  },
+  {
+    name: 'dbHost',
+    message: 'Database Host',
+    default: 'localhost'
+  },
+  {
+    name: 'dbUser',
+    message: 'Database User',
+    default: ''
+  },
+  {
+    type: 'password',
+    name: 'dbPassword',
+    message: 'Database Password',
+    default: ''
+  },
+  {
+    name: 'dbPort',
+    message: 'Database Port',
+    default: 27017
+  }
   ];
 
   this.prompt(prompts, function (props) {
@@ -69,7 +63,6 @@ MongooseGenerator.prototype.askFor = function askFor() {
     this.dbUser = props.dbUser;
     this.dbPassword = props.dbPassword;
     this.dbPort = props.dbPort;
-    this.useHeroku = props.useHeroku;
     cb();
   }.bind(this));
 };
