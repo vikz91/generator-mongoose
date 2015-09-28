@@ -15,7 +15,7 @@ module.exports = function(grunt) {
         livereload: true,
       },
       express: {
-        files:  [ '*.js','routes/*.js', 'models/*.js', 'config/*.js','api/*.js'  ],
+        files:  [ '*.js','routes/*.js', 'models/*.js', 'config/*.js','api/*.js','apiObjects/*.js'  ],
         tasks:  [ 'express:dev' ],
         options: {
           spawn: false // Without this option specified express won't be reloaded
@@ -42,7 +42,7 @@ module.exports = function(grunt) {
     },
     open: {
       server: {
-        url: 'http://localhost:' + grunt.config.get('express.options.port')
+        url: 'http://localhost:3000'
       }
     }
   });
