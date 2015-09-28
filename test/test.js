@@ -19,8 +19,7 @@ describe('🏃  running `yo mongoose`', function () {
             'dbHost'    : 'localhost',
             'dbUser'    : '',
             'dbPassword': '',
-            'dbPort'    : 27017,
-            'useHeroku' : true
+            'dbPort'    : 27017
           })
           .on('end', done);
 
@@ -86,7 +85,7 @@ describe('🏃  running `yo mongoose:schema`', function () {
 
       var expected = [
                 // add files you expect to exist here.
-                'routes/todo.js',
+                'api/todo.js',
                 'models/todo.js',
                 'test/test-todo.js'
                 ];
