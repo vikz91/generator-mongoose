@@ -90,7 +90,7 @@
                 // add files you expect to exist here.
                 'api/todo.js',
                 'models/todo.js',
-                'apiOptions/todo.js',
+                'apiObjects/todo.js',
                 'test/test-todo.js'
                 ];
                 assertFile(expected);

@@ -31,7 +31,7 @@
     "mkdirp": "^0.5.1",
     "request": ">=2.5.x",
     "underscore.string": "^3.0.3",
-    "yeoman-generator": ">=0.18.0",
+    "yeoman-generator": "^0.20.3",
     "yo": ">=1.4.x"
   },
   "devDependencies": {
