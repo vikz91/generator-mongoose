@@ -56,8 +56,16 @@ MongooseGenerator.prototype.askFor = function askFor() {
   {
     type:'confirm',
     name:'useUserAuth',
-    message:'Install User Authentication using JWT',
-    default:true
+    message:'Install JWT Secure User Data?',
+    default:false,
+
+  },
+  {
+    type:'confirm',
+    name:'useSampleItem',
+    message:'Install "item" REST files for guideline?',
+    default:true,
+    store   : true
   }
   ];
 
@@ -70,27 +78,36 @@ MongooseGenerator.prototype.askFor = function askFor() {
     this.dbPassword = props.dbPassword;
     this.dbPort = props.dbPort;
     this.useUserAuth=props.useUserAuth;
+    this.useSampleItem=props.useSampleItem;
+
+
+    if(this.useUserAuth){
+      generator.log('[X] Please note that by using JWT Secure User, you need bearer token to open any route, except /api/login');
+    }
     cb();
   }.bind(this));
 };
 
 MongooseGenerator.prototype.app = function app() {
-  mkdirp('test');
-  mkdirp('config');
-  this.template('_package.json', 'package.json');
-  this.template('_app.js', 'app.js');
-  this.fs.copy(this.templatePath('Gruntfile.js'), this.destinationPath('Gruntfile.js'));
-  this.fs.copy(this.templatePath('bowerrc'), this.destinationPath('.bowerrc'));  
-  this.template('_bower.json', 'bower.json');
-  this.fs.copy(this.templatePath('.gitignore'), this.destinationPath('.gitignore'));
+//console.log('Preparing App ...');
+mkdirp('test');
+mkdirp('config');
+this.template('_package.json', 'package.json');
+this.template('_app.js', 'app.js');
+this.fs.copy(this.templatePath('Gruntfile.js'), this.destinationPath('Gruntfile.js'));
+this.fs.copy(this.templatePath('bowerrc'), this.destinationPath('.bowerrc'));  
+this.template('_bower.json', 'bower.json');
+this.fs.copy(this.templatePath('.gitignore'), this.destinationPath('.gitignore'));
 };
 
 MongooseGenerator.prototype.routes = function routes() {
-  mkdirp('routes');
-  this.fs.copy(this.templatePath('routes/index.js'), this.destinationPath('routes/index.js'));
+ // console.log('Configuring Routes ...');
+ mkdirp('routes');
+ this.fs.copy(this.templatePath('routes/index.js'), this.destinationPath('routes/index.js'));
 };
 
 MongooseGenerator.prototype.publicFiles = function publicFiles() {
+
   mkdirp('public');
   mkdirp('public/css');
   this.fs.copy(this.templatePath('public/css/style.css'), this.destinationPath('public/css/style.css'));
@@ -104,16 +121,19 @@ MongooseGenerator.prototype.views = function views() {
 };
 
 MongooseGenerator.prototype.projectfiles = function projectfiles() {
-  this.template('_README.md', 'README.md');
-  this.fs.copy(this.templatePath('editorconfig'), this.destinationPath('.editorconfig'));
-  this.fs.copy(this.templatePath('jshintrc'), this.destinationPath('.jshintrc'));
+//  console.log('Configuring Files ...');
+this.template('_README.md', 'README.md');
+this.fs.copy(this.templatePath('editorconfig'), this.destinationPath('.editorconfig'));
+this.fs.copy(this.templatePath('jshintrc'), this.destinationPath('.jshintrc'));
 };
 
 MongooseGenerator.prototype.db = function db() {
-  mkdirp('models');
-  mkdirp('api');
-  mkdirp('apiObjects');
-  this.template('config/_db.js', 'config/db.js');
+//  console.log('Setting up database ...');
+
+mkdirp('models');
+mkdirp('api');
+mkdirp('apiObjects');
+this.template('config/_db.js', 'config/db.js');
 
   //UserAuth
   if(this.useUserAuth){
@@ -126,15 +146,18 @@ MongooseGenerator.prototype.db = function db() {
 };
 
 MongooseGenerator.prototype.installItem = function installItem() {
-  console.log('installing Item files...');
-  this.composeWith("mongoose:schema", {args: ["item|name:String,price:Number"]}, function(){
-    console.log('Item files installed.');
-  });
+//  console.log('installing Item files...');
+// this.composeWith("mongoose:schema", {args: ["item|name:String,price:Number"]}, function(){
+
+// });
+if(this.useSampleItem){
+  this.composeWith("mongoose:schema", {args: ["item|name:String,price:Number"]});
+}
 };
 
 
 
 MongooseGenerator.prototype.install = function install(){
   this.installDependencies();
-  
+  //
 };
