@@ -109,3 +109,7 @@ If you'd like to get to know Yeoman better and meet some of his friends, [Grunt]
 
 
 [![Bitdeli Badge](https://d2weczhvl823v0.cloudfront.net/afj176/generator-mongoose/trend.png)](https://bitdeli.com/free "Bitdeli Badge")
+
+
+[![Bitdeli Badge](https://d2weczhvl823v0.cloudfront.net/vikz91/generator-mongoose/trend.png)](https://bitdeli.com/free "Bitdeli Badge")
+
