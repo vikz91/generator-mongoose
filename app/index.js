@@ -14,7 +14,7 @@ var MongooseGenerator = module.exports = function MongooseGenerator(args, option
     this.installDependencies({ skipInstall: options['skip-install'] });
   });
 
-  this.pkg = JSON.parse(this.readFileAsString(path.join(__dirname, '../package.json')));
+  this.pkg = JSON.parse(require('html-wiring').readFileAsString(path.join(__dirname, '../package.json')));
 };
 
 util.inherits(MongooseGenerator, yeoman.generators.Base);
@@ -133,7 +133,7 @@ MongooseGenerator.prototype.installItem = function installItem() {
 };
 
 MongooseGenerator.prototype.test = function test() {
-  
+
 };
 
 

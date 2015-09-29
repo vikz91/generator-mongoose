@@ -42,7 +42,7 @@ module.exports = function(grunt) {
     },
     open: {
       server: {
-        url: 'http://localhost:3000'
+        url: 'http://localhost:<%= express:options:port %>'
       }
     }
   });
@@ -56,7 +56,7 @@ module.exports = function(grunt) {
         'express:prod',
         'open',
         'watch'
-      ]);
+        ]);
     }
     else
     {
@@ -64,7 +64,7 @@ module.exports = function(grunt) {
         'express:dev',
         'open',
         'watch'
-      ]);
+        ]);
     }
   });
   grunt.registerTask('default', [ 'server' ]);
