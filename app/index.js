@@ -126,18 +126,15 @@ MongooseGenerator.prototype.db = function db() {
 };
 
 MongooseGenerator.prototype.installItem = function installItem() {
-
+  console.log('installing Item files...');
   this.composeWith("mongoose:schema", {args: ["item|name:String,price:Number"]}, function(){
-
+    console.log('Item files installed.');
   });
-};
-
-MongooseGenerator.prototype.test = function test() {
-
 };
 
 
 
 MongooseGenerator.prototype.install = function install(){
   this.installDependencies();
+  
 };
