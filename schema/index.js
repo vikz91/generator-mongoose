@@ -38,7 +38,9 @@ SchemaGenerator.prototype.files = function files() {
 	mkdirp('models');
 	mkdirp('test');
 	mkdirp('api');
+	mkdirp('apiObjects');
 	this.template('_api.js', 'api/' + name + '.js');
+	this.template('_apiObject.js', 'apiObjects/' + name + '.js');
 	this.template('_schema.js', 'models/' + name + '.js');
 
 };

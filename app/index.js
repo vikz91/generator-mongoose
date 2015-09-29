@@ -105,6 +105,7 @@ MongooseGenerator.prototype.projectfiles = function projectfiles() {
 MongooseGenerator.prototype.db = function db() {
   mkdirp('models');
   mkdirp('api');
+  mkdirp('apiObjects');
   this.template('config/_db.js', 'config/db.js');
   this.fs.copy(this.templatePath('models/post.js'), this.destinationPath('models/post.js'));
   this.fs.copy(this.templatePath('api/post.js'), this.destinationPath('api/post.js'));
@@ -112,4 +113,9 @@ MongooseGenerator.prototype.db = function db() {
 
 MongooseGenerator.prototype.test = function test() {
   this.template('test/test-post.js', 'test/test-post.js');
+};
+
+
+MongooseGenerator.prototype.install = function install(){
+  this.installDependencies();
 };
