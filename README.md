@@ -1,4 +1,4 @@
-# generator-mongoose [![Build Status](https://api.travis-ci.org/vikz91/generator-mongoose.png?branch=master)](https://travis-ci.org/vikz91/generator-mongoose)
+# generator-mongoose [![Build Status](https://api.travis-ci.org/vikz91/generator-mongoose.png)](https://travis-ci.org/vikz91/generator-mongoose)
 
 A custom-built Mongoose generator for [Yeoman](http://yeoman.io). The base project has been forked from  afj176/generator-mongoose and has been updated with new features and tweaks to get you up with a basic NodeJS Express Application up and running, fully equipped with JWT based authentication, User management, Route vs Model Segregation and much more.
 
