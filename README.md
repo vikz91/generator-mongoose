@@ -1,10 +1,6 @@
-# generator-mongoose [![Build Status](https://secure.travis-ci.org/afj176/generator-mongoose.png?branch=master)](https://travis-ci.org/afj176/generator-mongoose)
-[![Gitter](https://badges.gitter.im/Join Chat.svg)](https://gitter.im/afj176/generator-mongoose?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
+# generator-mongoose [![Build Status](https://api.travis-ci.org/vikz91/generator-mongoose.png)](https://travis-ci.org/vikz91/generator-mongoose)
 
-[![NPM](https://nodei.co/npm/generator-mongoose.png?downloads=true&stars=true)](https://nodei.co/npm/generator-mongoose/)
-
-A generator for [Yeoman](http://yeoman.io).
-
+A custom-built Mongoose generator for [Yeoman](http://yeoman.io). The base project has been forked from  afj176/generator-mongoose and has been updated with new features and tweaks to get you up with a basic NodeJS Express Application up and running, fully equipped with JWT based authentication, User management, Route vs Model Segregation and much more.
 
 ## Getting Started
 
@@ -113,3 +109,7 @@ If you'd like to get to know Yeoman better and meet some of his friends, [Grunt]
 
 
 [![Bitdeli Badge](https://d2weczhvl823v0.cloudfront.net/afj176/generator-mongoose/trend.png)](https://bitdeli.com/free "Bitdeli Badge")
+
+
+[![Bitdeli Badge](https://d2weczhvl823v0.cloudfront.net/vikz91/generator-mongoose/trend.png)](https://bitdeli.com/free "Bitdeli Badge")
+

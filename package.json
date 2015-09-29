@@ -3,13 +3,13 @@
   "version": "2.0.2",
   "description": "A mongoose schema generator for Yeoman",
   "keywords": [
-    "yo",
-    "yeoman",
-    "generator",
-    "yeoman-generator",
-    "mongoose",
-    "mongodb",
-    "schema"
+  "yo",
+  "yeoman",
+  "generator",
+  "yeoman-generator",
+  "mongoose",
+  "mongodb",
+  "schema"
   ],
   "homepage": "http://www.yomongoo.se",
   "bugs": "https://github.com/afj176/generator-mongoose/issues",
@@ -17,33 +17,35 @@
     "name": "Antonio Fernandes",
     "email": "afj176@gmail.com",
     "url": "https://github.com/afj176"
-  },
-  "main": "app/index.js",
-  "repository": {
-    "type": "git",
-    "url": "git://github.com/afj176/generator-mongoose.git"
-  },
-  "scripts": {
-    "test": "mocha"
-  },
-  "dependencies": {
-    "chalk": ">=1.x",
-    "mkdirp": "^0.5.1",
-    "request": ">=2.5.x",
-    "underscore.string": "^3.0.3",
-    "yeoman-generator": ">=0.18.0",
-    "yo": ">=1.4.x"
-  },
-  "devDependencies": {
-    "mocha": ">=2.x"
-  },
-  "engines": {
-    "node": ">=0.10.25",
-    "npm": ">=2.8.4"
-  },
-  "licenses": [
-    {
-      "type": "MIT"
-    }
-  ]
-}
+    },
+    "main": "app/index.js",
+    "repository": {
+      "type": "git",
+      "url": "git://github.com/afj176/generator-mongoose.git"
+      },
+      "scripts": {
+        "test": "mocha"
+        },
+        "dependencies": {
+          "chalk": ">=1.x",
+          "html-wiring": "^1.2.0",
+          "mkdirp": "^0.5.1",
+          "request": ">=2.5.x",
+          "underscore.string": "^3.0.3",
+          "yeoman-generator": "^0.20.3",
+          "yo": ">=1.4.x"
+          },
+          "devDependencies": {
+            "mocha": ">=2.x",
+            "yeoman-assert": "^2.0.0"
+            },
+            "engines": {
+              "node": ">=0.10.25",
+              "npm": ">=2.8.4"
+              },
+              "licenses": [
+              {
+                "type": "MIT"
+              }
+              ]
+            }

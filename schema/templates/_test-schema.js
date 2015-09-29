@@ -1,5 +1,5 @@
 var request = require('supertest'),
-    express = require('express');
+express = require('express');
 
 process.env.NODE_ENV = 'test';
 
@@ -13,7 +13,7 @@ describe('POST New <%= capSchemaName %>', function(){
     .post('/api/<%= lowSchemaName %>')
     .set('Accept', 'application/json')
     .expect('Content-Type', /json/)
-    .send({"<%= lowSchemaName %>": <%= mockData %>})
+    .send({"<%= lowSchemaName %>": <%- mockData %>})
     .expect(201)
     .end(function(err, res) {
       if (err) {

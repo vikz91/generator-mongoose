@@ -2,16 +2,21 @@
 
 // Module dependencies.
 var express = require('express'),
-    path = require('path'),
-    fs = require('fs'),
-    methodOverride = require('method-override'),
-    morgan = require('morgan'),
-    bodyParser = require('body-parser'),
-    errorhandler = require('errorhandler');
+path = require('path'),
+fs = require('fs'),
+methodOverride = require('method-override'),
+morgan = require('morgan'),
+bodyParser = require('body-parser'),
+errorhandler = require('errorhandler');
 
-var app = module.exports = exports.app = express();
+<% if(useUserAuth){ %>
+    var jwt=require('express-jwt');
+    var gcon=require('./config/gcon');
+    <% } %>
 
-app.locals.siteName = "<%= capName %>";
+    var app = module.exports = exports.app = express();
+
+    app.locals.siteName = "<%= capName %>";
 
 // Connect to database
 var db = require('./config/db');
@@ -50,7 +55,7 @@ if ('test' == env) {
 
 if ('production' == env) {
     app.use(morgan());
-     app.use(errorhandler({
+    app.use(errorhandler({
         dumpExceptions: false,
         showStack: false
     }));
@@ -61,6 +66,20 @@ app.set('view engine', 'html');
 app.use(methodOverride());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
+
+<% if(useUserAuth){ %>
+   //Auth
+   app.use(jwt({ secret: gcon.jwtSecret}).unless({path: ['/api/login']}));
+
+   app.use(function (err, req, res, next) {
+      if (err.name === 'UnauthorizedError') {
+        res.status(401).json({err:true,msg:'invalid token...'});
+    }
+});
+   <% } %>
+
+
+
 
 // Bootstrap routes
 var routesPath = path.join(__dirname, 'routes');

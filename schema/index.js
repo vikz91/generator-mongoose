@@ -1,11 +1,11 @@
 'use strict';
 var util = require('util'),
-		request = require('request'),
-		yeoman = require('yeoman-generator'),
-		chalk = require('chalk'),
-		monty = require('./yo-ascii'),
-		_s = require('underscore.string'),
-		mkdirp = require('mkdirp');
+request = require('request'),
+yeoman = require('yeoman-generator'),
+chalk = require('chalk'),
+monty = require('./yo-ascii'),
+_s = require('underscore.string'),
+mkdirp = require('mkdirp');
 
 var SchemaGenerator = module.exports = function SchemaGenerator(args, options, config) {
 	// By calling `NamedBase` here, we get the argument to the subgenerator call
@@ -18,7 +18,7 @@ var SchemaGenerator = module.exports = function SchemaGenerator(args, options, c
 		fields.push(field.split(":")[0]);
 	});
 	// have Monty greet the user.
-  console.log(monty);
+	console.log(monty);
 	console.log(chalk.green("You're creating a schema for: ") + chalk.blue.bold(schemaName) );
 	console.log(chalk.green("With the fields: ") + chalk.yellow.bold(fields.join(',')));
 	console.log("\n");
@@ -38,7 +38,9 @@ SchemaGenerator.prototype.files = function files() {
 	mkdirp('models');
 	mkdirp('test');
 	mkdirp('api');
+	mkdirp('apiObjects');
 	this.template('_api.js', 'api/' + name + '.js');
+	this.template('_apiObject.js', 'apiObjects/' + name + '.js');
 	this.template('_schema.js', 'models/' + name + '.js');
 
 };
@@ -54,26 +56,26 @@ SchemaGenerator.prototype.schematic = function schematic() {
 		props[fld] = {};
 		switch(type){
 			case 'ObjectId':
-				props[fld].type = lowerType;
-				props[fld].ipsum = 'id';
+			props[fld].type = lowerType;
+			props[fld].ipsum = 'id';
 			break;
 			case 'Date':
-				props[fld].type = 'string';
-				props[fld].format = 'date-time';
+			props[fld].type = 'string';
+			props[fld].format = 'date-time';
 			break;
 			case 'Array':
-				props[fld].type = lowerType;
-				props[fld].items = { "type": "string" };
+			props[fld].type = lowerType;
+			props[fld].items = { "type": "string" };
 			break;
 			case 'Number':
-				props[fld].type = lowerType;
+			props[fld].type = lowerType;
 			break;
 			case 'Boolean':
-				props[fld].type = lowerType;
+			props[fld].type = lowerType;
 			break;
 			case 'String':
-				props[fld].type = lowerType;
-				props[fld].ipsum = "sentence"
+			props[fld].type = lowerType;
+			props[fld].ipsum = "sentence"
 			break;
 			case 'Buffer':
 			case 'Mixed':
@@ -92,11 +94,13 @@ SchemaGenerator.prototype.schematic = function schematic() {
 
 	var cb = this.async();
 
+	//console.log('MOck Data INtervention .. . .');
+
 	request(options, function(error, response, body) {
 		console.log(chalk.grey("starting request to schematic for test mock data..."));
 		console.log("\n");
 		if (!error && response.statusCode == 200) {
-			this.mockData = JSON.stringify(body);
+			this.mockData = JSON.stringify(body);			
 		}else{
 			console.log(chalk.red.bold("There was an issue reaching http://schematic-ipsum.herokuapp.com."));
 			console.log(chalk.red.bold("providing mock data for tests has failed, update you test file manually."));
@@ -105,6 +109,7 @@ SchemaGenerator.prototype.schematic = function schematic() {
 		cb();
 	}.bind(this));
 };
+
 
 SchemaGenerator.prototype.loadTest = function loadTest() {
 	var arg = this.name.split("|");
