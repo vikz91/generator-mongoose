@@ -12,7 +12,6 @@
       "express-jwt": "^3.1.0",
       "jsonwebtoken": "^5.0.5",
       <% } %>
-      "html-wiring": "^1.1.0",
       "method-override": "latest",
       "body-parser": "latest",
       "errorhandler": "latest"

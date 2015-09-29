@@ -28,6 +28,7 @@
   },
   "dependencies": {
     "chalk": ">=1.x",
+    "html-wiring": "^1.2.0",
     "mkdirp": "^0.5.1",
     "request": ">=2.5.x",
     "underscore.string": "^3.0.3",
