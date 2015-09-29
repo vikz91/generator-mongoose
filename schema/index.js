@@ -108,6 +108,7 @@ SchemaGenerator.prototype.schematic = function schematic() {
 	}.bind(this));
 };
 
+
 SchemaGenerator.prototype.loadTest = function loadTest() {
 	var arg = this.name.split("|");
 	var name = arg[0];

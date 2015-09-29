@@ -52,6 +52,12 @@ MongooseGenerator.prototype.askFor = function askFor() {
     name: 'dbPort',
     message: 'Database Port',
     default: 27017
+  },
+  {
+    type:'confirm',
+    name:'useUserAuth',
+    message:'Install User Authentication using JWT',
+    default:true
   }
   ];
 
@@ -63,6 +69,7 @@ MongooseGenerator.prototype.askFor = function askFor() {
     this.dbUser = props.dbUser;
     this.dbPassword = props.dbPassword;
     this.dbPort = props.dbPort;
+    this.useUserAuth=props.useUserAuth;
     cb();
   }.bind(this));
 };
@@ -107,13 +114,28 @@ MongooseGenerator.prototype.db = function db() {
   mkdirp('api');
   mkdirp('apiObjects');
   this.template('config/_db.js', 'config/db.js');
-  this.fs.copy(this.templatePath('models/post.js'), this.destinationPath('models/post.js'));
-  this.fs.copy(this.templatePath('api/post.js'), this.destinationPath('api/post.js'));
+
+  //UserAuth
+  if(this.useUserAuth){
+    //Copy the User Auth Files
+    this.fs.copy(this.templatePath('models/user.js'), this.destinationPath('models/user.js'));
+    this.fs.copy(this.templatePath('api/user.js'), this.destinationPath('api/user.js'));
+    this.fs.copy(this.templatePath('apiObjects/user.js'), this.destinationPath('apiObjects/user.js'));
+    this.template('config/_gcon.js', 'config/gcon.js');
+  }
+};
+
+MongooseGenerator.prototype.installItem = function installItem() {
+
+  this.composeWith("mongoose:schema", {args: ["item|name:String,price:Number"]}, function(){
+
+  });
 };
 
 MongooseGenerator.prototype.test = function test() {
-  this.template('test/test-post.js', 'test/test-post.js');
+  
 };
+
 
 
 MongooseGenerator.prototype.install = function install(){

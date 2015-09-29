@@ -19,7 +19,8 @@ describe('🏃  running `yo mongoose`', function () {
             'dbHost'    : 'localhost',
             'dbUser'    : '',
             'dbPassword': '',
-            'dbPort'    : 27017
+            'dbPort'    : 27017,
+            'useUserAuth':true
           })
           .on('end', done);
 
@@ -46,8 +47,10 @@ describe('🏃  running `yo mongoose`', function () {
                 '.editorconfig',
                 '.jshintrc',
                 'config/db.js',
-                'models/post.js',
-                'test/test-post.js'
+                'models/item.js',
+                'api/item.js',
+                'apiObjects/item.js',
+                'test/test-item.js'
                 ];
 
                 assertFile(expected);
@@ -87,6 +90,7 @@ describe('🏃  running `yo mongoose:schema`', function () {
                 // add files you expect to exist here.
                 'api/todo.js',
                 'models/todo.js',
+                'apiOptions/todo.js',
                 'test/test-todo.js'
                 ];
                 assertFile(expected);
