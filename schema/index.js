@@ -94,11 +94,13 @@ SchemaGenerator.prototype.schematic = function schematic() {
 
 	var cb = this.async();
 
+	//console.log('MOck Data INtervention .. . .');
+
 	request(options, function(error, response, body) {
 		console.log(chalk.grey("starting request to schematic for test mock data..."));
 		console.log("\n");
 		if (!error && response.statusCode == 200) {
-			this.mockData = JSON.stringify(body);
+			this.mockData = JSON.stringify(body);			
 		}else{
 			console.log(chalk.red.bold("There was an issue reaching http://schematic-ipsum.herokuapp.com."));
 			console.log(chalk.red.bold("providing mock data for tests has failed, update you test file manually."));
