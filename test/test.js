@@ -28,10 +28,9 @@
 
     describe('project generator', function () {
 
-      it('can be imported without blowing up', function (done) {
+      it('can be imported without blowing up', function () {
         var app = require('../app');
         assert(app !== undefined);
-        done();
       });
 
       it('creates express app, routes, model, and files', function (done) {
@@ -80,10 +79,9 @@
 
     describe('schema generator', function () {
 
-      it('schema can be imported without blowing up', function (done) {
+      it('schema can be imported without blowing up', function () {
         var app = require('../schema');
         assert(app !== undefined);
-        done();
       });
 
       it('created new route, model, and test for todo', function (done) {
