@@ -20,7 +20,7 @@
             'dbUser'    : '',
             'dbPassword': '',
             'dbPort'    : 27017,
-            'useUserAuth':true
+            'useUserAuth':false
           })
           .on('end', done);
 
