@@ -7,12 +7,12 @@
   var helpers = require('yeoman-generator').test;
   var assert = require('yeoman-assert');
 
-  describe('🏃  running `yo mongoose`', function () {
+  describe('🏃  running `yo restgoose`', function () {
 
     before(function (done) {
 
      var deps = [
-     [helpers.createDummyGenerator(), 'mongoose:schema','item|name:String,price:Number']
+     [helpers.createDummyGenerator(), 'restgoose:schema','item|name:String,price:Number']
      ];
 
      helpers.run(path.join( __dirname, '../app'))
@@ -64,7 +64,7 @@
 
   });
 
-  describe('🏃  running `yo mongoose:schema`', function () {
+  describe('🏃  running `yo restgoose:schema`', function () {
 
 
     before(function (done) {

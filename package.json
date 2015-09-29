@@ -9,7 +9,7 @@
   "yeoman-generator",
   "mongoose",
   "mongodb",
-  "schema"
+  "schema","rest","jwt"
   ],
   "homepage": "http://www.debabhishek.com/rapid-nodejs-rest-server-generator/",
   "bugs": "https://github.com/vikz91/generator-restgoose/issues",

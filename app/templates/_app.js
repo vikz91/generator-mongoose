@@ -10,13 +10,13 @@ bodyParser = require('body-parser'),
 errorhandler = require('errorhandler');
 
 <% if(useUserAuth){ %>
-    var jwt=require('express-jwt');
-    var gcon=require('./config/gcon');
-    <% } %>
+  var jwt=require('express-jwt');
+  var gcon=require('./config/gcon');
+  <% } %>
 
-    var app = module.exports = exports.app = express();
+  var app = module.exports = exports.app = express();
 
-    app.locals.siteName = "<%= capName %>";
+  app.locals.siteName = "<%= capName %>";
 
 // Connect to database
 var db = require('./config/db');
@@ -32,33 +32,33 @@ fs.readdirSync(modelsPath).forEach(function (file) {
 var env = process.env.NODE_ENV || 'development';
 
 if ('development' == env) {
-    app.use(morgan('dev'));
-    app.use(errorhandler({
-        dumpExceptions: true,
-        showStack: true
-    }));
-    app.set('view options', {
-        pretty: true
-    });
+  app.use(morgan('dev'));
+  app.use(errorhandler({
+    dumpExceptions: true,
+    showStack: true
+  }));
+  app.set('view options', {
+    pretty: true
+  });
 }
 
 if ('test' == env) {
-    app.use(morgan('test'));
-    app.set('view options', {
-        pretty: true
-    });
-    app.use(errorhandler({
-        dumpExceptions: true,
-        showStack: true
-    }));
+  app.use(morgan('test'));
+  app.set('view options', {
+    pretty: true
+  });
+  app.use(errorhandler({
+    dumpExceptions: true,
+    showStack: true
+  }));
 }
 
 if ('production' == env) {
-    app.use(morgan());
-    app.use(errorhandler({
-        dumpExceptions: false,
-        showStack: false
-    }));
+  app.use(morgan());
+  app.use(errorhandler({
+    dumpExceptions: false,
+    showStack: false
+  }));
 }
 
 app.engine('html', require('ejs').renderFile);
@@ -69,13 +69,14 @@ app.use(bodyParser.urlencoded({ extended: true }));
 
 <% if(useUserAuth){ %>
    //Auth
-   app.use(jwt({ secret: gcon.jwtSecret}).unless({path: ['/api/login']}));
+   //Uncommment the following to enable JWT based Token Authentication
+   //app.use(jwt({ secret: gcon.jwtSecret}).unless({path: ['/api/login']}));
 
    app.use(function (err, req, res, next) {
-      if (err.name === 'UnauthorizedError') {
-        res.status(401).json({err:true,msg:'invalid token...'});
+    if (err.name === 'UnauthorizedError') {
+      res.status(401).json({err:true,msg:'invalid token...'});
     }
-});
+  });
    <% } %>
 
 

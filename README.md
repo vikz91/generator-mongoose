@@ -35,34 +35,34 @@ $ yo mongoose
 ```
 It should output a file structure similiar to:
 
-    .bowerrc
-    .editorconfig
-    .jshintrc
-    api/
-      - item.js
-    apiObjects/
-      - item.js
-    config/
-      - db.js
-      - gcon.j
-    public/
-      css/  
-         - style.css
-      js/  
-         - script.js
-    models/
-        - item.js
-    routes/
-      - index.js
-      
-    test/
-      - test-item.js
-    views/
-      - index.html
-    bower.json
-    Gruntfile.js
-    package.json
-    Readme.md
+.bowerrc
+.editorconfig
+.jshintrc
+api/
+- item.js
+apiObjects/
+- item.js
+config/
+- db.js
+- gcon.j
+public/
+css/  
+- style.css
+js/  
+- script.js
+models/
+- item.js
+routes/
+- index.js
+
+test/
+- test-item.js
+views/
+- index.html
+bower.json
+Gruntfile.js
+package.json
+Readme.md
 
 
 - models - contains Mongoose Schema of an entity ( Data Layer)
@@ -103,12 +103,12 @@ $ yo mongoose:schema "article|title:String,excerpt:String,content:String,publish
 
 output:
 
-    You're creating a schema for article
-    With the fields: title,excerpt,content,published,created
-       create routes/article.js
-       create models/article.js
-    starting request to schematic for test mock data...
-       create test/test-article.js
+You're creating a schema for article
+With the fields: title,excerpt,content,published,created
+create routes/article.js
+create models/article.js
+starting request to schematic for test mock data...
+create test/test-article.js
 
 
 ### Getting To Know Yeoman
