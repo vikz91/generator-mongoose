@@ -18,20 +18,20 @@ Not every new computer comes with a Yeoman pre-installed. He lives in the [npm](
 $ npm install -g yo
 ```
 
-### Generator Mongoose
+### Generator Restgoose
 
 While running through a leafy mongodb field he picked up mongoose.
 
-To install generator-mongoose from npm, run:
+To install generator-restgoose from npm, run:
 
 ```
-$ npm install -g generator-mongoose
+$ npm install -g generator-restgoose
 ```
 
 Finally, initiate the generator:
 
 ```
-$ yo mongoose
+$ yo restgoose
 ```
 It should output a file structure similiar to:
 
@@ -98,7 +98,7 @@ $ grunt prod
 Run the sub generator for schemas:
 
 ```
-$ yo mongoose:schema "article|title:String,excerpt:String,content:String,published:Boolean,created:Date"
+$ yo restgoose:schema "article|title:String,excerpt:String,content:String,published:Boolean,created:Date"
 ```
 
 output:
