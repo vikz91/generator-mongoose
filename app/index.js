@@ -97,7 +97,7 @@ this.template('_app.js', 'app.js');
 this.fs.copy(this.templatePath('Gruntfile.js'), this.destinationPath('Gruntfile.js'));
 this.fs.copy(this.templatePath('bowerrc'), this.destinationPath('.bowerrc'));  
 this.template('_bower.json', 'bower.json');
-this.fs.copy(this.templatePath('.gitignore'), this.destinationPath('.gitignore'));
+this.fs.copy(this.templatePath('_gitignore'), this.destinationPath('.gitignore'));
 };
 
 RestgooseGenerator.prototype.routes = function routes() {
