@@ -120,16 +120,16 @@ api.login = function (userid,token,cb) {
 
     if(!err && (user===undefined || user.length<1)){
         //Register User
-        user.oauthuname=usr.username;
-        user.oauthtoken=usr.token;
+        user.oauthuname=userid;
+        user.oauthtoken=token;
         user.accrole='member';
         user.tourtaken=false;
 
         return api.addUser(user,function(err,nuser){ 
-          return cbf(cb,err,token);         
+          return cbf(cb,err,{user:nuser,token:newToken});         
         });
       }
-      return cbf(cb,err,token);
+      return cbf(cb,err,{user:user,token:newToken});
     });
 };
 
