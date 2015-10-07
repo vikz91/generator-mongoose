@@ -55,41 +55,41 @@ api.addUser = function (user,cb) {
 api.editUser = function (id,updateData, cb) {
   User.findById(id, function (err, user) {
 
-    if(typeof req.body.user["fullname"] != 'undefined'){
-      user["fullname"] = req.body.user["fullname"];
+    if(typeof updateData["fullname"] != 'undefined'){
+      user["fullname"] = updateData["fullname"];
     }
 
-    if(typeof req.body.user["dob"] != 'undefined'){
-      user["dob"] = req.body.user["dob"];
+    if(typeof updateData["dob"] != 'undefined'){
+      user["dob"] = updateData["dob"];
     }
 
-    if(typeof req.body.user["accrole"] != 'undefined'){
-      user["accrole"] = req.body.user["accrole"];
+    if(typeof updateData["accrole"] != 'undefined'){
+      user["accrole"] = updateData["accrole"];
     }
 
-    if(typeof req.body.user["location"] != 'undefined'){
-      user["location"] = req.body.user["location"];
+    if(typeof updateData["location"] != 'undefined'){
+      user["location"] = updateData["location"];
     }
 
-    if(typeof req.body.user["gender"] != 'undefined'){
-      user["gender"] = req.body.user["gender"];
+    if(typeof updateData["gender"] != 'undefined'){
+      user["gender"] = updateData["gender"];
     }
 
-    if(typeof req.body.user["emailid"] != 'undefined'){
-      user["emailid"] = req.body.user["emailid"];
+    if(typeof updateData["emailid"] != 'undefined'){
+      user["emailid"] = updateData["emailid"];
     }
 
-    if(typeof req.body.user["userName"] != 'undefined'){
-      user["userName"] = req.body.user["userName"];
+    if(typeof updateData["userName"] != 'undefined'){
+      user["userName"] = updateData["userName"];
     }
 
-    if(typeof req.body.user["userPassword"] != 'undefined'){
-      user["userPassword"] = req.body.user["userPassword"];
+    if(typeof updateData["userPassword"] != 'undefined'){
+      user["userPassword"] = updateData["userPassword"];
     }
 
 
     return user.save(function (err) {
-      cbf(cb,err,user.toObject()); 
+      cbf(cb,err,user); 
     }); //eo user.save
   });// eo user.find
 };
