@@ -1,0 +1,116 @@
+0 info it worked if it ends with ok
+1 verbose cli [ '/usr/bin/nodejs', '/usr/bin/npm', 'publish' ]
+2 info using npm@3.3.4
+3 info using node@v4.1.1
+4 verbose publish [ '.' ]
+5 silly cache add args [ '.', null ]
+6 verbose cache add spec .
+7 silly cache add parsed spec Result {
+7 silly cache add   raw: '.',
+7 silly cache add   scope: null,
+7 silly cache add   name: null,
+7 silly cache add   rawSpec: '.',
+7 silly cache add   spec: '/home/abhishek/projects/Library/generator-restgoose',
+7 silly cache add   type: 'directory' }
+8 verbose addLocalDirectory /home/abhishek/.npm/generator-restgoose/0.0.31/package.tgz not in flight; packing
+9 info lifecycle generator-restgoose@0.0.31~prepublish: generator-restgoose@0.0.31
+10 silly lifecycle generator-restgoose@0.0.31~prepublish: no script for prepublish, continuing
+11 verbose tar pack [ '/home/abhishek/.npm/generator-restgoose/0.0.31/package.tgz',
+11 verbose tar pack   '/home/abhishek/projects/Library/generator-restgoose' ]
+12 verbose tarball /home/abhishek/.npm/generator-restgoose/0.0.31/package.tgz
+13 verbose folder /home/abhishek/projects/Library/generator-restgoose
+14 verbose addLocalTarball adding from inside cache /home/abhishek/.npm/generator-restgoose/0.0.31/package.tgz
+15 silly cache afterAdd generator-restgoose@0.0.31
+16 verbose afterAdd /home/abhishek/.npm/generator-restgoose/0.0.31/package/package.json not in flight; writing
+17 verbose afterAdd /home/abhishek/.npm/generator-restgoose/0.0.31/package/package.json written
+18 silly publish { name: 'generator-restgoose',
+18 silly publish   version: '0.0.31',
+18 silly publish   description: 'An Out-Of-Box REST NodeJS Server generator built on top of Mongoose, Express, JWT, Grunt and many more.',
+18 silly publish   keywords:
+18 silly publish    [ 'yo',
+18 silly publish      'yeoman',
+18 silly publish      'generator',
+18 silly publish      'yeoman-generator',
+18 silly publish      'mongoose',
+18 silly publish      'mongodb',
+18 silly publish      'schema',
+18 silly publish      'rest',
+18 silly publish      'jwt' ],
+18 silly publish   homepage: 'http://www.debabhishek.com/rapid-nodejs-rest-server-generator/',
+18 silly publish   bugs: { url: 'https://github.com/vikz91/generator-restgoose/issues' },
+18 silly publish   author:
+18 silly publish    { name: 'Abhishek Deb',
+18 silly publish      email: 'vikz91.deb@gmail.com',
+18 silly publish      url: 'https://github.com/vikz91' },
+18 silly publish   main: 'app/index.js',
+18 silly publish   repository:
+18 silly publish    { type: 'git',
+18 silly publish      url: 'git://github.com/vikz91/generator-restgoose.git' },
+18 silly publish   scripts: { test: 'mocha' },
+18 silly publish   dependencies:
+18 silly publish    { chalk: '>=1.x',
+18 silly publish      'html-wiring': '^1.2.0',
+18 silly publish      mkdirp: '^0.5.1',
+18 silly publish      request: '>=2.5.x',
+18 silly publish      'underscore.string': '^3.0.3',
+18 silly publish      'yeoman-generator': '^0.20.3',
+18 silly publish      yo: '>=1.4.x' },
+18 silly publish   devDependencies: { mocha: '>=2.x', 'yeoman-assert': '^2.0.0' },
+18 silly publish   engines: { node: '>=0.10.25', npm: '>=2.8.4' },
+18 silly publish   licenses: [ { type: 'MIT' } ],
+18 silly publish   readme: '# generator-restgoose [![Build Status](https://api.travis-ci.org/vikz91/generator-restgoose.png)](https://travis-ci.org/vikz91/generator-restgoose)\n\nA [custom-built Mongoose generator](http://www.debabhishek.com/rapid-nodejs-rest-server-generator/) for [Yeoman](http://yeoman.io). The base project has been forked from  afj176/generator-mongoose and has been updated with new features and tweaks to get you up with a basic NodeJS Express Application up and running, fully equipped with JWT based authentication, User management, Route vs Model Segregation and much more.\n\n## Getting Started\n\n### What is Yeoman?\n\nTrick question. It\'s not a thing. It\'s this guy:\n\n![](http://i.imgur.com/KvLOBSb.jpg)\n\nBasically, he wears a top hat, lives in your computer, and waits for you to tell him what kind of application you wish to create.\n\nNot every new computer comes with a Yeoman pre-installed. He lives in the [npm](https://npmjs.org) package repository. You only have to ask for him once, then he packs up and moves into your hard drive. *Make sure you clean up, he likes new and shiny things.*\n\n```\n$ npm install -g yo\n```\n\n### Generator Restgoose\n\nWhile running through a leafy mongodb field he picked up mongoose.\n\nTo install generator-restgoose from npm, run:\n\n```\n$ npm install -g generator-restgoose\n```\n\nFinally, initiate the generator:\n\n```\n$ yo restgoose\n```\nIt should output a file structure similiar to:\n\n.bowerrc\n.editorconfig\n.jshintrc\napi/\n- item.js\napiObjects/\n- item.js\nconfig/\n- db.js\n- gcon.j\npublic/\ncss/  \n- style.css\njs/  \n- script.js\nmodels/\n- item.js\nroutes/\n- index.js\n\ntest/\n- test-item.js\nviews/\n- index.html\nbower.json\nGruntfile.js\npackage.json\nReadme.md\n\n\n- models - contains Mongoose Schema of an entity ( Data Layer)\n- apiObjects - Contains business logic &amp; model access for each entity ( Business Layer )\n- api - Contains routes of each entity ( Presentation Layer / Controller )\n- test - contains unit test cases for each entity\n\n\nIf you choose to install JWT ( JSONWebTokens) User Security, please note that all the routes will require Authorization header with Bearer <to.ke.n>. You can get this token from /api/login providing OAuthUserID & OAuthToken.  try sending post data as { username : <231654> , token : <longtoken> }\n\n\n### Run the app \n\nDevelopment mode\n```bash\n$ grunt \n```\nor\n\n```bash\n$ grunt server \n```\n\nProduction mode\n```bash\n$ grunt prod \n```\n\n\n\n### Sub Generator Schema\n\nRun the sub generator for schemas:\n\n```\n$ yo restgoose:schema "article|title:String,excerpt:String,content:String,published:Boolean,created:Date"\n```\n\noutput:\n\nYou\'re creating a schema for article\nWith the fields: title,excerpt,content,published,created\ncreate routes/article.js\ncreate models/article.js\nstarting request to schematic for test mock data...\ncreate test/test-article.js\n\n\n### Getting To Know Yeoman\n\nYeoman has a heart of gold. He\'s a person with feelings and opinions, but he\'s very easy to work with. If you think he\'s too opinionated, he can be easily convinced.\n\nIf you\'d like to get to know Yeoman better and meet some of his friends, [Grunt](http://gruntjs.com) and [Bower](http://bower.io), check out the complete [Getting Started Guide](https://github.com/yeoman/yeoman/wiki/Getting-Started).\n\n\n## License\n\n[MIT License](http://en.wikipedia.org/wiki/MIT_License)\n\n\n[![Bitdeli Badge](https://d2weczhvl823v0.cloudfront.net/vikz91/generator-restgoose/trend.png)](https://bitdeli.com/free "Bitdeli Badge")\n',
+18 silly publish   readmeFilename: 'README.md',
+18 silly publish   gitHead: '825a8d4257b6de990adca422101b162cd1e1d2b0',
+18 silly publish   _id: 'generator-restgoose@0.0.31',
+18 silly publish   _shasum: '07b8d1958bfe99921fac7eee2a6e4f5db85aed04',
+18 silly publish   _from: '.' }
+19 verbose getPublishConfig undefined
+20 silly mapToRegistry name generator-restgoose
+21 silly mapToRegistry using default registry
+22 silly mapToRegistry registry https://registry.npmjs.org/
+23 silly mapToRegistry uri https://registry.npmjs.org/generator-restgoose
+24 verbose publish registryBase https://registry.npmjs.org/
+25 silly publish uploading /home/abhishek/.npm/generator-restgoose/0.0.31/package.tgz
+26 verbose request uri https://registry.npmjs.org/generator-restgoose
+27 verbose request sending authorization for write operation
+28 info attempt registry request try #1 at 02:42:03
+29 verbose request using bearer token for auth
+30 verbose request id d681adfb3df83869
+31 http request PUT https://registry.npmjs.org/generator-restgoose
+32 http 403 https://registry.npmjs.org/generator-restgoose
+33 verbose headers { 'content-type': 'application/json',
+33 verbose headers   'cache-control': 'max-age=60',
+33 verbose headers   'content-length': '96',
+33 verbose headers   'accept-ranges': 'bytes',
+33 verbose headers   date: 'Wed, 07 Oct 2015 21:12:04 GMT',
+33 verbose headers   via: '1.1 varnish',
+33 verbose headers   connection: 'keep-alive',
+33 verbose headers   'x-served-by': 'cache-sin6924-SIN',
+33 verbose headers   'x-cache': 'MISS',
+33 verbose headers   'x-cache-hits': '0',
+33 verbose headers   'x-timer': 'S1444252323.843226,VS0,VE892' }
+34 verbose request invalidating /home/abhishek/.npm/registry.npmjs.org/generator-restgoose on PUT
+35 error publish Failed PUT 403
+36 verbose stack Error: "You cannot publish over the previously published version 0.0.31." : generator-restgoose
+36 verbose stack     at makeError (/usr/lib/node_modules/npm/node_modules/npm-registry-client/lib/request.js:264:12)
+36 verbose stack     at CachingRegistryClient.<anonymous> (/usr/lib/node_modules/npm/node_modules/npm-registry-client/lib/request.js:252:14)
+36 verbose stack     at Request._callback (/usr/lib/node_modules/npm/node_modules/npm-registry-client/lib/request.js:172:14)
+36 verbose stack     at Request.self.callback (/usr/lib/node_modules/npm/node_modules/request/request.js:198:22)
+36 verbose stack     at emitTwo (events.js:87:13)
+36 verbose stack     at Request.emit (events.js:172:7)
+36 verbose stack     at Request.<anonymous> (/usr/lib/node_modules/npm/node_modules/request/request.js:1063:14)
+36 verbose stack     at emitOne (events.js:82:20)
+36 verbose stack     at Request.emit (events.js:169:7)
+36 verbose stack     at IncomingMessage.<anonymous> (/usr/lib/node_modules/npm/node_modules/request/request.js:1009:12)
+37 verbose statusCode 403
+38 verbose pkgid generator-restgoose
+39 verbose cwd /home/abhishek/projects/Library/generator-restgoose
+40 error Linux 3.16.0-30-generic
+41 error argv "/usr/bin/nodejs" "/usr/bin/npm" "publish"
+42 error node v4.1.1
+43 error npm  v3.3.4
+44 error code E403
+45 error "You cannot publish over the previously published version 0.0.31." : generator-restgoose
+46 error If you need help, you may report this error at:
+46 error     <https://github.com/npm/npm/issues>
+47 verbose exit [ 1, true ]
