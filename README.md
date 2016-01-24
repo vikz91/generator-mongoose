@@ -35,38 +35,38 @@ $ yo restgoose
 ```
 It should output a file structure similiar to:
 
+```
 .bowerrc
 .editorconfig
 .jshintrc
 api/
 apiObjects/
 config/
-    - db.js
-    - lib.js
+... db.js
+... lib.js
 public/
 models/
 routes/
-    - index.js
-
+... index.js
 test/
 views/
 bower.json
 Gruntfile.js
 package.json
 Readme.md
+```
+
+- models - contains Mongoose Schema of an entity ( Data Layer)
+- apiObjects - Contains business logic &amp; model access for each entity ( Business Layer )
+- api - Contains routes of each entity ( Presentation Layer / Controller )
+- test - contains unit test cases for each entity
 
 
-    - models - contains Mongoose Schema of an entity ( Data Layer)
-    - apiObjects - Contains business logic &amp; model access for each entity ( Business Layer )
-    - api - Contains routes of each entity ( Presentation Layer / Controller )
-    - test - contains unit test cases for each entity
+Don't forget to checkout the `config/lib.js` file which contains many useful stuff (slug maker, image to Base64 Converter, etc).
+Use the Library as ``` var l = require('../config/lib.js); ``` ( which generates with every sub schema).
 
+Try to use ``` l.p('Print something'); ``` to log something. The future release will include a full featured logger to store all logs in memory, file or db.
 
-Don't forget to checkout the `config/lib.js` file to use it as core library.
-
-
-
-If you choose to install JWT ( JSONWebTokens) User Security, please note that all the routes will require Authorization header with Bearer <to.ke.n>. You can get this token from /api/login providing OAuthUserID & OAuthToken.  try sending post data as { username : <231654> , token : <longtoken> }
 
 
 ### Run the app 
@@ -97,14 +97,14 @@ $ yo restgoose:schema "article|title:String,excerpt:String,content:String,publis
 ```
 
 output:
-
+```
 You're creating a schema for article
 With the fields: title,excerpt,content,published,created
 create routes/article.js
 create models/article.js
 starting request to schematic for test mock data...
 create test/test-article.js
-
+```
 
 ### Getting To Know Yeoman
 
