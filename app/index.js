@@ -38,6 +38,11 @@ RestgooseGenerator.prototype.askFor = function askFor() {
     default: 'localhost'
   },
   {
+    name: 'dbPort',
+    message: 'Database Port',
+    default: 27017
+  },
+  {
     name: 'dbUser',
     message: 'Database User',
     default: ''
@@ -47,25 +52,6 @@ RestgooseGenerator.prototype.askFor = function askFor() {
     name: 'dbPassword',
     message: 'Database Password',
     default: ''
-  },
-  {
-    name: 'dbPort',
-    message: 'Database Port',
-    default: 27017
-  },
-  {
-    type:'confirm',
-    name:'useUserAuth',
-    message:'Install JWT Secure User Data?',
-    default:false,
-
-  },
-  {
-    type:'confirm',
-    name:'useSampleItem',
-    message:'Install "item" REST files for guideline?',
-    default:true,
-    store   : true
   }
   ];
 
@@ -77,13 +63,7 @@ RestgooseGenerator.prototype.askFor = function askFor() {
     this.dbUser = props.dbUser;
     this.dbPassword = props.dbPassword;
     this.dbPort = props.dbPort;
-    this.useUserAuth=props.useUserAuth;
-    this.useSampleItem=props.useSampleItem;
 
-
-    if(this.useUserAuth){
-      console.log('[X] Please note that by using JWT Secure User, you need bearer token to open any route, except /api/login');
-    }
     cb();
   }.bind(this));
 };
@@ -109,15 +89,10 @@ RestgooseGenerator.prototype.routes = function routes() {
 RestgooseGenerator.prototype.publicFiles = function publicFiles() {
 
   mkdirp('public');
-  mkdirp('public/css');
-  this.fs.copy(this.templatePath('public/css/style.css'), this.destinationPath('public/css/style.css'));
-  mkdirp('public/js');
-  this.fs.copy(this.templatePath('public/js/script.js'), this.destinationPath('public/js/script.js'));
 };
 
 RestgooseGenerator.prototype.views = function views() {
   mkdirp('views');
-  this.fs.copy(this.templatePath('views/index.html'), this.destinationPath('views/index.html'));
 };
 
 RestgooseGenerator.prototype.projectfiles = function projectfiles() {
@@ -134,22 +109,12 @@ mkdirp('models');
 mkdirp('api');
 mkdirp('apiObjects');
 this.template('config/_db.js', 'config/db.js');
+this.fs.copy(this.templatePath('config/lib.js'), this.destinationPath('config/lib.js'));
 
-  //UserAuth
-  if(this.useUserAuth){
-    //Copy the User Auth Files
-    this.fs.copy(this.templatePath('models/user.js'), this.destinationPath('models/user.js'));
-    this.fs.copy(this.templatePath('api/user.js'), this.destinationPath('api/user.js'));
-    this.fs.copy(this.templatePath('apiObjects/user.js'), this.destinationPath('apiObjects/user.js'));
-    this.template('config/_gcon.js', 'config/gcon.js');
-  }
 };
 
 RestgooseGenerator.prototype.installItem = function installItem() {
 //  console.log('installing Item files...');
-if(this.useSampleItem){
-  this.composeWith("restgoose:schema", {args: ["item|name:String,price:Number"]});
-}
 };
 
 

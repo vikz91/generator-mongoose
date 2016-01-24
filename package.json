@@ -1,15 +1,15 @@
 {
   "name": "generator-restgoose",
-  "version": "0.0.33",
-  "description": "An Out-Of-Box REST NodeJS Server generator built on top of Mongoose, Express, JWT, Grunt and many more.",
+  "version": "0.1.0",
+  "description": "An Out-Of-Box NodeJS REST API Server generator built on top of Mongoose, Express, Cors, Grunt and many more.",
   "keywords": [
-  "yo",
-  "yeoman",
-  "generator",
-  "yeoman-generator",
-  "mongoose",
-  "mongodb",
-  "schema","rest","jwt"
+    "yo",
+    "yeoman",
+    "generator",
+    "yeoman-generator",
+    "mongoose",
+    "mongodb",
+    "schema","rest","cors"
   ],
   "homepage": "http://www.debabhishek.com/rapid-nodejs-rest-server-generator/",
   "bugs": "https://github.com/vikz91/generator-restgoose/issues",
@@ -17,35 +17,35 @@
     "name": "Abhishek Deb",
     "email": "vikz91.deb@gmail.com",
     "url": "https://github.com/vikz91"
-    },
-    "main": "app/index.js",
-    "repository": {
-      "type": "git",
-      "url": "git://github.com/vikz91/generator-restgoose.git"
-      },
-      "scripts": {
-        "test": "mocha"
-        },
-        "dependencies": {
-          "chalk": ">=1.x",
-          "html-wiring": "^1.2.0",
-          "mkdirp": "^0.5.1",
-          "request": ">=2.5.x",
-          "underscore.string": "^3.0.3",
-          "yeoman-generator": "^0.20.3",
-          "yo": ">=1.4.x"
-          },
-          "devDependencies": {
-            "mocha": ">=2.x",
-            "yeoman-assert": "^2.0.0"
-            },
-            "engines": {
-              "node": ">=0.10.25",
-              "npm": ">=2.8.4"
-              },
-              "licenses": [
-              {
-                "type": "MIT"
-              }
-              ]
-            }
+  },
+  "main": "app/index.js",
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/vikz91/generator-restgoose.git"
+  },
+  "scripts": {
+    "test": "mocha"
+  },
+  "dependencies": {
+    "chalk": ">=1.x",
+    "html-wiring": "^1.2.0",
+    "mkdirp": "^0.5.1",
+    "request": ">=2.5.x",
+    "underscore.string": "^3.0.3",
+    "yeoman-generator": "^0.20.3",
+    "yo": ">=1.4.x"
+  },
+  "devDependencies": {
+    "mocha": ">=2.x",
+    "yeoman-assert": "^2.0.0"
+  },
+  "engines": {
+    "node": ">=0.10.12",
+    "npm": ">=2.8.4"
+  },
+  "licenses": [
+    {
+      "type": "MIT"
+    }
+  ]
+}

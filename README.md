@@ -39,36 +39,31 @@ It should output a file structure similiar to:
 .editorconfig
 .jshintrc
 api/
-- item.js
 apiObjects/
-- item.js
 config/
-- db.js
-- gcon.j
+    - db.js
+    - lib.js
 public/
-css/  
-- style.css
-js/  
-- script.js
 models/
-- item.js
 routes/
-- index.js
+    - index.js
 
 test/
-- test-item.js
 views/
-- index.html
 bower.json
 Gruntfile.js
 package.json
 Readme.md
 
 
-- models - contains Mongoose Schema of an entity ( Data Layer)
-- apiObjects - Contains business logic &amp; model access for each entity ( Business Layer )
-- api - Contains routes of each entity ( Presentation Layer / Controller )
-- test - contains unit test cases for each entity
+    - models - contains Mongoose Schema of an entity ( Data Layer)
+    - apiObjects - Contains business logic &amp; model access for each entity ( Business Layer )
+    - api - Contains routes of each entity ( Presentation Layer / Controller )
+    - test - contains unit test cases for each entity
+
+
+Don't forget to checkout the `config/lib.js` file to use it as core library.
+
 
 
 If you choose to install JWT ( JSONWebTokens) User Security, please note that all the routes will require Authorization header with Bearer <to.ke.n>. You can get this token from /api/login providing OAuthUserID & OAuthToken.  try sending post data as { username : <231654> , token : <longtoken> }

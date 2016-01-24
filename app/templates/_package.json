@@ -4,32 +4,30 @@
   "version": "0.0.1",
   "private": true,
   "dependencies": {
-    "ejs": "latest",
     "express": "latest",
     "mongoose": "latest",
     "morgan": "latest",
-    <% if(useUserAuth){ %>
-      "express-jwt": "^3.1.0",
-      "jsonwebtoken": "^5.0.5",
-      <% } %>
-      "method-override": "latest",
-      "body-parser": "latest",
-      "errorhandler": "latest"
-      },
-      "devDependencies": {
-        "grunt": "latest",
-        "grunt-mocha-test": "latest",
-        "bower": "latest",
-        "supertest": "latest",
-        "mocha": "latest",
-        "grunt-open": "^0.2.3",
-        "grunt-contrib-watch": "^0.6.1",
-        "grunt-express-server": "^0.4.17",
-        "load-grunt-tasks": "^0.4.0"
-        },
-        "scripts": {
-          "postinstall": "grunt test",
-          "test" : "grunt test",
-          "start": "app.js"
-        }
-      }
+    "method-override": "latest",
+    "body-parser": "latest",
+    "errorhandler": "latest",
+    "cors":"latest",
+    "slug":"latest",
+    "request":"latest"
+  },
+  "devDependencies": {
+    "grunt": "latest",
+    "grunt-mocha-test": "latest",
+    "bower": "latest",
+    "supertest": "latest",
+    "mocha": "latest",
+    "grunt-open": "^0.2.3",
+    "grunt-contrib-watch": "^0.6.1",
+    "grunt-express-server": "^0.4.17",
+    "load-grunt-tasks": "^0.4.0"
+  },
+  "scripts": {
+    "postinstall": "grunt test",
+    "test" : "grunt test",
+    "start": "node app.js"
+  }
+}

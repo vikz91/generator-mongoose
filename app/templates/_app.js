@@ -7,17 +7,14 @@ fs = require('fs'),
 methodOverride = require('method-override'),
 morgan = require('morgan'),
 bodyParser = require('body-parser'),
-errorhandler = require('errorhandler');
+errorhandler = require('errorhandler'),
+cors=require('cors');
 
-<% if(useUserAuth){ %>
-  var jwt=require('express-jwt');
-  var gcon=require('./config/gcon');
-  <% } %>
+var app = module.exports = exports.app = express();
 
-  var app = module.exports = exports.app = express();
+app.locals.siteName = "<%= capName %>";
 
-  app.locals.siteName = "<%= capName %>";
-
+app.use(cors());
 // Connect to database
 var db = require('./config/db');
 app.use(express.static(__dirname + '/public'));
@@ -61,25 +58,10 @@ if ('production' == env) {
   }));
 }
 
-app.engine('html', require('ejs').renderFile);
 app.set('view engine', 'html');
 app.use(methodOverride());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
-
-<% if(useUserAuth){ %>
-   //Auth
-   //Uncommment the following to enable JWT based Token Authentication
-   //app.use(jwt({ secret: gcon.jwtSecret}).unless({path: ['/api/login']}));
-
-   app.use(function (err, req, res, next) {
-    if (err.name === 'UnauthorizedError') {
-      res.status(401).json({err:true,msg:'invalid token...'});
-    }
-  });
-   <% } %>
-
-
 
 
 // Bootstrap routes

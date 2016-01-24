@@ -1,7 +1,8 @@
 // Module dependencies.
 var mongoose = require('mongoose'),
 <%= capSchemaName %> = mongoose.models.<%= capSchemaName %>,
-api = {};
+api = {},
+l=require('../config/lib');
 
 //Common Callback Function Utility
 var cbf=function(cb,err,data){
@@ -11,24 +12,32 @@ var cbf=function(cb,err,data){
   }
 };
 
+
+
+/*
+========= [ CORE METHODS ] =========
+*/
+
 // ALL
-api.getAll<%= capSchemaName %>s = function (cb) {
-  return <%= capSchemaName %>.find(function(err, <%= lowSchemaName %>s) {
+api.getAll<%= capSchemaName %>s = function (skip,limit,cb) {
+  var q=<%= capSchemaName %>.find();
+  
+  if(skip!=undefined)
+    q.skip(skip*1);
+
+  if(limit!=undefined)
+    q.limit(limit*1);
+
+  return q.exec(function(err, <%= lowSchemaName %>s) {
     cbf(cb,err,<%= lowSchemaName %>s);    
   });
 };
 
 // GET
 api.get<%= capSchemaName %> = function (id,cb) {
+
   <%= capSchemaName %>.findOne({ '_id': id }, function(err, <%= lowSchemaName %>) {
     cbf(cb,err,<%= lowSchemaName %>);
-  });
-};
-
-//Some
-api.get<%= capSchemaName %>s = function (offset,limit,cb) {
-  return <%= capSchemaName %>.find({ skip: offset, limit: limit },function(err, <%= lowSchemaName %>s) {
-    cbf(cb,err,<%= lowSchemaName %>s);    
   });
 };
 
@@ -71,6 +80,45 @@ api.delete<%= capSchemaName %> = function (id,cb) {
     });
   });
 };
+
+
+
+/*
+========= [ SPECIAL METHODS ] =========
+*/
+
+api.deleteAll<%= capSchemaName %>s = function (cb) {
+  return <%= capSchemaName %>.remove({},function (err) {
+    cbf(cb,err,true);      
+  });
+};
+
+
+//TEST
+api.test=function (cb) {
+  cbf(cb,false,{result:'ok'});
+};
+
+
+
+/*
+========= [ UTILITY METHODS ] =========
+*/
+
+/** Callback Helper
+ * @param  {Function} - Callback Function
+ * @param  {Object} - The Error Object
+ * @param  {Object} - Data Object
+ * @return {Function} - Callback
+ */
+ 
+ var cbf=function(cb,err,data){
+  if(cb && typeof(cb)=='function'){
+    if(err) cb(err);
+    else cb(false,data);
+  }
+};
+
 
 
 module.exports = api;
