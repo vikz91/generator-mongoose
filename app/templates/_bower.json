@@ -4,7 +4,6 @@
   "description": "Sample Description",
   "private": true,
   "dependencies": {
-    "jquery": "latest"
   },
   "ignore": [
     "**/.*",

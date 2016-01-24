@@ -77,7 +77,7 @@ api.login = function (req, res) {
    if(err){
     res.status(500).json({msg:'Oops! Something Happened!',err:err});
   }else{
-   res.status(200).json({token:token});
+   res.status(200).json(user);
  }
 });
 

@@ -1,6 +1,6 @@
-# generator-mongoose [![Build Status](https://api.travis-ci.org/vikz91/generator-mongoose.png)](https://travis-ci.org/vikz91/generator-mongoose)
+# generator-restgoose [![Build Status](https://api.travis-ci.org/vikz91/generator-restgoose.png)](https://travis-ci.org/vikz91/generator-restgoose)
 
-A custom-built Mongoose generator for [Yeoman](http://yeoman.io). The base project has been forked from  afj176/generator-mongoose and has been updated with new features and tweaks to get you up with a basic NodeJS Express Application up and running, fully equipped with JWT based authentication, User management, Route vs Model Segregation and much more.
+A [custom-built Mongoose generator](http://www.debabhishek.com/rapid-nodejs-rest-server-generator/) for [Yeoman](http://yeoman.io). The base project has been forked from  afj176/generator-mongoose and has been updated with new features and tweaks to get you up with a basic NodeJS Express Application up and running, fully equipped with JWT based authentication, User management, Route vs Model Segregation and much more.
 
 ## Getting Started
 
@@ -18,46 +18,56 @@ Not every new computer comes with a Yeoman pre-installed. He lives in the [npm](
 $ npm install -g yo
 ```
 
-### Generator Mongoose
+### Generator Restgoose
 
 While running through a leafy mongodb field he picked up mongoose.
 
-To install generator-mongoose from npm, run:
+To install generator-restgoose from npm, run:
 
 ```
-$ npm install -g generator-mongoose
+$ npm install -g generator-restgoose
 ```
 
 Finally, initiate the generator:
 
 ```
-$ yo mongoose
+$ yo restgoose
 ```
 It should output a file structure similiar to:
 
-    .bowerrc
-    .editorconfig
-    .jshintrc
-    config/
-      - db.js
-    public/
-      css/  
-         - style.css
-      js/  
-         - script.js
-    models/
-        - post.js
-    routes/
-      - index.js
-      - post.js
-    test/
-      - test-post.js
-    views/
-      - index.html
-    bower.json
-    Gruntfile.js
-    package.json
-    Readme.md
+.bowerrc
+.editorconfig
+.jshintrc
+api/
+apiObjects/
+config/
+    - db.js
+    - lib.js
+public/
+models/
+routes/
+    - index.js
+
+test/
+views/
+bower.json
+Gruntfile.js
+package.json
+Readme.md
+
+
+    - models - contains Mongoose Schema of an entity ( Data Layer)
+    - apiObjects - Contains business logic &amp; model access for each entity ( Business Layer )
+    - api - Contains routes of each entity ( Presentation Layer / Controller )
+    - test - contains unit test cases for each entity
+
+
+Don't forget to checkout the `config/lib.js` file to use it as core library.
+
+
+
+If you choose to install JWT ( JSONWebTokens) User Security, please note that all the routes will require Authorization header with Bearer <to.ke.n>. You can get this token from /api/login providing OAuthUserID & OAuthToken.  try sending post data as { username : <231654> , token : <longtoken> }
+
 
 ### Run the app 
 
@@ -83,17 +93,17 @@ $ grunt prod
 Run the sub generator for schemas:
 
 ```
-$ yo mongoose:schema "article|title:String,excerpt:String,content:String,published:Boolean,created:Date"
+$ yo restgoose:schema "article|title:String,excerpt:String,content:String,published:Boolean,created:Date"
 ```
 
 output:
 
-    You're creating a schema for article
-    With the fields: title,excerpt,content,published,created
-       create routes/article.js
-       create models/article.js
-    starting request to schematic for test mock data...
-       create test/test-article.js
+You're creating a schema for article
+With the fields: title,excerpt,content,published,created
+create routes/article.js
+create models/article.js
+starting request to schematic for test mock data...
+create test/test-article.js
 
 
 ### Getting To Know Yeoman
@@ -108,8 +118,5 @@ If you'd like to get to know Yeoman better and meet some of his friends, [Grunt]
 [MIT License](http://en.wikipedia.org/wiki/MIT_License)
 
 
-[![Bitdeli Badge](https://d2weczhvl823v0.cloudfront.net/afj176/generator-mongoose/trend.png)](https://bitdeli.com/free "Bitdeli Badge")
 
-
-[![Bitdeli Badge](https://d2weczhvl823v0.cloudfront.net/vikz91/generator-mongoose/trend.png)](https://bitdeli.com/free "Bitdeli Badge")
-
+[![Bitdeli Badge](https://d2weczhvl823v0.cloudfront.net/vikz91/generator-restgoose/trend.png)](https://bitdeli.com/free "Bitdeli Badge")
