@@ -45,13 +45,11 @@
           'app.js',
           'bower.json',
           'routes/index.js',
-          'public/css/style.css',
-          'public/js/script.js',
-          'views/index.html',
           'README.md',
           '.editorconfig',
           '.jshintrc',
-          'config/db.js'
+          'config/db.js',
+          'config/lib.js'
           // 'models/item.js',
           // 'api/item.js',
           // 'apiObjects/item.js',
