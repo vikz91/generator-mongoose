@@ -1,6 +1,9 @@
-var slug=require('slug');
 var requestImg = require('request').defaults({ encoding: null });
-var api={}
+var api={};
+var fs=require('fs');
+
+var logFile='../debug.log';
+
 
 
 /*
@@ -22,8 +25,22 @@ api.config={
 /**
  * [p description] Quick Print
  * @type {String} 
+ * @type {Object} 
  */
- api.p=console.log.bind(console,'> ');
+ api.p=function(str,obj){
+
+  var d=new Date();
+  var s=d.getFullYear()+'/'+(d.getMonth()+1)+'/'+d.getDate()+' '+d.getHours()+':'+d.getMinutes()+':'+d.getSeconds();
+  s+=' > '+str;
+
+  if(obj!=undefined)
+    s+=JSON.stringify(obj);
+
+  console.log(' ',s);
+  fs.appendFile(logFile, "\n"+s, function (err) {
+    //console.log('err: ',err);
+  });
+ }
 
 /**
  * COnverts an image url to Base64
@@ -40,16 +57,6 @@ api.config={
  			return cb(true,error);
  		}
  	});
- };
-
-
-/**
- * Slugifies a string
- * @param  {String} str - The STring to be slugified
- * @return {[type]} str - Slugified String
- */
- api.slug=function(str){
- 	return slug(str).toLowerCase();
  };
 
 

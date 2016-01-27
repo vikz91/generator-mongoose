@@ -54,7 +54,7 @@ module.exports = function(grunt) {
     {
       grunt.task.run([
         'express:prod',
-        'open',
+        //'open',
         'watch'
         ]);
     }
@@ -62,7 +62,7 @@ module.exports = function(grunt) {
     {
       grunt.task.run([
         'express:dev',
-        'open',
+        //'open',
         'watch'
         ]);
     }

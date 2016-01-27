@@ -14,7 +14,13 @@ var app = module.exports = exports.app = express();
 
 app.locals.siteName = "<%= capName %>";
 
+var accessLogStream = fs.createWriteStream(__dirname + '/../'+app.locals.siteName+'_access.log', {flags: 'a'})
+
+
 app.use(cors());
+app.use(morgan('dev'));
+app.use(morgan('short',{stream: accessLogStream}));
+
 // Connect to database
 var db = require('./config/db');
 app.use(express.static(__dirname + '/public'));
@@ -29,7 +35,6 @@ fs.readdirSync(modelsPath).forEach(function (file) {
 var env = process.env.NODE_ENV || 'development';
 
 if ('development' == env) {
-  app.use(morgan('dev'));
   app.use(errorhandler({
     dumpExceptions: true,
     showStack: true
@@ -40,7 +45,6 @@ if ('development' == env) {
 }
 
 if ('test' == env) {
-  app.use(morgan('test'));
   app.set('view options', {
     pretty: true
   });
@@ -51,7 +55,6 @@ if ('test' == env) {
 }
 
 if ('production' == env) {
-  app.use(morgan());
   app.use(errorhandler({
     dumpExceptions: false,
     showStack: false

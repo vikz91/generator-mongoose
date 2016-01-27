@@ -11,7 +11,6 @@
     "body-parser": "latest",
     "errorhandler": "latest",
     "cors":"latest",
-    "slug":"latest",
     "request":"latest"
   },
   "devDependencies": {

@@ -62,10 +62,13 @@ Readme.md
 - test - contains unit test cases for each entity
 
 
-Don't forget to checkout the `config/lib.js` file which contains many useful stuff (slug maker, image to Base64 Converter, etc).
-Use the Library as ``` var l = require('../config/lib.js); ``` ( which generates with every sub schema).
+Don't forget to checkout the `config/lib.js` file which contains many useful stuff (Json Validator, image to Base64 Converter, etc).
+Use the Library as ``` var l = require('../config/lib.js); ``` ( which generates with every sub schema). 
 
-Try to use ``` l.p('Print something'); ``` to log something. The future release will include a full featured logger to store all logs in memory, file or db.
+Try to use ``` l.p('Print something'); ``` to log something. This will log to debug.log file. 
+
+Logging
+Two log files are served : debug.log and access.log.
 
 
 
