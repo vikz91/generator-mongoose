@@ -4,14 +4,6 @@ var mongoose = require('mongoose'),
 api = {},
 l=require('../config/lib');
 
-//Common Callback Function Utility
-var cbf=function(cb,err,data){
-  if(cb && typeof(cb)=='function'){
-    if(err) cb(err);
-    else cb(false,data);
-  }
-};
-
 
 
 /*
@@ -87,6 +79,13 @@ api.delete<%= capSchemaName %> = function (id,cb) {
 ========= [ SPECIAL METHODS ] =========
 */
 
+
+//TEST
+api.test=function (cb) {
+  cbf(cb,false,{result:'ok'});
+};
+
+
 api.deleteAll<%= capSchemaName %>s = function (cb) {
   return <%= capSchemaName %>.remove({},function (err) {
     cbf(cb,err,true);      
@@ -94,10 +93,7 @@ api.deleteAll<%= capSchemaName %>s = function (cb) {
 };
 
 
-//TEST
-api.test=function (cb) {
-  cbf(cb,false,{result:'ok'});
-};
+
 
 
 
