@@ -107,7 +107,7 @@ router.route('/<%= lowSchemaName %>s')
 .delete(api.deleteAll<%= capSchemaName %>s);
 
 
-router.get('/<%= lowSchemaName %>s/test',function(res,res){
+router.get('/<%= lowSchemaName %>s/test',function(req,res){
 	return <%= lowSchemaName %>.test(function (err, data) {
 		res.status(200).json(data);
 	});
