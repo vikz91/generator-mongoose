@@ -1,6 +1,10 @@
-# generator-restgoose [![Build Status](https://api.travis-ci.org/vikz91/generator-restgoose.png)](https://travis-ci.org/vikz91/generator-restgoose)
+# generator-restgoose [![Build Status](https://travis-ci.org/vikz91/generator-restgoose.svg?branch=master)](https://travis-ci.org/vikz91/generator-restgoose) [![npm version](https://badge.fury.io/js/generator-restgoose.svg)](https://badge.fury.io/js/generator-restgoose)
+
 
 A [custom-built Mongoose generator](http://www.debabhishek.com/rapid-nodejs-rest-server-generator/) for [Yeoman](http://yeoman.io). The base project has been forked from  afj176/generator-mongoose and has been updated with new features and tweaks to get you up with a basic NodeJS Express Application up and running, Route vs Model Segregation and much more.
+
+
+[![NPM](https://nodei.co/npm/generator-restgoose.png?downloads=true&downloadRank=true&stars=true)](https://nodei.co/npm/generator-restgoose/)  
 
 ## Getting Started
 
@@ -127,4 +131,8 @@ If you'd like to get to know Yeoman better and meet some of his friends, [Grunt]
 
 
 
-[![Bitdeli Badge](https://d2weczhvl823v0.cloudfront.net/vikz91/generator-restgoose/trend.png)](https://bitdeli.com/free "Bitdeli Badge")
+
+![NPM](https://david-dm.org/vikz91/generator-restgoose.svg)
+
+
+[![NPM](https://nodei.co/npm-dl/generator-restgoose.png)](https://nodei.co/npm/generator-restgoose/)
