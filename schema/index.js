@@ -6,6 +6,7 @@ chalk = require('chalk'),
 monty = require('./yo-ascii'),
 _s = require('underscore.string'),
 mkdirp = require('mkdirp');
+var fs=require('fs');
 
 var SchemaGenerator = module.exports = function SchemaGenerator(args, options, config) {
 	// By calling `NamedBase` here, we get the argument to the subgenerator call
@@ -39,10 +40,11 @@ SchemaGenerator.prototype.files = function files() {
 	mkdirp('test');
 	mkdirp('api');
 	mkdirp('apiObjects');
+	mkdirp('docs');
 	this.template('_api.js', 'api/' + name + '.js');
 	this.template('_apiObject.js', 'apiObjects/' + name + '.js');
 	this.template('_schema.js', 'models/' + name + '.js');
-
+	this.template('_doc.js', 'docs/' + name + '.md');
 };
 
 SchemaGenerator.prototype.schematic = function schematic() {
@@ -115,4 +117,6 @@ SchemaGenerator.prototype.loadTest = function loadTest() {
 	var arg = this.name.split("|");
 	var name = arg[0];
 	this.template('_test-schema.js', 'test/test-' + name + '.js');
+
+	
 };

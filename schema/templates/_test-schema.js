@@ -6,7 +6,11 @@ process.env.NODE_ENV = 'test';
 var app = require('../app.js');
 var _id = '';
 
+/*
+ *  ==== POST === 
+ */ 
 
+//Simple POST
 describe('POST New <%= capSchemaName %>', function(){
   it('creates new <%= lowSchemaName %> and responds with json success message', function(done){
     request(app)
@@ -19,12 +23,37 @@ describe('POST New <%= capSchemaName %>', function(){
       if (err) {
         throw err;
       }
-      _id = res.body._id;
+      _id = res.body.data._id;
       done();
     });
   });
 });
 
+//Incorrect POST
+describe('POST New Item Incorrectly', function(){
+  it('Does not create new "item" and responds with json error message', function(done){
+    request(app)
+    .post('/api/<%= lowSchemaName %>')
+    .set('Accept', 'application/json')
+    .expect('Content-Type', /json/)
+    .send({"<%= lowSchemaName %>X": <%- mockData %>})
+    .expect(500)
+    .end(function(err, res) {
+      if (err) {
+        throw err;
+      }
+      done();
+    });
+  });
+});
+
+
+
+/*
+ *  ==== GET === 
+ */ 
+
+// Get List of Items
 describe('GET List of <%= capSchemaName %>s', function(){
   it('responds with a list of <%= lowSchemaName %> items in JSON', function(done){
     request(app)
@@ -35,6 +64,7 @@ describe('GET List of <%= capSchemaName %>s', function(){
   });
 });
 
+// Get Single Item
 describe('GET <%= capSchemaName %> by ID', function(){
   it('responds with a single <%= lowSchemaName %> item in JSON', function(done){
     request(app)
@@ -46,6 +76,25 @@ describe('GET <%= capSchemaName %> by ID', function(){
 });
 
 
+// Get Single Item Incorrectly
+describe('GET Item by Incorrect ID', function(){
+  it('responds with a error status for "item" in JSON', function(done){
+    request(app)
+    .get('/api/<%= lowSchemaName %>/'+ _id+'X' )
+    .set('Accept', 'application/json')
+    .expect('Content-Type', /json/)
+    .expect(404, done);
+  });
+});
+
+
+
+
+/*
+ *  ==== PUT === 
+ */ 
+
+//Simple PUT
 describe('PUT <%= capSchemaName %> by ID', function(){
   it('updates <%= lowSchemaName %> item in return JSON', function(done){
     request(app)
@@ -53,14 +102,54 @@ describe('PUT <%= capSchemaName %> by ID', function(){
     .set('Accept', 'application/json')
     .expect('Content-Type', /json/)
     .send({ "<%= lowSchemaName %>": { "title": "Hell Is Where There Are No Robots" } })    
-    .expect(200, done);
+    .expect(202, done);
   });
 });
 
+// PUT with Incorrect id
+describe('PUT Item by Incorrect ID', function(){
+  it('Does not update "item" & return JSON with error status', function(done){
+    request(app)
+    .put('/api/<%= lowSchemaName %>/'+ _id +'X')
+    .set('Accept', 'application/json')
+    .expect('Content-Type', /json/)
+    .send({ "<%= lowSchemaName %>": { "title": "Hell Is Where There Are No Robots" } })    
+    .expect(404, done);
+  });
+});
+
+// PUT with Incorrect data
+describe('PUT Item by Incorrect data', function(){
+  it('Does not update "item" & return JSON with error status', function(done){
+    request(app)
+    .put('/api/<%= lowSchemaName %>/'+ _id )
+    .set('Accept', 'application/json')
+    .expect('Content-Type', /json/)
+    .send({ "<%= lowSchemaName %>X": { "title": "Hell Is Where There Are No Robots" } })    
+    .expect(500, done);
+  });
+});
+
+
+
+/*
+ *  ==== DELETE === 
+ */ 
+
+//Simple Delete
 describe('DELETE <%= capSchemaName %> by ID', function(){
   it('should delete <%= lowSchemaName %> and return 200 status code', function(done){
     request(app)
     .del('/api/<%= lowSchemaName %>/'+ _id) 
-    .expect(204, done);
+    .expect(202, done);
+  });
+});
+
+//Incorrect Delete
+describe('DELETE Item by Incorrect ID', function(){
+  it('should NOT delete item and return 500 status code', function(done){
+    request(app)
+    .del('/api/<%= lowSchemaName %>/'+ _id+'X') 
+    .expect(500, done);
   });
 });

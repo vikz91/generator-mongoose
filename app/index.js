@@ -108,6 +108,7 @@ RestgooseGenerator.prototype.db = function db() {
 mkdirp('models');
 mkdirp('api');
 mkdirp('apiObjects');
+mkdirp('docs');
 this.template('config/_db.js', 'config/db.js');
 this.fs.copy(this.templatePath('config/lib.js'), this.destinationPath('config/lib.js'));
 

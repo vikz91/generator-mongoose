@@ -15,6 +15,8 @@ var uristring = "mongodb://" + login + config.host + port + "/" + config.db;
 
 var mongoOptions = { db: { safe: true } };
 
+mongoose.Promise=global.Promise;
+
 // Connect to Database
 mongoose.connect(uristring, mongoOptions, function (err, res) {
   if(err){

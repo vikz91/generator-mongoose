@@ -23,9 +23,7 @@
           'dbHost'    : 'localhost',
           'dbUser'    : 'd',
           'dbPassword': 'd',
-          'dbPort'    : 27017,
-          'useUserAuth':false,
-          'useSampleItem':false
+          'dbPort'    : 27017
         })
         .withGenerators(deps)
         .on('end', done);
@@ -83,14 +81,15 @@
         assert(app !== undefined);
       });
 
-      it('created new route, model, and test for todo', function (done) {
+      it('created new route, model, apiObject, docs and test for todo', function (done) {
 
         var expected = [
                 // add files you expect to exist here.
                 'api/todo.js',
                 'models/todo.js',
                 'apiObjects/todo.js',
-                'test/test-todo.js'
+                'test/test-todo.js',
+                'docs/todo.md'
                 ];
                 assert.file(expected);
                 done();
