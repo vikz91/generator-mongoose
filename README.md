@@ -16,7 +16,18 @@ For more information, please refer to the [Wiki page](https://github.com/Awesome
 
 ## Overview
 
-
+- Scaffolds *out-of-the-box* REST API Server
+- Generates All Ready to run files
+	- Model ( Mongoose)
+	- Api Route (endpoint)
+	- Api Object (Business Layer, crud logic)
+	- Documentation (API reffernce)
+	- Test File
+- Generates *ready-to-rock* README file with License(MIT), etc.
+- Conforms to jSend Specs for API JSON Response
+- Modular and based on `Seperation of Concern`
+- Fast and readible code generation
+-  ... [much more](#bucket-list)
 
 
 ## Table of contents
@@ -179,6 +190,7 @@ If you'd like to get to know Yeoman better and meet some of his friends, [Grunt]
 * yo restgoose:schema "\<schema\>|field:DataType" - Create all routers, models, test and docs for a schema
 * yo restgoose:deleteschema "\<Schema\>" - Delete all related generated files for a schema
 * grunt - start server with watch enabled
+* npm test - Start Testing generated schemas
 
 
 ## Architecture
@@ -197,8 +209,8 @@ WIP
 First off, I am really sorry for this long awaited update. Good News, a **lot** has changed in this update - Unified Response JSON object, conforming with spec, Documentation Generation, Great README file for both Yeoman Generator-Restgoose Project(this one) and your generated project! Oh and by the way, do check out the brand new sub-generator "deleteschema"!
 
 * Migration   
-With as much pain I can endure, this version of generator-restgoose is **not** backwards-compatible. This comes due to changing the core response object of all API endpoints. I will write up a blog page/wiki very soon for reasons, resolutions and troubleshooting. I personally regret and inconveniences.  
-Despite this, If you need need reasons to keep using this project, read on ...
+With as much pain I can endure, this version of generator-restgoose is **not** backwards-compatible. This comes due to changing the core response object of all API endpoints. I will write up a blog page/wiki very soon for reasons, resolutions and troubleshooting. I personally regret inconveniences caused.  
+Despite this, If you need more reasons to keep using this project, read on ...
 * Features
 	* Unified JSON response object \([jSend](https://labs.omniti.com/labs/jsend)\)
 	* Quick Auto Callback and Response Handlers ( check `config/lib.js`)
