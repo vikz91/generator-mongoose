@@ -44,7 +44,7 @@ For more information, please refer to the [Wiki page](https://github.com/vikz91/
   - [Architecture](#architecture)
   - [ChangeLog](#changeLog)
   - [Bucket List](#bucket-list)
-  - [Guidelines for Contribution](https://github.com/awesome-api-generator/awesome-api-generator/wiki/Guidelines-for-Contribution)
+  - [Guidelines for Contribution](https://github.com/vikz91/generator-restgoose/wiki/Guidelines)
   - [Generator Restgoose Core Team](#generator-restgoose-core-team)
   - [License](#license)
 

@@ -1,7 +1,15 @@
 language: node_js
 node_js:
-  - '0.12.4'
+  - "4"
+env:
+  - CXX=g++-4.8
+addons:
+  apt:
+    sources:
+      - ubuntu-toolchain-r-test
+    packages:
+      - g++-4.8
 before_install:
   - currentfolder=${PWD##*/}
-  - if [ "$currentfolder" != 'generator-mongoose' ]; then cd .. && eval "mv $currentfolder generator-mongoose" && cd generator-mongoose; fi
+  - if [ "$currentfolder" != 'generator-restgoose' ]; then cd .. && eval "mv $currentfolder generator-restgoose" && cd generator-restgoose; fi
 
