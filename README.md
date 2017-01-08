@@ -12,9 +12,9 @@ A [custom-built Mongoose generator](http://abhishekdeb.com/rapid-nodejs-rest-ser
 Minimum NPM Version : 3.x**
 
 ## Quick Links
-If you would like to contribute, please refer to [guidelines](https://github.com/Awesome-API-Server/Awesome-API-Server/blob/master/CONTRIBUTING.md) and a list of [open tasks](https://github.com/Awesome-API-Server/Awesome-API-Server/issues).
+If you would like to contribute, please refer to [guidelines](https://github.com/vikz91/generator-restgoose/wiki/Guidelines) and a list of [open tasks](https://github.com/vikz91/generator-restgoose/issues?q=is%3Aopen+is%3Aissue).
 
-For more information, please refer to the [Wiki page](https://github.com/Awesome-API-Server/Awesome-API-Server/wiki) and [FAQ](https://github.com/Awesome-API-Server/Awesome-API-Server/wiki/FAQ) 
+For more information, please refer to the [Wiki page](https://github.com/vikz91/generator-restgoose/wiki) and [FAQ](https://github.com/vikz91/generator-restgoose/wiki/FAQ) 
 
 
 ## Overview
@@ -212,7 +212,7 @@ WIP
 First off, I am really sorry for this long awaited update. Good News, a **lot** has changed in this update - Unified Response JSON object, conforming with spec, Documentation Generation, Great README file for both Yeoman Generator-Restgoose Project(this one) and your generated project! Oh and by the way, do check out the brand new sub-generator "deleteschema"!
 
 * Migration   
-With as much pain I can endure, this version of generator-restgoose is **not** backwards-compatible. This comes due to changing the core response object of all API endpoints. I will write up a blog page/wiki very soon for reasons, resolutions and troubleshooting. I personally regret inconveniences caused.  
+With as much pain I can endure, this version of generator-restgoose is **not** backwards-compatible. This comes due to changing the core response object of all API endpoints. I will write up a blog page/[wiki](https://github.com/vikz91/generator-restgoose/wiki/Migrations) very soon for reasons, resolutions and troubleshooting. I personally regret inconveniences caused.  
 Despite this, If you need more reasons to keep using this project, read on ...
 * Features
 	* Unified JSON response object \([jSend](https://labs.omniti.com/labs/jsend)\)
