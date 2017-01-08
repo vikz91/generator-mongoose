@@ -1,5 +1,6 @@
 # generator-restgoose   [![Build Status](https://travis-ci.org/vikz91/generator-restgoose.svg?branch=master)](https://travis-ci.org/vikz91/generator-restgoose) [![npm version](https://badge.fury.io/js/generator-restgoose.svg)](https://badge.fury.io/js/generator-restgoose)
 
+
 ##### *Mongoose RESTful API generator for your NodeJS Express App* #####
 
 A [custom-built Mongoose generator](http://abhishekdeb.com/rapid-nodejs-rest-server-generator/) for [Yeoman](http://yeoman.io). The base project has been forked from  afj176/generator-mongoose and has been updated with many new features, tests and tweaks to get you full fledged *out-of-the-box* NodeJS Express API Application up and running, Route vs Model Segregation and much more.
@@ -7,6 +8,8 @@ A [custom-built Mongoose generator](http://abhishekdeb.com/rapid-nodejs-rest-ser
 
 [![NPM](https://nodei.co/npm/generator-restgoose.png?downloads=true&downloadRank=true&stars=true)](https://nodei.co/npm/generator-restgoose/)  
 
+**Minimum Node Version : 4.x   
+Minimum NPM Version : 3.x**
 
 ## Quick Links
 If you would like to contribute, please refer to [guidelines](https://github.com/Awesome-API-Server/Awesome-API-Server/blob/master/CONTRIBUTING.md) and a list of [open tasks](https://github.com/Awesome-API-Server/Awesome-API-Server/issues).
