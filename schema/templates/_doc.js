@@ -35,12 +35,12 @@
         "<%= lowSchemaName %>s": [
           {
             "_id": "587100001657a2bd9c5a00df",
-            "field": "value",
-            . 
-            .
-            .
+            <% schemaFields.forEach(function(field, index) { %><%=field.split(':')[0] %> : <%= field.split(':')[1] %>,<% if(schemaFields.length-1!=index){ %><%= "\n\t\t\t" %> <%} %><% }) %>
             "__v": 0
-          }
+          },
+          .
+          .
+          .
         ],
         "count": 1
       },
@@ -69,10 +69,8 @@
    ```
     { 
       "<%= lowSchemaName %>" : {
-        "field" : "name",
-            .
-            .
-            .
+        <% schemaFields.forEach(function(field, index) { %><%=field.split(':')[0] %> : <%= field.split(':')[1] %><% if(schemaFields.length-1!=index){ %><%= "," %> <%} %>
+        <% }) %> 
       }
     }
    ```
@@ -85,11 +83,9 @@
         "status": "success",
         "data": {
           "__v": 0,
-          "field": "value",
-          .
-          .
-          .
-          "_id": "58713aaf1657a2bd9c5a00e0"
+          "_id": "58713aaf1657a2bd9c5a00e0",
+          <% schemaFields.forEach(function(field, index) { %><%=field.split(':')[0] %> : <%= field.split(':')[1] %><% if(schemaFields.length-1!=index){ %><%= "," %> <%} %>
+          <% }) %> 
         },
         "message": null
       }
@@ -144,11 +140,9 @@
         "status": "success",
         "data": {
           "_id": "587100001657a2bd9c5a00df",
-          "field": "value",
-          .
-          .
-          .
-          "__v": 0
+          "__v": 0,
+          <% schemaFields.forEach(function(field, index) { %><%=field.split(':')[0] %> : <%= field.split(':')[1] %><% if(schemaFields.length-1!=index){ %><%= "," %> <%} %>
+          <% }) %> 
         },
         "message": null
       }
@@ -193,10 +187,8 @@
    ```
     { 
       "<%= lowSchemaName %>" : {
-        "field" : "name",
-            .
-            .
-            .
+        <% schemaFields.forEach(function(field, index) { %><%=field.split(':')[0] %> : <%= field.split(':')[1] %><% if(schemaFields.length-1!=index){ %><%= "," %> <%} %>
+        <% }) %> 
       }
     }
    ```
@@ -209,11 +201,9 @@
         "status": "success",
         "data": {
           "_id": "587100001657a2bd9c5a00df",
-          "field": "value",
-          .
-          .
-          .
-          "__v": 0
+          "__v": 0,
+          <% schemaFields.forEach(function(field, index) { %><%=field.split(':')[0] %> : <%= field.split(':')[1] %><% if(schemaFields.length-1!=index){ %><%= "," %> <%} %>
+          <% }) %> 
         },
         "message": null
       }
