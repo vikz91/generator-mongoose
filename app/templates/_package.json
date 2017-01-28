@@ -1,31 +1,32 @@
 {
-  "name": "<%= _.slugify(appname) %>",
-  "description": "<%= _.slugify(appname) %> app description here",
+  "name": "<%= slugName %>",
+  "description": "<%= slugName %> app description here",
   "version": "0.0.1",
   "private": true,
-	"dependencies": {
-		"ejs": "latest",
-		"express": "latest",
-		"mongoose": "latest",
+  "dependencies": {
+    "express": "latest",
+    "mongoose": "latest",
     "morgan": "latest",
     "method-override": "latest",
     "body-parser": "latest",
-    "errorhandler": "latest"
-	},
-	"devDependencies": {
+    "errorhandler": "latest",
+    "cors":"latest",
+    "request":"latest"
+  },
+  "devDependencies": {
     "grunt": "latest",
     "grunt-mocha-test": "latest",
-    "bower": "latest",    
+    "bower": "latest",
     "supertest": "latest",
     "mocha": "latest",
     "grunt-open": "^0.2.3",
     "grunt-contrib-watch": "^0.6.1",
     "grunt-express-server": "^0.4.17",
     "load-grunt-tasks": "^0.4.0"
-	},
+  },
   "scripts": {
     "postinstall": "grunt test",
     "test" : "grunt test",
-    "start": "app.js"
-  }	
+    "start": "node app.js"
+  }
 }

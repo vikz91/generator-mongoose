@@ -50,6 +50,54 @@ For more information, please refer to the [Wiki page](https://github.com/vikz91/
   - [Generator Restgoose Core Team](#generator-restgoose-core-team)
   - [License](#license)
 
+=======
+
+##### *Mongoose RESTful API generator for your NodeJS Express App*  v0.1.8 #####
+
+A [custom-built Mongoose generator](http://abhishekdeb.com/rapid-nodejs-rest-server-generator/) for [Yeoman](http://yeoman.io). The base project has been forked from  afj176/generator-mongoose and has been updated with many new features, tests and tweaks to get you full fledged *out-of-the-box* NodeJS Express API Application up and running, Route vs Model Segregation and much more.
+
+
+[![NPM](https://nodei.co/npm/generator-restgoose.png?downloads=true&downloadRank=true&stars=true)](https://nodei.co/npm/generator-restgoose/)  
+
+**Minimum Node Version : 4.x   
+Minimum NPM Version : 3.x**
+
+## Quick Links
+If you would like to contribute, please refer to [guidelines](https://github.com/vikz91/generator-restgoose/wiki/Guidelines) and a list of [open tasks](https://github.com/vikz91/generator-restgoose/issues?q=is%3Aopen+is%3Aissue).
+
+For more information, please refer to the [Wiki page](https://github.com/vikz91/generator-restgoose/wiki) and [FAQ](https://github.com/vikz91/generator-restgoose/wiki/FAQ) 
+
+
+## Overview
+
+- Scaffolds *out-of-the-box* REST API Server
+- Generates All Ready to run files
+	- Model ( Mongoose)
+	- Api Route (endpoint)
+	- Api Object (Business Layer, crud logic)
+	- Documentation (API reffernce)
+	- Test File
+- Generates *ready-to-rock* README file with License(MIT), etc.
+- Conforms to jSend Specs for API JSON Response
+- Modular and based on `Seperation of Concern`
+- Fast and readible code generation
+-  ... [much more](#bucket-list)
+
+
+## Table of contents
+
+  - [Generator Restgoose](#generator-restgoose)
+  - [Quick Links](#quick-links)
+  - [Overview](#overview)
+  - Table of Contents
+  - [Getting Started](#getting-started)
+  - [Command List](#command-list)
+  - [Architecture](#architecture)
+  - [ChangeLog](#changeLog)
+  - [Bucket List](#bucket-list)
+  - [Guidelines for Contribution](https://github.com/vikz91/generator-restgoose/wiki/Guidelines)
+  - [Generator Restgoose Core Team](#generator-restgoose-core-team)
+  - [License](#license)
 
 
 ## Getting Started
@@ -164,6 +212,19 @@ starting request to schematic for test mock data...
 create test/test-article.js
 create doc/article.md
 ```
+#### DeleteSchema
+
+Deletes all files (Model, APi Route, API Object, Doc, Test) for a particular schema. Run the sub generator for deleteschema:
+
+```
+$ yo restgoose:deleteschema "article" --force
+```
+**N.B.** You need to use --force else y=Yeoman will continue asking you to overwrite each file.  
+output:
+```
+You're deleting all files for schema: article
+
+=======
 
 #### DeleteSchema
 

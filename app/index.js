@@ -1,23 +1,25 @@
 'use strict';
-var util = require('util');
-var path = require('path');
-var yeoman = require('yeoman-generator');
-var monty = require('./yo-ascii');
+var util = require('util'),
+path = require('path'),
+yeoman = require('yeoman-generator'),
+monty = require('./yo-ascii'),
+_s = require('underscore.string'),
+mkdirp = require('mkdirp');
 
 
-var MongooseGenerator = module.exports = function MongooseGenerator(args, options, config) {
+var RestgooseGenerator = module.exports = function RestgooseGenerator(args, options, config) {
   yeoman.generators.Base.apply(this, arguments);
 
   this.on('end', function () {
     this.installDependencies({ skipInstall: options['skip-install'] });
   });
 
-  this.pkg = JSON.parse(this.readFileAsString(path.join(__dirname, '../package.json')));
+  this.pkg = JSON.parse(require('html-wiring').readFileAsString(path.join(__dirname, '../package.json')));
 };
 
-util.inherits(MongooseGenerator, yeoman.generators.Base);
+util.inherits(RestgooseGenerator, yeoman.generators.Base);
 
-MongooseGenerator.prototype.askFor = function askFor() {
+RestgooseGenerator.prototype.askFor = function askFor() {
   var cb = this.async();
 
   // have Monty greet the user.
@@ -25,92 +27,100 @@ MongooseGenerator.prototype.askFor = function askFor() {
 
 
   var prompts = [
-    {
-      name: 'dbName',
-      message: 'Database Name',
-      default: 'myDb'
-    },
-    {
-      name: 'dbHost',
-      message: 'Database Host',
-      default: 'localhost'
-    },
-    {
-      name: 'dbUser',
-      message: 'Database User',
-      default: ''
-    },
-    {
-      type: 'password',
-      name: 'dbPassword',
-      message: 'Database Password',
-      default: ''
-    },
-    {
-      name: 'dbPort',
-      message: 'Database Port',
-      default: 27017
-    },
-    {
-      type: 'confirm',
-      name: 'useHeroku',
-      message: 'Will you be using heroku?',
-      default: true
-    }
+  {
+    name: 'dbName',
+    message: 'Database Name',
+    default: 'myDb'
+  },
+  {
+    name: 'dbHost',
+    message: 'Database Host',
+    default: 'localhost'
+  },
+  {
+    name: 'dbPort',
+    message: 'Database Port',
+    default: 27017
+  },
+  {
+    name: 'dbUser',
+    message: 'Database User',
+    default: ''
+  },
+  {
+    type: 'password',
+    name: 'dbPassword',
+    message: 'Database Password',
+    default: ''
+  }
   ];
 
   this.prompt(prompts, function (props) {
     this.dbName = props.dbName;
+    this.slugName = _s.slugify(this.appname);
+    this.capName = _s.capitalize(this.appname);
     this.dbHost = props.dbHost;
     this.dbUser = props.dbUser;
     this.dbPassword = props.dbPassword;
     this.dbPort = props.dbPort;
-    this.useHeroku = props.useHeroku;
+
     cb();
   }.bind(this));
 };
 
-MongooseGenerator.prototype.app = function app() {
-  this.mkdir('test');
-  this.mkdir('config');
-  this.template('_package.json', 'package.json');
-  this.template('_app.js', 'app.js');
-  this.copy('Gruntfile.js', 'Gruntfile.js');
-  this.copy('bowerrc', '.bowerrc');
-  this.template('_bower.json', 'bower.json');
+RestgooseGenerator.prototype.app = function app() {
+//console.log('Preparing App ...');
+mkdirp('test');
+mkdirp('config');
+this.template('_package.json', 'package.json');
+this.template('_app.js', 'app.js');
+this.fs.copy(this.templatePath('Gruntfile.js'), this.destinationPath('Gruntfile.js'));
+this.fs.copy(this.templatePath('bowerrc'), this.destinationPath('.bowerrc'));  
+this.template('_bower.json', 'bower.json');
+this.fs.copy(this.templatePath('_gitignore'), this.destinationPath('.gitignore'));
 };
 
-MongooseGenerator.prototype.routes = function routes() {
-  this.mkdir('routes');
-  this.copy('routes/index.js', 'routes/index.js');
+RestgooseGenerator.prototype.routes = function routes() {
+ // console.log('Configuring Routes ...');
+ mkdirp('routes');
+ this.fs.copy(this.templatePath('routes/index.js'), this.destinationPath('routes/index.js'));
 };
 
-MongooseGenerator.prototype.publicFiles = function publicFiles() {
-  this.mkdir('public');
-  this.mkdir('public/css');
-  this.copy('public/css/style.css', 'public/css/style.css');
-  this.mkdir('public/js');
-  this.copy('public/js/script.js', 'public/js/script.js');
+RestgooseGenerator.prototype.publicFiles = function publicFiles() {
+
+  mkdirp('public');
 };
 
-MongooseGenerator.prototype.views = function views() {
-  this.mkdir('views');
-  this.copy('views/index.html', 'views/index.html');
+RestgooseGenerator.prototype.views = function views() {
+  mkdirp('views');
 };
 
-MongooseGenerator.prototype.projectfiles = function projectfiles() {
-  this.template('_README.md', 'README.md');
-  this.copy('editorconfig', '.editorconfig');
-  this.copy('jshintrc', '.jshintrc');
+RestgooseGenerator.prototype.projectfiles = function projectfiles() {
+//  console.log('Configuring Files ...');
+this.template('_README.md', 'README.md');
+this.fs.copy(this.templatePath('editorconfig'), this.destinationPath('.editorconfig'));
+this.fs.copy(this.templatePath('jshintrc'), this.destinationPath('.jshintrc'));
 };
 
-MongooseGenerator.prototype.db = function db() {
-  this.mkdir('models');
-  this.template('config/_db.js', 'config/db.js');
-  this.copy('models/post.js', 'models/post.js');
-  this.copy('routes/post.js', 'routes/post.js');
+RestgooseGenerator.prototype.db = function db() {
+//  console.log('Setting up database ...');
+
+mkdirp('models');
+mkdirp('api');
+mkdirp('apiObjects');
+mkdirp('docs');
+this.template('config/_db.js', 'config/db.js');
+this.fs.copy(this.templatePath('config/lib.js'), this.destinationPath('config/lib.js'));
+
 };
 
-MongooseGenerator.prototype.test = function test() {
-  this.template('test/test-post.js', 'test/test-post.js');
+RestgooseGenerator.prototype.installItem = function installItem() {
+//  console.log('installing Item files...');
+};
+
+
+
+RestgooseGenerator.prototype.install = function install(){
+  this.installDependencies();
+  //
 };

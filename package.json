@@ -1,7 +1,7 @@
 {
-  "name": "generator-mongoose",
-  "version": "1.0.4",
-  "description": "A mongoose schema generator for Yeoman",
+  "name": "generator-restgoose",
+  "version": "0.1.8",
+  "description": "An Out-Of-Box NodeJS REST API Server generator built on top of Mongoose, Express, Cors, Grunt and many more.",
   "keywords": [
     "yo",
     "yeoman",
@@ -9,41 +9,46 @@
     "yeoman-generator",
     "mongoose",
     "mongodb",
-    "schema"
+    "schema",
+    "rest",
+    "cors",
+    "restgoose",
+    "generator-restgoose",
+    "abhishek",
+    "abhishekdeb",
+    "documentation"
   ],
-  "homepage": "http://www.yomongoo.se",
-  "bugs": "https://github.com/afj176/generator-mongoose/issues",
+  "homepage": "http://abhishekdeb.com/rapid-nodejs-rest-server-generator/",
+  "bugs": "https://github.com/vikz91/generator-restgoose/issues",
   "author": {
-    "name": "Antonio Fernandes",
-    "email": "afj176@gmail.com",
-    "url": "https://github.com/afj176"
+    "name": "Abhishek Deb",
+    "email": "vikz91.deb@gmail.com",
+    "url": "https://github.com/vikz91"
   },
   "main": "app/index.js",
   "repository": {
     "type": "git",
-    "url": "git://github.com/afj176/generator-mongoose.git"
+    "url": "git://github.com/vikz91/generator-restgoose.git"
   },
   "scripts": {
     "test": "mocha"
   },
   "dependencies": {
-    "yeoman-generator": ">=0.16.0",
-    "request": "~2.27.0",
-    "chalk": "~0.4.0"
+    "chalk": "^1.1.3",
+    "html-wiring": "^1.2.0",
+    "mkdirp": "^0.5.1",
+    "request": "^2.79.0",
+    "underscore.string": "^3.3.4",
+    "yeoman-generator": "^0.20.3",
+    "yo": "^1.8.5"
   },
   "devDependencies": {
-    "mocha": "~1.14.0"
-  },
-  "peerDependencies": {
-    "yo": ">=1.1.1"
+    "mocha": ">=2.x",
+    "yeoman-assert": "^2.0.0"
   },
   "engines": {
-    "node": ">=0.8.0",
-    "npm": ">=1.2.10"
+    "node": ">=4.x",
+    "npm": ">=3.x"
   },
-  "licenses": [
-    {
-      "type": "MIT"
-    }
-  ]
+  "license": "MIT"
 }
