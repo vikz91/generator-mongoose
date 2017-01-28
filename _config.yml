@@ -1,0 +1,18 @@
+# Setup
+title:        generator-restgoose
+url:          https://github.com/vikz91/generator-restgoose
+tagline:      Mongoose RESTful API generator for your NodeJS Express App
+baseurl:      ""
+paginate:     1
+
+# About/contact
+author:
+  name:       Abhishek Deb
+  url:        http://debabhishek.com
+
+# Gems
+gems:
+  - jekyll-paginate
+
+#Others
+markdown: kramdown
