@@ -81,6 +81,40 @@ api.deleteAll<%= capSchemaName %>s = function (req, res) {
 	});
 };
 
+
+// SEARCH
+api.search<%= capSchemaName %>s=function(req,res){
+	var skip=null,limit=10,keyword='',strict='';
+
+	if(req.query.skip!=undefined)
+		skip=req.query.skip;
+
+	if(req.query.limit!=undefined)
+		limit=req.query.limit;
+
+	if(req.query.keyword!=undefined)
+		keyword=req.query.keyword;
+
+	if(req.query.strict!=undefined)
+		strict=req.query.strict;
+	else
+		strict=false;
+
+	strict = (strict=='true' || strict=='True' || strict==1)?true:false;
+
+
+	var k={};
+	var kObj=keyword.split(',').forEach(function(key) {
+		var k1=key.split(':');
+	      k[k1[0]]=k1[1];
+	 });
+
+	<%= lowSchemaName %>.search<%= capSchemaName %>s(skip,limit,k,strict, (data) => l.response(res,data) ); 
+};
+
+
+
+
 /*
 =====================  ROUTES  =====================
 */
@@ -98,6 +132,13 @@ router.route('/<%= lowSchemaName %>s')
 .get(api.<%= lowSchemaName %>s)
 .delete(api.deleteAll<%= capSchemaName %>s);
 
+/*
+	SEARCH
+	e.g.: /api/<%= lowSchemaName %>s/search?keyword=first:Sam,last:Jones
+ */
+router.get('/<%= lowSchemaName %>s/search',api.search<%= capSchemaName %>s);
+
+
 
 /* 
 //Manual Response Handling
@@ -112,7 +153,7 @@ router.get('/<%= lowSchemaName %>s/test',function(req,res){
 
 //New quick Response Handling
 router.get('/<%= lowSchemaName %>s/test', (req,res)=>
-	<%= lowSchemaName %>.test( (data)=>l.response(res,response) )
+	<%= lowSchemaName %>.test( (data)=>l.response(res,data) )
 );
 
 module.exports = router;

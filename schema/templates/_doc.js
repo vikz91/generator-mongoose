@@ -9,6 +9,8 @@
 * `[DELETE]` /api/<%= lowSchemaName %>/<.id> - [Delete a single *<%= capSchemaName %>* with `id`](#Delete-a-single-<%= capSchemaName %>)
 * `[GET]` /api/<%= lowSchemaName %>s/test - [Quick Test <%= lowSchemaName %>](#Quick-Test-<%= lowSchemaName %>)
 * `[DELETE]` /api/<%= lowSchemaName %>s - [Delete all *<%= lowSchemaName %>s* in the collection](#Delete-all-<%= lowSchemaName %>s)
+* `[SEARCH]` /api/<%= lowSchemaName %>s/search - [Searches all *<%= lowSchemaName %>s* for multiple values](#Search-<%= lowSchemaName %>s)
+
 
 **N.B**: The `/test` endpoint of this <%= lowSchemaName %> is for quick development testing only. Do Disable this when in production!
 
@@ -346,3 +348,53 @@
   The key model being `<%= lowSchemaName %>` which updates a 'sharpner' data 
 
 * **Notes:**
+
+
+
+
+### Search <%= capSchemaName %>s
+
+* **Syntax** : `[GET] /api/<%= lowSchemaName %>s/search [?skip= X & limit= Y & keyword= field:value [,field:value]]` 
+* **URL** :  `/api/<%= lowSchemaName %>s/search`  
+* **Method**: `GET`  
+* **URL Params**:   
+   **Required:**   keyword  
+   **Optional:**
+ 
+   `skip=[Integer]` - Offsets(Skips) index of results  
+   `limit=[Integer]` - Total number of results in the current request to return
+   `keyword=[CSV]` - keyword = field1:value1, filed2:value2 ... 
+    `strict=[Boolean]` - Performs Strict search.
+
+* **Success Response:**
+ 
+   **Code:** 200 <br />
+    **Content:** 
+    ```
+    {
+      "status": "success",
+      "data": {
+        "<%= lowSchemaName %>s": [
+          {
+            "_id": "587100001657a2bd9c5a00df",
+            name : String,
+        price : Number,
+            "__v": 0
+          },
+          .
+          .
+          .
+        ],
+        "count": 1
+      },
+      "message": null
+    }
+    ```
+
+* **Sample Call:**
+
+   `  curl "http://localhost:3000/api/<%= lowSchemaName %>s/search?keyword=first:Sam,last:Jones"`  
+ Searches <%= lowSchemaName %>s with rows with its first name 'Sam' and last name 'Jones'
+
+* **Notes:**
+To use Strict Search, add param ?strict=true

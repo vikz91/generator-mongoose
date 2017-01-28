@@ -1,6 +1,6 @@
 {
   "name": "generator-restgoose",
-  "version": "0.1.7",
+  "version": "0.1.8",
   "description": "An Out-Of-Box NodeJS REST API Server generator built on top of Mongoose, Express, Cors, Grunt and many more.",
   "keywords": [
     "yo",

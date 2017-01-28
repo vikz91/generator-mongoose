@@ -1,7 +1,7 @@
 # generator-restgoose   [![Build Status](https://travis-ci.org/vikz91/generator-restgoose.svg?branch=master)](https://travis-ci.org/vikz91/generator-restgoose) [![npm version](https://badge.fury.io/js/generator-restgoose.svg)](https://badge.fury.io/js/generator-restgoose)
 
 
-##### *Mongoose RESTful API generator for your NodeJS Express App* #####
+##### *Mongoose RESTful API generator for your NodeJS Express App*  v0.1.8 #####
 
 A [custom-built Mongoose generator](http://abhishekdeb.com/rapid-nodejs-rest-server-generator/) for [Yeoman](http://yeoman.io). The base project has been forked from  afj176/generator-mongoose and has been updated with many new features, tests and tweaks to get you full fledged *out-of-the-box* NodeJS Express API Application up and running, Route vs Model Segregation and much more.
 
@@ -208,7 +208,18 @@ WIP
 
 ## ChangeLog
 
-### [ 8 Jan 2016 ] v0.1.6
+### [ 28 Jan 2017 ] v0.1.8
+* Features
+	* Universal Search Functionality ( both Strict and Casual Options)
+* Optimizations & Upgrades
+	* Updated Docs
+* Bug Fixes
+	* fixed test mothod in api
+
+
+
+
+### [ 8 Jan 2017 ] v0.1.6
 First off, I am really sorry for this long awaited update. Good News, a **lot** has changed in this update - Unified Response JSON object, conforming with spec, Documentation Generation, Great README file for both Yeoman Generator-Restgoose Project(this one) and your generated project! Oh and by the way, do check out the brand new sub-generator "deleteschema"!
 
 * Migration   
@@ -230,7 +241,7 @@ Despite this, If you need more reasons to keep using this project, read on ...
 	* Better Test Cases
 
 
-### [ 5 Feb 2015 ] v0.1.5
+### [ 5 Feb 2016 ] v0.1.5
 - Bug Fixed for Test Route in APIs
 
 ## Bucket List

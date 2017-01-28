@@ -107,4 +107,30 @@ api.deleteAll<%= capSchemaName %>s = function (cb) {
 };
 
 
+// SEARCH
+api.search<%= capSchemaName%>s = function (skip,limit,keywordObj,strict,cb) {
+  var k={};
+
+  if(strict){
+    k=keywordObj;
+  }else{
+    Object.keys(keywordObj).forEach(function(key,index) {
+        k[key]=new RegExp(keywordObj[key], 'i');
+    });
+  }
+
+  var q=<%= capSchemaName%>.find(k)
+  
+  if(skip!=undefined)
+    q.skip(skip*1);
+
+  if(limit!=undefined)
+    q.limit(limit*1);
+
+  return q.exec( (err, <%= lowSchemaName %>s)=>{
+    cbf(cb,err,<%= lowSchemaName %>s) 
+  });
+};
+
+
 module.exports = api;
