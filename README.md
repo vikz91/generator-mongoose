@@ -181,6 +181,31 @@ force models/article.js
 force docs/article.md
 force test/test-article.js
 ```
+
+#### Auth
+
+Enabled Passport + Redis + JWT based Authentication and Authorization for your RESR API server.
+
+```
+$ yo restgoose:auth "auth"
+```
+**N.B.** Run this before creating user model and auth controllers or else, they will be overwritten.  
+output:
+```
+Instantiating Authentication ...
+
+
+   create api/auth.js
+   create apiObjects/auth.js
+   create models/user.js
+   create middlewares/passport.js
+   create docs/auth.md
+   create routes/sampleauth.js
+```
+
+You should checkout the ``docs/auth.md`` after issuing this command for complete reference.
+
+
 ### Getting To Know Yeoman
 
 Yeoman has a heart of gold. He's a person with feelings and opinions, but he's very easy to work with. If you think he's too opinionated, he can be easily convinced.
@@ -208,6 +233,22 @@ WIP
 
 ## ChangeLog
 
+### [ 10th March 2017 ] v0.2.0
+* Migration 
+Since response callbacks are changed, this version is not backwards compatible. However, I am locking down core transport methods ( response calbacks, etc.) so as to make future versions backward compatible. 
+* Features
+	* **Passport + JWT + Redis based out-of-the-box Authentication**
+	* Authorization Middleware
+	* Core Response Lockdown. Future versions will be backwards compatible.
+* Optimizations & Upgrades
+	* Updated Docs
+	* Changed Response Method to very simple err first callbacks
+	* Removed complex response classes
+* Bug Fixes
+	* minor memory optimizations
+
+
+
 ### [ 28 Jan 2017 ] v0.1.8
 * Features
 	* Universal Search Functionality ( both Strict and Casual Options)
@@ -220,7 +261,6 @@ WIP
 
 
 ### [ 8 Jan 2017 ] v0.1.6
-First off, I am really sorry for this long awaited update. Good News, a **lot** has changed in this update - Unified Response JSON object, conforming with spec, Documentation Generation, Great README file for both Yeoman Generator-Restgoose Project(this one) and your generated project! Oh and by the way, do check out the brand new sub-generator "deleteschema"!
 
 * Migration   
 With as much pain I can endure, this version of generator-restgoose is **not** backwards-compatible. This comes due to changing the core response object of all API endpoints. I will write up a blog page/[wiki](https://github.com/vikz91/generator-restgoose/wiki/Migrations) very soon for reasons, resolutions and troubleshooting. I personally regret inconveniences caused.  
@@ -251,7 +291,7 @@ Despite this, If you need more reasons to keep using this project, read on ...
 - API Versioning System
 - API Dynamic on-demand Doc Generator
 - Conform to [REST API Standards](https://github.com/WhiteHouse/api-standards/blob/master/README.md)
-- out-of-the-box passportJS authentication with JWT
+- * ~~out-of-the-box passportJS authentication with JWT~~ * \m/
 - Socket.IO Generator (wohooo)
 - Docker Scripts
 - AutoStart Script using PM2 ( 1 click deploy)

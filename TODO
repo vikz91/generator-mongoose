@@ -1,0 +1,30 @@
+[ Auth ]
+1. Set Expiry
+2. Email Verfiication
+3. Optional Mobile OTP Module
+4. Authentication config file
+5. Forgot Password
+6. Change Password
+7. Edit Profile
+8. Revoke Login Tokens
+9. Email Subscription with MailChimp
+10. Profile View
+11. UAC
+12. Automate enabling redis and passport in app.js
+
+
+[ SDK ]
+1. Angular SDK (generator-angular) service
+2. jQuery SDK
+3. Unity Engine SDK
+4. Xamarin SDK
+5. Unreal SDK
+
+
+[ System ]
+1. Server / Resource Load
+2. Load Balancing
+3. Installer Bash file
+4. Maintenance Bash file ( repair, remove, add/delete features)
+5. Logger System
+6. Docker Image

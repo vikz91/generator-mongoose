@@ -5,6 +5,8 @@ router = express.Router(),
 l=require('../config/lib');
 
 var api = {};
+
+
 // GET ALL
 api.<%= lowSchemaName %>s = function (req, res) {
 	var skip=null,limit=10;
@@ -15,71 +17,135 @@ api.<%= lowSchemaName %>s = function (req, res) {
 	if(req.query.limit!=undefined)
 		limit=req.query.limit;
 
-	<%= lowSchemaName %>.getAll<%= capSchemaName %>s(skip,limit, (data) => l.response(res,data) ); 
+	<%= lowSchemaName %>.getAll<%= capSchemaName %>s(skip,limit, (err,data) => {
+
+		var r={},statusCode=500;
+
+		if(err){
+			r=l.response(l.STATUS_ERR,null,err);
+		}else{
+			r=l.response(l.STATUS_OK,data,null);
+			statusCode=200;
+		}
+		return res.status(statusCode).json(r);
+	});  
 };
+
 
 // POST
 api.add<%= lowSchemaName %> = function (req, res) {
-	if(req.body.<%= lowSchemaName %>==undefined) return res.status(500).json(new l.ResponseClass('error','Invalid <%= lowSchemaName %>/key model provided','There was an error saving this data.').out());
 
-	<%= lowSchemaName %>.add<%= capSchemaName %>(req.body.<%= lowSchemaName %>,	(data)=>{
-		var status=(data.status!='success')? 500 :  201;
-		res.status(status).json(data);
-	});	
+	if(req.body.<%= lowSchemaName %>==undefined) {
+		var r=l.response(l.STATUS_ERR,'Invalid <%= lowSchemaName %>/key model provided','There was an error saving this data.');
+		return res.status(500).json(r);
+	}
+
+	<%= lowSchemaName %>.add<%= capSchemaName %>(req.body.<%= lowSchemaName %>,	(err,data)=>{
+		var r={},statusCode=500;
+
+		if(err){
+			r=l.response(l.STATUS_ERR,null,err);
+		}else{
+			r=l.response(l.STATUS_OK,data,null);
+			statusCode=201;
+		}
+		return res.status(statusCode).json(r);
+	});
 };
+
 
 // GET
 api.<%= lowSchemaName %> = function (req, res) {
+
 	var id = req.params.id;
-	<%= lowSchemaName %>.get<%= capSchemaName %>(id, (data)=>{
-		var status=200;
 
-		if(data.status!='success'){
-			status=404;
-			data.message='Not Found Error';
+	if(id===null || id===undefined){
+		res.status(402).json(l.response(l.STATUS_ERR,null,'No ID Provided'));
+	}
+
+	<%= lowSchemaName %>.get<%= capSchemaName %>(id, (err,data)=>{
+		var r={},statusCode=500;
+
+		if(err){
+			r=l.response(l.STATUS_ERR,null,err);
+			statusCode=(data===404)?404:500;
+		}else{
+			r=l.response(l.STATUS_OK,data,null);
+			statusCode=200;
 		}
-
-		res.status(status).json(data);
+		return res.status(statusCode).json(r);
 	}); 
 };
+
 
 // PUT
 api.edit<%= capSchemaName %> = function (req, res) {
 	var id = req.params.id;
 
-	if(req.body.<%= lowSchemaName %>==undefined) {
-		var r=new l.ResponseClass('error','Invalid <%= lowSchemaName %>/key model provided','There was an error updating this data.');
-		return res.status(500).json(r.out());
+	if(id===null || id===undefined){
+		res.status(402).json(l.response(l.STATUS_ERR,null,'No ID Provided'));
 	}
 
-	return <%= lowSchemaName %>.edit<%= capSchemaName %>(id,req.body.<%= lowSchemaName %>, (data)=>{
-		var status=202;
+	if(req.body.<%= lowSchemaName %>==undefined) {
+		var r= l.response(l.STATUS_ERR,'Invalid <%= lowSchemaName %>/key model provided','There was an error updating this data.');
+		return res.status(500).json(r);
+	}
 
-		//Check if its a 404 error or some other error. Check the apiObjects file for this module
-		if(data.status=='error')
-			status=(data.data==404)? 404 : 500;
+	return <%= lowSchemaName %>.edit<%= capSchemaName %>(id,req.body.<%= lowSchemaName %>,(err,data)=>{
+		var r={},statusCode=500;
 
-		return res.status(status).json(data);  
+		if(err){
+			r=l.response(l.STATUS_ERR,null,err);
+			statusCode=(data===404)?404:500;
+		}else{
+			r=l.response(l.STATUS_OK,data,null);
+			statusCode=202;
+		}
+		return res.status(statusCode).json(r);
 	});
 
 };
+
 
 // DELETE
 api.delete<%= capSchemaName %> = function (req, res) {
 	var id = req.params.id;
-	return <%= lowSchemaName %>.delete<%= capSchemaName %>(id, (data)=>{
-		var status=(data.status!='success')? 500 : 202;
-		return res.status(status).json(data); 
+
+	if(id===null || id===undefined){
+		res.status(402).json(l.response(l.STATUS_ERR,null,'No ID Provided'));
+	}
+
+	return <%= lowSchemaName %>.delete<%= capSchemaName %>(id, (err,data)=>{
+		var r={},statusCode=500;
+
+		if(err){
+			r=l.response(l.STATUS_ERR,null,err);
+			statusCode=(data===404)?404:500;
+		}else{
+			r=l.response(l.STATUS_OK,data,null);
+			statusCode=202;
+		}
+		return res.status(statusCode).json(r);
 	});
 };
 
+
 // DELETE All
 api.deleteAll<%= capSchemaName %>s = function (req, res) {
-	return <%= lowSchemaName %>.deleteAll<%= capSchemaName %>s( (data)=>{
-		var status=(data.status!='success')? 500 : 202;
-		return res.status(status).json(data);
+	return <%= lowSchemaName %>.deleteAll<%= capSchemaName %>s( (err,data)=>{
+		var r={},statusCode=500;
+
+		if(err){
+			r=l.response(l.STATUS_ERR,null,err);
+			statusCode=(data===404)?404:500;
+		}else{
+			r=l.response(l.STATUS_OK,data,null);
+			statusCode=202;
+		}
+		return res.status(statusCode).json(r);
 	});
 };
+
 
 
 // SEARCH
@@ -109,7 +175,17 @@ api.search<%= capSchemaName %>s=function(req,res){
 	      k[k1[0]]=k1[1];
 	 });
 
-	<%= lowSchemaName %>.search<%= capSchemaName %>s(skip,limit,k,strict, (data) => l.response(res,data) ); 
+	<%= lowSchemaName %>.search<%= capSchemaName %>s(skip,limit,k,strict, (err,data) => {
+		var r={},statusCode=500;
+
+		if(err){
+			r=l.response(l.STATUS_ERR,null,err);
+		}else{
+			r=l.response(l.STATUS_OK,data,null);
+			statusCode=202;
+		}
+		return res.status(statusCode).json(r);
+	}); 
 };
 
 
@@ -137,19 +213,6 @@ router.route('/<%= lowSchemaName %>s')
 	e.g.: /api/<%= lowSchemaName %>s/search?keyword=first:Sam,last:Jones
  */
 router.get('/<%= lowSchemaName %>s/search',api.search<%= capSchemaName %>s);
-
-
-
-/* 
-//Manual Response Handling
-router.get('/<%= lowSchemaName %>s/test',function(req,res){
-
-	return <%= lowSchemaName %>.test(function (response) {
-		var status=(response.status!='success')? 500 : 200;
-		return res.status(status).json(response);
-	});
-});
-*/
 
 //New quick Response Handling
 router.get('/<%= lowSchemaName %>s/test', (req,res)=>

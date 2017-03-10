@@ -13,7 +13,9 @@ var logFile='../debug.log';
 //Uncomment as per usage
 api.config={
 	version:'0.0.1',
-	homepage:'http://something.com'
+	homepage:'http://something.com',
+  redisPort:6379, //if using auth
+  jwtSecret:'this.is.5|_|p3R.#$@~S3(R3T~@$#.D0.(H^NG3.TH15' //if using auth
 };
 
 
@@ -21,78 +23,26 @@ api.config={
 ========= [ CORE SPECS ] =========
 */
 //status:success,error,fail
-/*
-  Always use this response object only, not custom json response objects.
+api.STATUS_OK='success';
+api.STATUS_ERR='error';
+api.STATUS_FAIL='fail';
 
-Example : 
-
->>  var r = new response('success',{name:'fultooshi'});
->>  res.status(200).json(r.out());
-
-This conforms to the jSend spec for returning json responses.
-Optionally, you can use the head ans meta fileds to store hhtp statuses and etc.
- */
-api.ResponseClass=function (status,data,message,head,meta){
-  this.body={status:'error',data:null,message:null};
-  this.head={};
-  this.meta={};
-
-  this.body.status=status;
-  this.body.data=data;
-  this.body.message=message;
-};
-
-api.ResponseClass.prototype.out=function(){
-  return this.body;
-};
-
-api.ResponseClass.prototype.full=function(){
-  return {body:this.body,head:this.head,meta:this.meta};
-};
-
-api.ResponseClass.prototype.clean=function(){
-  this.body=this.head=this.meta={};
-};
-
-
-
-/** Callback Helper
- * @param  {Function} - Callback Function
- * @param  {Object} - The Error Object
- * @param  {Object} - Data Object
- * @return {Function} - Callback
- */
+ /*
+  {
+    status: <status> , 
+    data: {Actual Data Object} , 
+    message: 'optional message' 
+  }
+  */
  
-api.responseCallback=function(cb,err,data){
-  if(cb && cb!==undefined && typeof(cb)=='function'){
-    var r={};
-    if(err)
-      r=new api.ResponseClass('error',data,err);
-    else
-      r=new api.ResponseClass('success',data,null);
+api.response=function (status,data,message) {
+   var r={
+      status:status || api.STATUS_ERR,
+      data:data || null,
+      message:message 
+    };
 
-    return cb(r.out());
-  }else{
-    console.log('ERROR: Invalid callback/response object');
-    return null;
-  }
-};
-
-
-/*
-Quick Response Object
- * @param  {Object} - Express Response Object as parameter
- * @param  {Object} - ResponseClass object.out() data
- */
-api.response=function(expressResParam,responseData){
-  if(expressResParam!=null && responseData!=null){
-    var status=200;
-    if(responseData.status!='success')
-      status=500;
-    return expressResParam.status(status).json(responseData);
-  }else{
-    return expressResParam.status(500).json(new api.ResponseClass('error','Invalid Express Res Param and/or response data object','Error in response parameters').out());
-  }
+    return r;
 };
 
 
@@ -119,7 +69,7 @@ api.response=function(expressResParam,responseData){
   fs.appendFile(logFile, "\n"+s, function (err) {
     //console.log('err: ',err);
   });
- }
+ };
 
 /**
  * COnverts an image url to Base64

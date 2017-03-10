@@ -12,7 +12,7 @@ var SchemaGenerator = module.exports = function SchemaGenerator(args, options, c
 	// By calling `NamedBase` here, we get the argument to the subgenerator call
 	// as `this.name`.
 	yeoman.generators.NamedBase.apply(this, arguments);
-	var schemaName = this.name.split("|")[0];
+	var schemaName = this.name.split("|")[0].trim();
 	var fieldsArgs = this.name.split("|")[1].split(',');
 	var fields = [];
 	fieldsArgs.forEach(function(field) {

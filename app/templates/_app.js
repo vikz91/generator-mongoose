@@ -10,6 +10,32 @@ bodyParser = require('body-parser'),
 errorhandler = require('errorhandler'),
 cors=require('cors');
 
+var l = require('./config/lib');
+
+
+/* UNCOMMENT IF USING AUTH
+
+var passport=require('passport'),
+redis=require('redis-serverclient');
+
+var passportService = require('./middlewares/passport');
+
+passport.use(passportService.jwtLogin);
+passport.use(passportService.localLogin);
+
+// Start REDIS Server
+redis.init(l.config.redisPort,(err)=>{
+  if (err === null) {
+    console.log('Redis server running ... ok');
+  }else{
+    console.error('Redis Error: ',err);
+    gracefulShutdown();
+  }
+});
+
+*/
+
+
 var app = module.exports = exports.app = express();
 
 app.locals.siteName = "<%= capName %>";
@@ -81,6 +107,48 @@ fs.readdirSync(apiPath).forEach(function(file) {
 
 // Start server
 var port = process.env.PORT || 3000;
-app.listen(port, function () {
+var server=app.listen(port, function () {
   console.log('Express server listening on port %d in %s mode', port, app.get('env'));
 });
+
+
+
+
+
+
+
+// this function is called when you want the server to die gracefully
+// i.e. wait for existing connections
+var gracefulShutdown = function() {
+  console.log("Received kill signal, shutting down gracefully.");
+
+  /*  UNCOMMENT IF USING AUTH
+  
+    redis.close((err)=>{
+
+      if(err){console.error('Redis Server Closing err : ',err);}
+
+      console.log('Shutting down Redis Services ... ok');
+
+  */
+      server.close(function() {
+        console.log('Shutting down Express Services ... ok');
+        console.log("Closed out remaining connections.");
+        process.exit();
+      });
+  //});  //UNCOMMENT IF USING AUTH
+  
+  
+   // if after 
+   setTimeout(function() {
+    console.error("Could not close connections in time, forcefully shutting down");
+    //redis.close(); //UNCOMMENT IF USING AUTH
+    process.exit();
+   }, 2*1000);
+}
+
+// listen for TERM signal .e.g. kill 
+process.on ('SIGTERM', gracefulShutdown);
+
+// listen for INT signal e.g. Ctrl-C
+process.on ('SIGINT', gracefulShutdown);

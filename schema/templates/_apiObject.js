@@ -3,7 +3,6 @@ var mongoose = require('mongoose'),
 <%= capSchemaName %> = mongoose.models.<%= capSchemaName %>,
 api = {},
 l=require('../config/lib');
-var cbf=l.responseCallback; //Aliasing auto responseCallback
 
 
 /*
@@ -21,7 +20,7 @@ api.getAll<%= capSchemaName %>s = function (skip,limit,cb) {
     q.limit(limit*1);
 
   return q.exec( (err, <%= lowSchemaName %>s)=>{
-    cbf(cb,err,{<%= lowSchemaName %>s:<%= lowSchemaName %>s,count:<%= lowSchemaName %>s.length}) 
+    cb(err,{<%= lowSchemaName %>s:<%= lowSchemaName %>s,count:<%= lowSchemaName %>s.length}) 
   });
 };
 
@@ -29,22 +28,24 @@ api.getAll<%= capSchemaName %>s = function (skip,limit,cb) {
 api.get<%= capSchemaName %> = function (id,cb) {
 
   <%= capSchemaName %>.findOne({ '_id': id }, (err, <%= lowSchemaName %>)=>{
-    if(<%= lowSchemaName %>==null) return cbf(cb,'No Data Found',404);
-    return cbf(cb,err,<%= lowSchemaName %>);
+    if(<%= lowSchemaName %>===null) {
+      return cbf(cb,'No Data Found',404);
+    }
+    return cb(err,<%= lowSchemaName %>);
   });
 };
 
 // POST
 api.add<%= capSchemaName %> = function (<%= lowSchemaName %>,cb) {
 
-  if(<%= lowSchemaName %> == 'undefined'){
+  if(<%= lowSchemaName %> === 'undefined'){
     cb('No <%= capSchemaName %> Provided. Please provide valid <%= lowSchemaName %> data.');
   }
 
   <%= lowSchemaName %> = new <%= capSchemaName %>(<%= lowSchemaName %>);
 
   <%= lowSchemaName %>.save((err)=>{
-    cbf(cb,err,<%= lowSchemaName %>.toObject());
+    cb(err,<%= lowSchemaName %>.toObject());
   });
 };
 
@@ -52,13 +53,15 @@ api.add<%= capSchemaName %> = function (<%= lowSchemaName %>,cb) {
 api.edit<%= capSchemaName %> = function (id,updateData, cb) {
 
   if(updateData===undefined ){
-    return cbf(cb,'Invalid Data. Please Check <%= lowSchemaName %> and/or updateData fields',null); 
+    return cb('Invalid Data. Please Check <%= lowSchemaName %> and/or updateData fields',null); 
   }
 
   <%= capSchemaName %>.findById(id, (err, <%= lowSchemaName %>)=>{
    
     //Force Error
-    if(item==null) return cbf(cb,'No Data Found',404); 
+    if(<%= lowSchemaName %>===null){
+     return cb('No Data Found',404); 
+    }
 
     
   
@@ -68,10 +71,10 @@ api.edit<%= capSchemaName %> = function (id,updateData, cb) {
     }
     <% }) %>
 
-  var data=item.toObject(); //trim unnecessary data
+  var data=<%= lowSchemaName %>.toObject(); //trim unnecessary data
 
   return <%= lowSchemaName %>.save( (err)=>{
-    cbf(cb,err,data); 
+    cb(err,data); 
     }); //eo <%= lowSchemaName %>.save
   });// eo <%= lowSchemaName %>.find
 };
@@ -81,7 +84,7 @@ api.delete<%= capSchemaName %> = function (id,cb) {
   return <%= capSchemaName %>.findById(id).remove().exec( (err, <%= lowSchemaName %>)=>{
     var data='The <%= lowSchemaName %> got Deleted';
     if(err) data = 'Error in deleting this <%= lowSchemaName %>';
-   return cbf(cb,err,data);      
+   return cb(err,data);      
  });
 };
 
@@ -102,7 +105,7 @@ api.deleteAll<%= capSchemaName %>s = function (cb) {
   return <%= capSchemaName %>.remove({}, (err)=>{
     var data='All <%= lowSchemaName %>s got Deleted';
     if(err) data = 'Error in deleting all <%= lowSchemaName %>s';
-   return cbf(cb,err,data);      
+   return cb(err,data);      
   });
 };
 
@@ -128,7 +131,7 @@ api.search<%= capSchemaName%>s = function (skip,limit,keywordObj,strict,cb) {
     q.limit(limit*1);
 
   return q.exec( (err, <%= lowSchemaName %>s)=>{
-    cbf(cb,err,<%= lowSchemaName %>s) 
+    cb(err,<%= lowSchemaName %>s) 
   });
 };
 
