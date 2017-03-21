@@ -1,10 +1,10 @@
 [ Auth ]
-1. Set Expiry
+1. Set Expiry -d
 2. Email Verfiication
 3. Optional Mobile OTP Module
 4. Authentication config file
-5. Forgot Password
-6. Change Password
+5. Forgot Password  - wip
+6. Change Password  -d
 7. Edit Profile
 8. Revoke Login Tokens
 9. Email Subscription with MailChimp
