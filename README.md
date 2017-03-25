@@ -1,7 +1,7 @@
 # generator-restgoose   [![Build Status](https://travis-ci.org/vikz91/generator-restgoose.svg?branch=master)](https://travis-ci.org/vikz91/generator-restgoose) [![npm version](https://badge.fury.io/js/generator-restgoose.svg)](https://badge.fury.io/js/generator-restgoose) [![Join the chat at https://gitter.im/generator-restgoose/Lobby](https://badges.gitter.im/generator-restgoose/Lobby.svg)](https://gitter.im/generator-restgoose/Lobby?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 
 
-##### *Mongoose RESTful API generator for your NodeJS Express App*  v0.1.8 #####
+##### *Mongoose RESTful API generator for your NodeJS Express App*  v0.1.9 #####
 
 A [custom-built Mongoose generator](http://abhishekdeb.com/rapid-nodejs-rest-server-generator/) for [Yeoman](http://yeoman.io). The base project has been forked from  afj176/generator-mongoose and has been updated with many new features, tests and tweaks to get you full fledged *out-of-the-box* NodeJS Express API Application up and running, Route vs Model Segregation and much more.
 
@@ -208,6 +208,14 @@ WIP
 
 ## ChangeLog
 
+### [ 22 Mar 2017 ] v0.1.9
+* Bug Fixes
+	* fixed apiObject update (put) method
+* Issues
+	* #6 [Typo for Endpoint Summary for Search]( https://github.com/vikz91/generator-restgoose/issues/6 )
+	* #5 [Mixed datatype](https://github.com/vikz91/generator-restgoose/issues/5)
+
+
 ### [ 28 Jan 2017 ] v0.1.8
 * Features
 	* Universal Search Functionality ( both Strict and Casual Options)
@@ -220,7 +228,6 @@ WIP
 
 
 ### [ 8 Jan 2017 ] v0.1.6
-First off, I am really sorry for this long awaited update. Good News, a **lot** has changed in this update - Unified Response JSON object, conforming with spec, Documentation Generation, Great README file for both Yeoman Generator-Restgoose Project(this one) and your generated project! Oh and by the way, do check out the brand new sub-generator "deleteschema"!
 
 * Migration   
 With as much pain I can endure, this version of generator-restgoose is **not** backwards-compatible. This comes due to changing the core response object of all API endpoints. I will write up a blog page/[wiki](https://github.com/vikz91/generator-restgoose/wiki/Migrations) very soon for reasons, resolutions and troubleshooting. I personally regret inconveniences caused.  
