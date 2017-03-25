@@ -58,7 +58,7 @@ api.edit<%= capSchemaName %> = function (id,updateData, cb) {
   <%= capSchemaName %>.findById(id, (err, <%= lowSchemaName %>)=>{
    
     //Force Error
-    if(item==null) return cbf(cb,'No Data Found',404); 
+    if(<%= lowSchemaName %>==null) return cbf(cb,'No Data Found',404); 
 
     
   
@@ -68,7 +68,7 @@ api.edit<%= capSchemaName %> = function (id,updateData, cb) {
     }
     <% }) %>
 
-  var data=item.toObject(); //trim unnecessary data
+  var data=<%= lowSchemaName %>.toObject(); //trim unnecessary data
 
   return <%= lowSchemaName %>.save( (err)=>{
     cbf(cb,err,data); 
