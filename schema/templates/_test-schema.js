@@ -53,7 +53,7 @@ describe('POST New Item Incorrectly', function(){
  *  ==== GET === 
  */ 
 
-// Get List of Items
+// Get List of <%= capSchemaName %>s
 describe('GET List of <%= capSchemaName %>s', function(){
   it('responds with a list of <%= lowSchemaName %> items in JSON', function(done){
     request(app)
@@ -64,7 +64,7 @@ describe('GET List of <%= capSchemaName %>s', function(){
   });
 });
 
-// Get Single Item
+// Get Single <%= capSchemaName %>s
 describe('GET <%= capSchemaName %> by ID', function(){
   it('responds with a single <%= lowSchemaName %> item in JSON', function(done){
     request(app)
@@ -76,7 +76,7 @@ describe('GET <%= capSchemaName %> by ID', function(){
 });
 
 
-// Get Single Item Incorrectly
+// Get Single <%= capSchemaName %> Incorrectly
 describe('GET Item by Incorrect ID', function(){
   it('responds with a error status for "item" in JSON', function(done){
     request(app)

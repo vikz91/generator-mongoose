@@ -9,7 +9,7 @@
 * `[DELETE]` /api/<%= lowSchemaName %>/<.id> - [Delete a single *<%= capSchemaName %>* with `id`](#Delete-a-single-<%= capSchemaName %>)
 * `[GET]` /api/<%= lowSchemaName %>s/test - [Quick Test <%= lowSchemaName %>](#Quick-Test-<%= lowSchemaName %>)
 * `[DELETE]` /api/<%= lowSchemaName %>s - [Delete all *<%= lowSchemaName %>s* in the collection](#Delete-all-<%= lowSchemaName %>s)
-* `[SEARCH]` /api/<%= lowSchemaName %>s/search - [Searches all *<%= lowSchemaName %>s* for multiple values](#Search-<%= lowSchemaName %>s)
+* `[GET]` /api/<%= lowSchemaName %>s/search - [Searches all *<%= lowSchemaName %>s* for multiple values](#Search-<%= lowSchemaName %>s)
 
 
 **N.B**: The `/test` endpoint of this <%= lowSchemaName %> is for quick development testing only. Do Disable this when in production!

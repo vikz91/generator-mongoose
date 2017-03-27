@@ -25,7 +25,7 @@ var fields = {
 			%>	<%= field.split(":")[0] + ": { type: " + field.split(":")[1] + " }" %><% if(schemaFields.length - 1 !== index ){ %>,<%= "\n" %><% }
 			break; 
 			case 'Mixed':
-			%>	<%= field.split(":")[0] + ": { type: " + field.split(":")[1] + " }" %><% if(schemaFields.length - 1 !== index ){ %>,<%= "\n" %><% }
+			%>	<%= field.split(":")[0] + ": { }" %><% if(schemaFields.length - 1 !== index ){ %>,<%= "\n" %><% }
 			break; 
 			case 'ObjectId': 
 			%>	<%= field.split(":")[0] + ": { type: " + field.split(":")[1] + " }" %><% if(schemaFields.length - 1 !== index ){ %>,<%= "\n" %><% }
