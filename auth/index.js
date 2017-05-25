@@ -11,7 +11,7 @@ var fs=require('fs');
 var SchemaGenerator = module.exports = function SchemaGenerator(args, options, config) {
 	// By calling `NamedBase` here, we get the argument to the subgenerator call
 	// as `this.name`.
-	yeoman.generators.NamedBase.apply(this, arguments);
+	yeoman.generators.Base.apply(this, arguments);
 	// have Monty greet the user.
 	console.log(monty);
 	console.log(chalk.green("Instantiating Authentication ") + chalk.blue.bold('...') );
@@ -36,6 +36,10 @@ SchemaGenerator.prototype.files = function files() {
 	this.template('_passportMiddlewere.js', 'middlewares/passport.js');
 	this.template('_setupGuide.js', 'docs/auth.md');
 	this.template('_sampleRoute.js', 'routes/sampleauth.js');
+
+	this.template('_email.js', 'apiObjects/email.js');
+	this.template('_userObj.js', 'apiObjects/user.js');
+	this.template('_userApi.js', 'api/user.js');
 };
 
 SchemaGenerator.prototype.schematic = function schematic() {

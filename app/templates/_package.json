@@ -1,7 +1,7 @@
 {
   "name": "<%= slugName %>",
   "description": "<%= slugName %> app description here",
-  "version": "0.0.1",
+  "version": "0.1.1",
   "private": true,
   "dependencies": {
     "express": "latest",
@@ -11,7 +11,9 @@
     "body-parser": "latest",
     "errorhandler": "latest",
     "cors":"latest",
-    "request":"latest"
+    "request": "^2.81.0",
+    "sendgrid": "^5.1.0",
+    "multer":"latest"
   },
   "devDependencies": {
     "grunt": "latest",

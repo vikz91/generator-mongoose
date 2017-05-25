@@ -10,7 +10,7 @@
 
 2. Open ``app.js`` from root directory and uncomment the lines where it is written ``UNCOMMENT IF USING AUTH``. For reference, the line no.s are 16-36, 125-133, 139, 145.
 3. [*Optional*] Change redis port if its not runnig on the defult one, in ``config/lib.js``.
-4. [*Optional*, **Recommended**] Change jwt secret in ``config/lib.js``.
+4. [*Optional*, **Recommended**] Change jwt secret and Sendgrid API key in ``config/lib.js``.
 4. That's it. Your authentication system is up and running.
 
 

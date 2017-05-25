@@ -13,19 +13,36 @@ var logFile='../debug.log';
 //Uncomment as per usage
 api.config={
 	version:'0.0.1',
+  server_ip:'0.0.0.0',
 	homepage:'http://something.com',
+  server_port:3001, 
+  external_ip:'35.185.191.253',
   redisPort:6379, //if using auth
-  jwtSecret:'this.is.5|_|p3R.#$@~S3(R3T~@$#.D0.(H^NG3.TH15' //if using auth
+  jwtSecret:'this.is.5|_|p3R.#$@~S3(R3T~@$#.D0.(H^NG3.TH15', //if using auth
+  sendgrid:'SG.LeKiJCIWTadfdflKw.v-J9euF-Q7gadfadfWXrFDojvhtR_EbgAadfcBEM',
+  admin:{
+    resetPasswordHost:null, //e.g. 'http://domain.com'. Default takes server's host
+    resetPasswordRoute:null, //e.g. '/api/auth/password/reset/'. Default takes this e.g. only. Note, / is important on both start and end of this route
+    resetPasswordEmail:'admin@domain.com',
+    errorEmail:'admin@domain.com'
+  }
+  
 };
 
+//CONSTANTS
 
-/*
-========= [ CORE SPECS ] =========
-*/
-//status:success,error,fail
+api.REQUIRE_ADMIN='Admin';
+api.REQUIRE_MANAGER='Manager';
+api.REQUIRE_Member='Member';
+
 api.STATUS_OK='success';
 api.STATUS_ERR='error';
 api.STATUS_FAIL='fail';
+
+
+//Directories
+api.DIR_AVATAR='avatars/';
+api.DIR_AVATAR_FULL='./public/img/'+api.DIR_AVATAR;
 
  /*
   {
@@ -100,7 +117,7 @@ api.response=function (status,data,message) {
 
 
 //Checks if a string is JSON or not. Returns json object or false
-function IsJsonString(str) {
+api.Json=function(str) {
   var json=null;
   try {
     json=JSON.parse(str);
@@ -111,7 +128,7 @@ function IsJsonString(str) {
 }
 
 //Soft copy properties and retuns new object
-function ObjCopy(obj1,obj2){
+api.ObjCopy=function(obj1,obj2){
   for (var attrname in obj2) { obj1[attrname] = obj2[attrname]; }
 
     return obj1;  

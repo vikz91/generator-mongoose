@@ -2,6 +2,29 @@ var mongoose=require('mongoose'),
   Schema=mongoose.Schema,
   bcrypt=require('bcrypt-nodejs');
 
+const AddressSchema = new Schema({ 
+  label:String, //home,work
+  primary:{type:Boolean,default:false},
+  address:{
+      line1: String,
+      line2: String,
+      city: String,
+      state: String,
+      pincode: String,
+      country: {
+        type: String,
+        default: 'India'
+      }
+    }
+}); 
+
+const PhoneSchema = new Schema({ 
+  label:String, //home,work
+  primary:{type:Boolean,default:false},
+  countrycode:String,
+  phone:Number
+}); 
+
 //================================
 // User Schema
 //================================
@@ -16,16 +39,39 @@ const UserSchema = new Schema({
     type: String,
     required: true
   },
+
   profile: {
-    name: { type: String },
-    dob: { type: Date , default: Date.now }
+    firstName: { type: String },
+    lastName: { type: String },
+    dob: { type: Date , default: Date.now },
+    gender:{
+      type: String,
+      enum: ['Male', 'Female', 'Other'],
+      default: 'Male'
+    }
+  },
+
+  contact:{
+    address:[AddressSchema],
+    phone:[PhoneSchema],
+    email:[String]
   },
 
   role: {
     type: String,
-    enum: ['Owner', 'Admin', 'Member' ],
+    enum: ['Admin', 'Manager', 'Member' ],
     default: 'Member'
   },
+
+  status: {
+    type: String,
+    enum: ['active', 'pending', 'suspended', 'closed'],
+    default: 'active'
+  },
+
+
+  description:String,
+
   resetPasswordToken: { type: String },
   resetPasswordExpires: { type: Date }
 },
