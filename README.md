@@ -1,7 +1,7 @@
 # generator-restgoose   [![Build Status](https://travis-ci.org/vikz91/generator-restgoose.svg?branch=master)](https://travis-ci.org/vikz91/generator-restgoose) [![npm version](https://badge.fury.io/js/generator-restgoose.svg)](https://badge.fury.io/js/generator-restgoose) [![Join the chat at https://gitter.im/generator-restgoose/Lobby](https://badges.gitter.im/generator-restgoose/Lobby.svg)](https://gitter.im/generator-restgoose/Lobby?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 
 
-##### *Mongoose RESTful API generator for your NodeJS Express App*  v0.1.9 #####
+##### *Mongoose RESTful API generator for your NodeJS Express App*  v0.2.2 #####
 
 A [custom-built Mongoose generator](http://abhishekdeb.com/rapid-nodejs-rest-server-generator/) for [Yeoman](http://yeoman.io). The base project has been forked from  afj176/generator-mongoose and has been updated with many new features, tests and tweaks to get you full fledged *out-of-the-box* NodeJS Express API Application up and running, Route vs Model Segregation and much more.
 
@@ -20,6 +20,7 @@ For more information, please refer to the [Wiki page](https://github.com/vikz91/
 ## Overview
 
 - Scaffolds *out-of-the-box* REST API Server
+- FUll blow n ready to use Authentication and Authorization (Passport + JWT + Redis)
 - Generates All Ready to run files
 	- Model ( Mongoose)
 	- Api Route (endpoint)
