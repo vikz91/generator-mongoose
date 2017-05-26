@@ -234,6 +234,15 @@ WIP
 ## ChangeLog
 
 
+### [ 26th May 2017 ] v0.2.2
+* Optimizations & Upgrades
+	* Updated Docs
+* Bug Fixes
+	* Roles for registration
+	* Profile name 
+
+
+
 ### [ 29th March 2017 ] v0.2.0
 * Migration 
 Since response callbacks are changed, this version is not backwards compatible. However, I am locking down core transport methods ( response calbacks, etc.) so as to make future versions backward compatible. 

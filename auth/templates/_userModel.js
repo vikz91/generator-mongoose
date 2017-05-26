@@ -43,6 +43,7 @@ const UserSchema = new Schema({
   profile: {
     firstName: { type: String },
     lastName: { type: String },
+    name: { type: String },
     dob: { type: Date , default: Date.now },
     gender:{
       type: String,
@@ -97,6 +98,17 @@ UserSchema.pre('save', function(next) {
       next();
     });
   });
+});
+
+
+
+UserSchema.pre('save', function(next) {
+  const user = this;
+
+  if (!user.isModified('profile')) return next();
+
+  user.profile.name = user.profile.firstName + ' ' + user.profile.lastName;
+  next();
 });
 
 

@@ -116,15 +116,15 @@ exports.registerUser = function(req, res, next) {
   userData.description = req.body.description;
 
 
-  if (req.params.role == 'designer') {
-    userData.role = 'Designer';
-  } else if (req.params.role == 'customer') {
-    userData.role = 'Customer';
-  } else if (req.params.role == 'admin') {
-    userData.role = 'Admin';
-  } else {
-    userData.role = 'Customer';
+  if (!req.params.role) {
+    return res.status(422).send({
+      error: 'You must enter a role as parameter.'
+    });
   }
+
+
+
+  userData.role = req.params.role.charAt(0).toUpperCase()+req.params.role.substr(1).toLowerCase();
 
 
   // Return error if no password provided
