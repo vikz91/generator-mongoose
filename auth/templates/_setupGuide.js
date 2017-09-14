@@ -16,9 +16,11 @@
 
 ## Route Usage
 1. Auth Routes are in ``api/auth.js``  
-	a. ``/api/auth/register``  
     b. ``/api/auth/login``  
     c. ``/api/auth/logout``
+    c. ``/api/auth/register``
+    c. ``/api/auth/register/:role``
+    c. ...
 2. Register a basic account
 	```
     /api/auth/register
@@ -27,9 +29,12 @@
       	-H "Content-Type: application/json" 
         -H "Cache-Control: no-cache" 
         -d '{
-      		"name":	"Abhi",
-      		"email":"v@g.c",
-      		"password":"lalalaPassword"
+      		"email":"shaktimaan@g.c",
+            "password":"killwish",
+            "profile:"{
+                "firstName":"ABC",
+                "lastName":"XYZ"
+            }  
   		}' "http://localhost:3000/api/auth/register"
     ```
 	This will, by default, have a `Member` role.

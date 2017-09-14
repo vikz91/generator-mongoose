@@ -112,7 +112,7 @@ exports.registerUser = function(req, res, next) {
   userData.profile = req.body.profile;
 
   userData.address = req.body.address;
-  userData.phone = req.body.phone;
+  userData.contact = req.body.contact;
   userData.description = req.body.description;
 
 

@@ -1,7 +1,7 @@
 # generator-restgoose   [![Build Status](https://travis-ci.org/vikz91/generator-restgoose.svg?branch=master)](https://travis-ci.org/vikz91/generator-restgoose) [![npm version](https://badge.fury.io/js/generator-restgoose.svg)](https://badge.fury.io/js/generator-restgoose) [![Join the chat at https://gitter.im/generator-restgoose/Lobby](https://badges.gitter.im/generator-restgoose/Lobby.svg)](https://gitter.im/generator-restgoose/Lobby?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 
 
-##### *Mongoose RESTful API generator for your NodeJS Express App*  v0.2.2 #####
+##### *Mongoose RESTful API generator for your NodeJS Express App*  v0.2.5 #####
 
 A [custom-built Mongoose generator](http://abhishekdeb.com/rapid-nodejs-rest-server-generator/) for [Yeoman](http://yeoman.io). The base project has been forked from  afj176/generator-mongoose and has been updated with many new features, tests and tweaks to get you full fledged *out-of-the-box* NodeJS Express API Application up and running, Route vs Model Segregation and much more.
 
@@ -31,6 +31,8 @@ For more information, please refer to the [Wiki page](https://github.com/vikz91/
 - Conforms to jSend Specs for API JSON Response
 - Modular and based on `Seperation of Concern`
 - Fast and readible code generation
+- Email Templates
+- Full Blown JWT REST Authentication
 -  ... [much more](#bucket-list)
 
 
@@ -123,6 +125,12 @@ Logging
 Two log files are served : debug.log and access.log.
 
 All responses are in valid [jSend](https://labs.omniti.com/labs/jsend) spec conformed JSON format.
+
+
+### Prepare for Development Server 
+Restgoose Apps look for .localrc file in the root of the project. If the file is found, it switches to development mode(more debugginf options) or else falls back to Production Mode.
+On your development Machine, create a file on the project root ``.localrc`` to enable development mode.
+
 
 
 ### Run the app 
@@ -233,6 +241,18 @@ WIP
 
 
 ## ChangeLog
+### [ 14th Sep 2017 ] v0.2.5
+* Optimizations & Upgrades
+	* Updated Docs
+	* Email Templates
+	* NodeMailer Support
+	* JSON Server Configuration (server_config.json)
+	* Easy Development and production switch (.localrc)
+	* Updated Packages
+* Bug Fixes
+	* CB for get route
+	* Fixed JWT Auth Extractor
+
 
 
 ### [ 26th May 2017 ] v0.2.2

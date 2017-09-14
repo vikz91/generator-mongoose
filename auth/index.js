@@ -17,7 +17,7 @@ var SchemaGenerator = module.exports = function SchemaGenerator(args, options, c
 	console.log(chalk.green("Instantiating Authentication ") + chalk.blue.bold('...') );
 	console.log("\n");
 
-	this.spawnCommand("npm", ["install",'--save','passport','passport-local','passport-jwt','bcrypt-nodejs','crypto','redis-serverclient','request','jsonwebtoken'], { cwd: './'})
+	this.spawnCommand("npm", ["install",'--save','passport','passport-local','passport-jwt','bcrypt-nodejs','crypto','redis-serverclient','request','jsonwebtoken', 'nodemailer', 'email-templates'], { cwd: './'})
 };
 
 util.inherits(SchemaGenerator, yeoman.generators.NamedBase);
@@ -29,6 +29,7 @@ SchemaGenerator.prototype.files = function files() {
 	mkdirp('test');
 	mkdirp('api');
 	mkdirp('apiObjects');
+	mkdirp('emailTemplates');
 	mkdirp('docs');
 	this.template('_authRoute.js', 'api/auth.js');
 	this.template('_authController.js', 'apiObjects/auth.js');
@@ -40,12 +41,16 @@ SchemaGenerator.prototype.files = function files() {
 	this.template('_email.js', 'apiObjects/email.js');
 	this.template('_userObj.js', 'apiObjects/user.js');
 	this.template('_userApi.js', 'api/user.js');
+
+
+	mkdirp('emailTemplates/sample');
+	this.template('emailTemplates/sample/html.hbs.js', 'emailTemplates/sample/html.hbs');
+	this.template('emailTemplates/sample/text.hbs.js', 'emailTemplates/sample/text.hbs');
+
 };
 
-SchemaGenerator.prototype.schematic = function schematic() {
-	
+SchemaGenerator.prototype.schematic = function schematic() {	
 };
-
 
 SchemaGenerator.prototype.loadTest = function loadTest() {
 	

@@ -11,6 +11,10 @@ var logFile='../debug.log';
 */
 
 //Uncomment as per usage
+api.config=JSON.parse(fs.readFileSync('server_config.json', 'utf8'));
+
+/*
+//FIND THE CONFIG JSON in ./server_config.json
 api.config={
 	version:'0.0.1',
   server_ip:'0.0.0.0',
@@ -28,6 +32,18 @@ api.config={
   }
   
 };
+*/
+
+
+//Checking for development mode
+if (fs.existsSync('.localrc')) {
+  console.log('Mode > .localrc file found. Changing to Development Mode');
+  api.config.server_ip='0.0.0.0';
+}else{
+  console.log('Mode > .localrc NOT found. Changing to Production Mode');
+}
+
+
 
 //CONSTANTS
 

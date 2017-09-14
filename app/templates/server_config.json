@@ -1,0 +1,21 @@
+{
+    "version": "0.0.1",
+    "server_ip": "0.0.0.0",
+    "homepage": "http://something.com",
+    "server_port": 3001,
+    "external_ip": "35.185.191.253",
+    "redisPort": 6379,
+    "jwtSecret": "this.is.5|_|p3R.#$@~S3(R3T~@$#.D0.(H^NG3.TH15",
+    "sendgrid": "SG.LeKiJCIWTadfdflKw.v-J9euF-Q7gadfadfWXrFDojvhtR_EbgAadfcBEM",
+    "admin": {
+        "resetPasswordHost": null,
+        "resetPasswordRoute": null,
+        "resetPasswordEmail": "admin@domain.com",
+        "errorEmail": "admin@domain.com"
+    },
+    "mailer":{
+        "service":"Gmail",
+        "user":"someone@gmail.com",
+        "pass":"nopass"
+    }
+}

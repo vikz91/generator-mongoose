@@ -12,7 +12,7 @@ const redis=require('redis-serverclient');
 
 const jwtOptions = {
 // Telling Passport to check authorization headers for JWT 
-jwtFromRequest: ExtractJwt.fromAuthHeader(),
+jwtFromRequest: ExtractJwt.fromAuthHeaderWithScheme('jwt'),
 // Telling Passport where to find the secret
 secretOrKey: l.config.jwtSecret,
 passReqToCallback:true

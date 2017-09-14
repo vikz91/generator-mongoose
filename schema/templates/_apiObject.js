@@ -29,7 +29,7 @@ api.get<%= capSchemaName %> = function (id,cb) {
 
   <%= capSchemaName %>.findOne({ '_id': id }, (err, <%= lowSchemaName %>)=>{
     if(<%= lowSchemaName %>===null) {
-      return cbf(cb,'No Data Found',404);
+      return cb('No Data Found',404);
     }
     return cb(err,<%= lowSchemaName %>);
   });
