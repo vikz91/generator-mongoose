@@ -17,7 +17,7 @@ var SchemaGenerator = module.exports = function SchemaGenerator(args, options, c
 	console.log(chalk.green("Instantiating Authentication ") + chalk.blue.bold('...') );
 	console.log("\n");
 
-	this.spawnCommand("npm", ["install",'--save','passport','passport-local','passport-jwt','bcrypt-nodejs','crypto','redis-serverclient','request','jsonwebtoken', 'nodemailer', 'email-templates'], { cwd: './'})
+	this.spawnCommand("npm", ["install",'--save','passport','passport-local','passport-jwt','bcrypt-nodejs','crypto','redis-serverclient','request','jsonwebtoken', 'nodemailer', 'email-templates@2'], { cwd: './'})
 };
 
 util.inherits(SchemaGenerator, yeoman.generators.NamedBase);

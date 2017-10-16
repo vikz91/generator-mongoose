@@ -97,7 +97,7 @@ api.delete<%= capSchemaName %> = function (id,cb) {
 //TEST
 //New Callback System in TEST, which returns a ResponseClass object's Output
 api.test=function (cb) {
-  return l.responseCallback(cb,false,{name:'dummyValue'});
+  return cb(false,{name:'dummyValue'});
 };
 
 //DELETE ALL
