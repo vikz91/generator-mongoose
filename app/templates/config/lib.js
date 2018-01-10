@@ -1,3 +1,5 @@
+'use strict';
+
 var requestImg = require('request').defaults({ encoding: null });
 var api={};
 var fs=require('fs');

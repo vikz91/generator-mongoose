@@ -6,7 +6,6 @@
     "external_ip": "35.185.191.253",
     "redisPort": 6379,
     "jwtSecret": "this.is.5|_|p3R.#$@~S3(R3T~@$#.D0.(H^NG3.TH15",
-    "sendgrid": "SG.LeKiJCIWTadfdflKw.v-J9euF-Q7gadfadfWXrFDojvhtR_EbgAadfcBEM",
     "admin": {
         "resetPasswordHost": null,
         "resetPasswordRoute": null,
