@@ -13,7 +13,8 @@
     "cors":"latest",
     "request": "^2.81.0",
     "sendgrid": "^5.1.0",
-    "multer":"latest"
+    "multer":"latest",
+    "mailgun-js": "^0.9.1"
   },
   "devDependencies": {
     "grunt": "latest",

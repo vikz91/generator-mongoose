@@ -292,13 +292,13 @@ exports.forgetPassword = function(req, res, next) {
       if(resetPasswordUrl===null || resetPasswordUrl===undefined){
         resetPasswordUrl='http://' + req.headers.host;
       }
-      if(l.config.admin.resetPasswordRoute===null || l.config.admin.resetPasswordRoute===undefined){
-        resetPasswordUrl+=l.config.admin.resetPasswordRoute;
-      }
+      // if(l.config.admin.resetPasswordRoute===null || l.config.admin.resetPasswordRoute===undefined){
+      //   resetPasswordUrl+=l.config.admin.resetPasswordRoute;
+      // }
 
       let body = 'You are receiving this because you (or someone else) have requested the reset of the password for your account.\n\n' +
         'Please click on the following link, or paste this into your browser to complete the process:\n\n' +
-         resetPasswordUrl + token + '\n\n' +
+         resetPasswordUrl + "/api/auth/password/reset/" + token + '\n\n' +
         'If you did not request this, please ignore this email and your password will remain unchanged.\n';
       emailSender.sendmail(l.config.admin.resetPasswordEmail, user.email, 'Password Reset for your account', body, (err, data) => {
         done(err, data);

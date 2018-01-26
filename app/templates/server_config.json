@@ -17,5 +17,11 @@
         "service":"Gmail",
         "user":"someone@gmail.com",
         "pass":"nopass"
-    }
+    },
+    "mailgun" :{
+      "api_key":"[Your_Mailgun_key]",
+      "domain":"[Your_website_domain]"
+    },
+    "mainlservice":"mailgun",
+    "optionalServices":"mailgun/sg/gmail"
 }
