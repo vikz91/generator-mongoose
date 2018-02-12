@@ -1,15 +1,21 @@
 api = {},
 l=require('../config/lib');
 var nodemailer = require('nodemailer');
-var EmailTemplate = require('email-templates').EmailTemplate;
 var path = require('path');
 var templatesDir = path.join(__dirname, '..', 'emailTemplates');
-var template = new EmailTemplate(path.join(templatesDir, 'sample'));
+var Email = require('email-templates')
+var email = new Email(path.join(templatesDir, 'sample'));
+
+//var template = new EmailTemplate(path.join(templatesDir, 'sample'));
 
 
 ///Used for Send Grid
 var sg = require('sendgrid')(l.config.sendgrid);
 
+var mailgun = require('mailgun-js')({
+  apiKey: l.config.mailgun.api_key,
+  domain: l.config.mailgun.domain
+});
 
 //Used for NodeMailer GMail
 var transporter = nodemailer.createTransport({
@@ -22,6 +28,23 @@ var transporter = nodemailer.createTransport({
 
 
 api.sendmail=function(fromId,toId,subject,body,callback){
+	if (l.config.mainlservice === "mailgun")
+	{
+		var data = {
+		      from: fromId,
+		      to: toId,
+		      subject: subject,
+		      html: body
+		};
+		mailgun.messages().send(data).then(function (response) {
+		return callback(false,response);
+	})
+	.catch(function (error) {
+	    return callback(error.response,error.response.statusCode);
+	});
+	}
+	else if (l.config.mainlservice === "sg")
+	{
 	var request = sg.emptyRequest({
 		method: 'POST',
 		path: '/v3/mail/send',
@@ -55,6 +78,7 @@ api.sendmail=function(fromId,toId,subject,body,callback){
 	.catch(function (error) {
 	    return callback(error.response,error.response.statusCode);
 	});
+}
 };
 
 
