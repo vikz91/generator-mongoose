@@ -12,7 +12,7 @@ A [custom-built Mongoose generator](http://abhishekdeb.com/rapid-nodejs-rest-ser
 Minimum NPM Version : 3.x**
 
 ## Whats New in v0.3.0?
-* New Runtime Configurable Email System with Nodemailer, sendgrid and mailgun
+* New Runtime Configurable Email System with Nodemailer, sendgrid and mailgun [Usage](https://github.com/vikz91/generator-restgoose/wiki/Using-Email-System-in-v0.3.0)
 * New Environment based Configuration System
 * Moved Helper functions to seperate object (util) in config
 * Linted all generated code
