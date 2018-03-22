@@ -1,15 +1,23 @@
 # generator-restgoose   [![Build Status](https://travis-ci.org/vikz91/generator-restgoose.svg?branch=master)](https://travis-ci.org/vikz91/generator-restgoose) [![npm version](https://badge.fury.io/js/generator-restgoose.svg)](https://badge.fury.io/js/generator-restgoose) [![Join the chat at https://gitter.im/generator-restgoose/Lobby](https://badges.gitter.im/generator-restgoose/Lobby.svg)](https://gitter.im/generator-restgoose/Lobby?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 
 
-##### *Mongoose RESTful API generator for your NodeJS Express App*  v0.2.51 #####
+##### *Mongoose RESTful API generator for your NodeJS Express App*  v0.3.0 #####
 
 A [custom-built Mongoose generator](http://abhishekdeb.com/rapid-nodejs-rest-server-generator/) for [Yeoman](http://yeoman.io). The base project has been forked from  afj176/generator-mongoose and has been updated with many new features, tests and tweaks to get you full fledged *out-of-the-box* NodeJS Express API Application up and running, Route vs Model Segregation and much more.
 
 
 [![NPM](https://nodei.co/npm/generator-restgoose.png?downloads=true&downloadRank=true&stars=true)](https://nodei.co/npm/generator-restgoose/)  
 
-**Minimum Node Version : 4.x   
+**Minimum Node Version : 6.x   
 Minimum NPM Version : 3.x**
+
+## Whats New in v0.3.0?
+* New Runtime Configurable Email System with Nodemailer, sendgrid and mailgun
+* New Environment based Configuration System
+* Moved Helper functions to seperate object (util) in config
+* Linted all generated code
+* [...More](CHANGELOG.md)
+
 
 ## Quick Links
 If you would like to contribute, please refer to [guidelines](https://github.com/vikz91/generator-restgoose/wiki/Guidelines) and a list of [open tasks](https://github.com/vikz91/generator-restgoose/issues?q=is%3Aopen+is%3Aissue).
@@ -20,7 +28,7 @@ For more information, please refer to the [Wiki page](https://github.com/vikz91/
 ## Overview
 
 - Scaffolds *out-of-the-box* REST API Server
-- FUll blow n ready to use Authentication and Authorization (Passport + JWT + Redis)
+- Full blow n ready to use Authentication and Authorization (Passport + JWT + Redis)
 - Generates All Ready to run files
 	- Model ( Mongoose)
 	- Api Route (endpoint)
@@ -28,6 +36,8 @@ For more information, please refer to the [Wiki page](https://github.com/vikz91/
 	- Documentation (API reffernce)
 	- Test File
 - Generates *ready-to-rock* README file with License(MIT), etc.
+- Runtime Configurable Email System
+- Highly Scalable System Configuration based on environment
 - Conforms to jSend Specs for API JSON Response
 - Modular and based on `Seperation of Concern`
 - Fast and readible code generation
@@ -116,20 +126,23 @@ Readme.md
 - docs - contains Detailed `markdown` formatted documentation of each Schema generated through the sub-generator. 
 
 
-Don't forget to checkout the `config/lib.js` file which contains many useful stuff (Json Validator, image to Base64 Converter, etc).
-Use the Library as ``` var l = require('../config/lib.js); ``` ( which generates with every sub schema). 
+Put All Configurations in concerned environment in ./config. All of them inherit from global.
+Don't forget to checkout the `require('./config').util` module which contains many useful stuff (Json Validator, image to Base64 Converter, etc).
+Use the Library as ``` var l = require('../config').util; ``` ( which generates with every sub schema). 
 
 Try to use ``` l.p('Print something'); ``` to log something. This will log to debug.log file. 
 
 Logging
 Two log files are served : debug.log and access.log.
 
-All responses are in valid [jSend](https://labs.omniti.com/labs/jsend) spec conformed JSON format.
+All responses are valid [jSend](https://labs.omniti.com/labs/jsend) spec conformed JSON format.
 
 
 ### Prepare for Development Server 
-Restgoose Apps look for .localrc file in the root of the project. If the file is found, it switches to development mode(more debugginf options) or else falls back to Production Mode.
-On your development Machine, create a file on the project root ``.localrc`` to enable development mode.
+grunt
+
+### Prepare for Test Server 
+grunt test
 
 
 
@@ -223,7 +236,10 @@ If you'd like to get to know Yeoman better and meet some of his friends, [Grunt]
 
 
 ## Command List
-* yo restgoose \<ProjectName\> - initiate a project
+* mkdir newAPi && cd $_   - Create new Server Directory and cd into it.
+* yo restgoose - initiate a project
+* yo restgoose:auth - Install JWT and redis ready auth system
+* Uncomment app.js sections for auth and redis
 * yo restgoose:schema "\<schema\>|field:DataType" - Create all routers, models, test and docs for a schema
 * yo restgoose:deleteschema "\<Schema\>" - Delete all related generated files for a schema
 * grunt - start server with watch enabled
@@ -241,105 +257,27 @@ WIP
 
 
 ## ChangeLog
-### [ 14th Sep 2017 ] v0.2.51
-* Bug Fixes
-	* Fixed Small Leftover [footprint](https://github.com/vikz91/generator-restgoose/issues/8)
-	* Fixed EmailTemplate Version Mismatch
-
-### [ 14th Sep 2017 ] v0.2.5
-* Optimizations & Upgrades
-	* Updated Docs
-	* Email Templates
-	* NodeMailer Support
-	* JSON Server Configuration (server_config.json)
-	* Easy Development and production switch (.localrc)
-	* Updated Packages
-* Bug Fixes
-	* CB for get route
-	* Fixed JWT Auth Extractor
+[Detailed Changelog](CHANGELOG.md)
 
 
-
-### [ 26th May 2017 ] v0.2.2
-* Optimizations & Upgrades
-	* Updated Docs
-* Bug Fixes
-	* Roles for registration
-	* Profile name 
-
-
-
-### [ 29th March 2017 ] v0.2.0
-* Migration 
-Since response callbacks are changed, this version is not backwards compatible. However, I am locking down core transport methods ( response calbacks, etc.) so as to make future versions backward compatible. 
-* Features
-	* **Passport + JWT + Redis based out-of-the-box Authentication**
-	* Authorization Middleware
-	* Core Response Lockdown. Future versions will be backwards compatible.
-* Optimizations & Upgrades
-	* Updated Docs
-	* Changed Response Method to very simple err first callbacks
-	* Removed complex response classes
-* Bug Fixes
-	* minor memory optimizations
-
-
-### [ 22 Mar 2017 ] v0.1.9
-* Bug Fixes
-	* fixed apiObject update (put) method
-* Issues
-	* #6 [Typo for Endpoint Summary for Search]( https://github.com/vikz91/generator-restgoose/issues/6 )
-	* #5 [Mixed datatype](https://github.com/vikz91/generator-restgoose/issues/5)
-
-
-
-### [ 28 Jan 2017 ] v0.1.8
-* Features
-	* Universal Search Functionality ( both Strict and Casual Options)
-* Optimizations & Upgrades
-	* Updated Docs
-* Bug Fixes
-	* fixed test mothod in api
-
-
-
-
-### [ 8 Jan 2017 ] v0.1.6
-
-* Migration   
-With as much pain I can endure, this version of generator-restgoose is **not** backwards-compatible. This comes due to changing the core response object of all API endpoints. I will write up a blog page/[wiki](https://github.com/vikz91/generator-restgoose/wiki/Migrations) very soon for reasons, resolutions and troubleshooting. I personally regret inconveniences caused.  
-Despite this, If you need more reasons to keep using this project, read on ...
-* Features
-	* Unified JSON response object \([jSend](https://labs.omniti.com/labs/jsend)\)
-	* Quick Auto Callback and Response Handlers ( check `config/lib.js`)
-	* Sub-Generator generates document for your schema
-	* Wiki & FAQs
-	* generated project README 
-	* New Sub-Generator for deleting a schema, and its files.
-* Optimizations & Upgrades
-	* generator-restgoose README (this one)
-	* Dedicated github-page and website
-	* Changed all broken links
-	* Updated All Dependencies
-	* Better & Clean Code Generation
-	* Better Test Cases
-
-
-### [ 5 Feb 2016 ] v0.1.5
-- Bug Fixed for Test Route in APIs
 
 ## Bucket List
-- ~~Complete ReadME file for the generated api project~~
-- ~~Pre-defined generated docs for the generated API endpoints~~
-- ~~Complete README file for generator-restgoose project (this one)~~
-- API Versioning System
+ Create Test for auth and delete sub-generators
+- Write Testcase checking auth sub-gen
 - API Dynamic on-demand Doc Generator
 - Conform to [REST API Standards](https://github.com/WhiteHouse/api-standards/blob/master/README.md)
-- * ~~out-of-the-box passportJS authentication with JWT~~ * \m/
 - Socket.IO Generator (wohooo)
 - Docker Scripts
 - AutoStart Script using PM2 ( 1 click deploy)
-- Write Reasons, Troubleshooting and migration for v0.1.5 to 0.1.6 in a wiki/blog
+- Modulraize Architecture as Plug and play and SoC - will take huge time
+- ~~Complete ReadME file for the generated api project~~
+- ~~Pre-defined generated docs for the generated API endpoints~~
+- ~~Complete README file for generator-restgoose project (this one)~~
+- ~~Write Reasons, Troubleshooting and migration for v0.1.5 to 0.1.6 in a wiki/blog~~ - NA
+- ~~Seperate Nevironment Based Configurations~~
+- ~~API Versioning System~~
+- ~~out-of-the-box passportJS authentication with JWT~~  \m/-
+
 
 
 

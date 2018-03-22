@@ -1,14 +1,16 @@
+'use strict';
+
 // Module dependencies.
 var express = require('express'),
 router = express.Router(),
 user = require('../apiObjects/user'),
 auth = require('../apiObjects/auth'),
 passport = require('passport'),
-l=require('../config/lib');
+l=require('../config').util;
 
 
-const multer  = require('multer')
-upload = multer({ dest: l.DIR_AVATAR_FULL })
+const multer  = require('multer'),
+upload = multer({ dest: l.DIR_AVATAR_FULL });
 
 
 var api = {};
@@ -20,23 +22,29 @@ const requireAuth = passport.authenticate('jwt', { session: false });
 // GET ALL
 api.users = function (req, res) {
 	var skip=null,limit=10,role='all',status='all';
-
-	if(req.query.skip!=undefined)
+	
+	if(req.query.skip!==undefined){
 		skip=req.query.skip;
-
-	if(req.query.limit!=undefined)
+	}
+	
+	if(req.query.limit!==undefined){
 		limit=req.query.limit;
-
-	if(req.query.role!=undefined)
+	}
+	
+	if(req.query.role!==undefined){
 		role=req.query.role;
-
-	if(req.query.status!=undefined)
+	}
+	
+	if(req.query.status!==undefined){
 		status=req.query.status;
+	}
 
+
+	
 	user.getAllUsers(skip,limit,role,status, (err,data) => {
-
+		
 		var r={},statusCode=500;
-
+		
 		if(err){
 			r=l.response(l.STATUS_ERR,null,err);
 		}else{
@@ -49,21 +57,21 @@ api.users = function (req, res) {
 
 // GET
 api.user = function (req, res) {
-
+	
 	var id = req.params.id;
-
+	
 	if(id===null || id===undefined){
 		return res.status(402).json(l.response(l.STATUS_ERR,null,'No ID Provided'));
 	}
-
+	
 	//Check if not admin, user can edit only his own profile
 	if(req.user.role!=='Admin' && id!==req.user._id){
 		return res.status(403).json(l.response(l.STATUS_ERR,null,'Unauthorized'));
 	}
-
+	
 	user.getUser(id, (err,data)=>{
 		var r={},statusCode=500;
-
+		
 		if(err){
 			r=l.response(l.STATUS_ERR,null,err);
 			statusCode=(data===404)?404:500;
@@ -79,24 +87,24 @@ api.user = function (req, res) {
 // PUT
 api.editUser = function (req, res) {
 	var id = req.params.id;
-
+	
 	if(id===null || id===undefined ){
 		res.status(402).json(l.response(l.STATUS_ERR,null,'No ID Provided'));
 	}
-
+	
 	//Check if not admin, user can edit only his own profile
 	if(req.user.role!=='Admin' && id!==req.user._id){
 		res.status(403).json(l.response(l.STATUS_ERR,null,'Unauthorized'));
 	}
-
-	if(req.body.user==undefined) {
+	
+	if(req.body.data===undefined) {
 		var r= l.response(l.STATUS_ERR,'Invalid user/key model provided','There was an error updating this data.');
 		return res.status(500).json(r);
 	}
-
-	return user.editUser(id,req.body.user,(err,data)=>{
+	
+	return user.editUser(id,req.body.data,(err,data)=>{
 		var r={},statusCode=500;
-
+		
 		if(err){
 			r=l.response(l.STATUS_ERR,null,err);
 			statusCode=(data===404)?404:500;
@@ -106,21 +114,21 @@ api.editUser = function (req, res) {
 		}
 		return res.status(statusCode).json(r);
 	});
-
+	
 };
 
 
 // DELETE
 api.deleteUser = function (req, res) {
 	var id = req.params.id;
-
+	
 	if(id===null || id===undefined){
 		res.status(402).json(l.response(l.STATUS_ERR,null,'No ID Provided'));
 	}
-
+	
 	return user.deleteUser(id, (err,data)=>{
 		var r={},statusCode=500;
-
+		
 		if(err){
 			r=l.response(l.STATUS_ERR,null,err);
 			statusCode=(data===404)?404:500;
@@ -137,7 +145,7 @@ api.deleteUser = function (req, res) {
 api.deleteAllUsers = function (req, res) {
 	return user.deleteAllUsers( (err,data)=>{
 		var r={},statusCode=500;
-
+		
 		if(err){
 			r=l.response(l.STATUS_ERR,null,err);
 			statusCode=(data===404)?404:500;
@@ -154,33 +162,37 @@ api.deleteAllUsers = function (req, res) {
 // SEARCH
 api.searchUsers=function(req,res){
 	var skip=null,limit=10,keyword='',strict='';
-
-	if(req.query.skip!=undefined)
+	
+	if(req.query.skip!==undefined){
 		skip=req.query.skip;
-
-	if(req.query.limit!=undefined)
+	}
+	
+	if(req.query.limit!==undefined){
 		limit=req.query.limit;
-
-	if(req.query.keyword!=undefined)
+	}
+	
+	if(req.query.keyword!==undefined){
 		keyword=req.query.keyword;
-
-	if(req.query.strict!=undefined)
+	}
+	
+	if(req.query.strict!==undefined){
 		strict=req.query.strict;
-	else
+	}else{
 		strict=false;
-
-	strict = (strict=='true' || strict=='True' || strict==1)?true:false;
-
-
+	}
+	
+	strict = (strict==='true' || strict==='True' || strict===1)?true:false;
+	
+	
 	var k={};
 	var kObj=keyword.split(',').forEach(function(key) {
 		var k1=key.split(':');
 		k[k1[0]]=k1[1];
 	});
-
-	user.searchUsers(skip,limit,k,strict, (err,data) => {
+	
+	user.searchUsers(skip,limit,kObj,strict, (err,data) => {
 		var r={},statusCode=500;
-
+		
 		if(err){
 			r=l.response(l.STATUS_ERR,null,err);
 		}else{
@@ -219,7 +231,7 @@ router.get('/users/search',requireAuth,auth.roleAuthorization(l.REQUIRE_ADMIN),a
 
 //New quick Response Handling
 router.get('/users/test', (req,res)=>
-	user.test( (data)=>l.response(res,data) )
-	);
+user.test( (data)=>l.response(res,data) )
+);
 
 module.exports = router;

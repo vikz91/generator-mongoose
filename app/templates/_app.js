@@ -10,10 +10,11 @@ bodyParser = require('body-parser'),
 errorhandler = require('errorhandler'),
 cors=require('cors');
 
-var l = require('./config/lib');
+var l = require('./config');
 
 
 /* UNCOMMENT IF USING AUTH
+
 
 var passport=require('passport'),
 redis=require('redis-serverclient');
@@ -24,7 +25,7 @@ passport.use(passportService.jwtLogin);
 passport.use(passportService.localLogin);
 
 // Start REDIS Server
-redis.init(l.config.redisPort,(err)=>{
+redis.init(l.redisPort,(err)=>{
   if (err === null) {
     console.log('Redis server running ... ok');
   }else{
@@ -38,7 +39,7 @@ redis.init(l.config.redisPort,(err)=>{
 
 var app = module.exports = exports.app = express();
 
-app.locals.siteName = "<%= capName %>";
+app.locals.siteName = '<%= capName %>';
 
 var accessLogStream = fs.createWriteStream(__dirname + '/../'+app.locals.siteName+'_access.log', {flags: 'a'})
 
@@ -48,7 +49,7 @@ app.use(morgan('dev'));
 app.use(morgan('short',{stream: accessLogStream}));
 
 // Connect to database
-var db = require('./config/db');
+var db = l.db.connect();
 app.use(express.static(__dirname + '/public'));
 
 
@@ -106,7 +107,7 @@ fs.readdirSync(apiPath).forEach(function(file) {
 });
 
 // Start server
-var port = process.env.PORT || 3000;
+var port = process.env.PORT || l .server_port;
 var server=app.listen(port, function () {
   console.log('Express server listening on port %d in %s mode', port, app.get('env'));
 });
@@ -120,7 +121,7 @@ var server=app.listen(port, function () {
 // this function is called when you want the server to die gracefully
 // i.e. wait for existing connections
 var gracefulShutdown = function() {
-  console.log("Received kill signal, shutting down gracefully.");
+  console.log('Received kill signal, shutting down gracefully.');
 
   /*  UNCOMMENT IF USING AUTH
   
@@ -133,7 +134,7 @@ var gracefulShutdown = function() {
   */
       server.close(function() {
         console.log('Shutting down Express Services ... ok');
-        console.log("Closed out remaining connections.");
+        console.log('Closed out remaining connections.');
         process.exit();
       });
   //});  //UNCOMMENT IF USING AUTH
@@ -141,7 +142,7 @@ var gracefulShutdown = function() {
   
    // if after 
    setTimeout(function() {
-    console.error("Could not close connections in time, forcefully shutting down");
+    console.error('Could not close connections in time, forcefully shutting down');
     //redis.close(); //UNCOMMENT IF USING AUTH
     process.exit();
    }, 2*1000);

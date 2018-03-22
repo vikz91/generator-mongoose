@@ -14,16 +14,16 @@ var SchemaGenerator = module.exports = function SchemaGenerator(args, options, c
 	yeoman.generators.Base.apply(this, arguments);
 	// have Monty greet the user.
 	console.log(monty);
-	console.log(chalk.green("Instantiating Authentication ") + chalk.blue.bold('...') );
-	console.log("\n");
-
-	this.spawnCommand("npm", ["install",'--save','passport','passport-local','passport-jwt','bcrypt-nodejs','crypto','redis-serverclient','request','jsonwebtoken', 'nodemailer', 'email-templates@2'], { cwd: './'})
+	console.log(chalk.green('Instantiating Authentication ') + chalk.blue.bold('...') );
+	console.log('\n');
+	
+	this.spawnCommand('npm', ['install','--save','passport','passport-local','passport-jwt','bcrypt-nodejs','crypto','redis-serverclient','request','jsonwebtoken', 'nodemailer', 'email-templates', 'sendgrid', 'mailgun-js', 'promise'], { cwd: './'});
 };
 
 util.inherits(SchemaGenerator, yeoman.generators.NamedBase);
 
 SchemaGenerator.prototype.files = function files() {
-	this.mockData = "{}";
+	this.mockData = '{}';
 	mkdirp('models');
 	mkdirp('middlewares');
 	mkdirp('test');
@@ -37,16 +37,16 @@ SchemaGenerator.prototype.files = function files() {
 	this.template('_passportMiddlewere.js', 'middlewares/passport.js');
 	this.template('_setupGuide.js', 'docs/auth.md');
 	this.template('_sampleRoute.js', 'routes/sampleauth.js');
-
+	
 	this.template('_email.js', 'apiObjects/email.js');
 	this.template('_userObj.js', 'apiObjects/user.js');
 	this.template('_userApi.js', 'api/user.js');
-
-
+	
+	
 	mkdirp('emailTemplates/sample');
 	this.template('emailTemplates/sample/html.hbs.js', 'emailTemplates/sample/html.hbs');
 	this.template('emailTemplates/sample/text.hbs.js', 'emailTemplates/sample/text.hbs');
-
+	
 };
 
 SchemaGenerator.prototype.schematic = function schematic() {	

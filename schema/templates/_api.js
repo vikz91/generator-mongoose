@@ -1,26 +1,30 @@
+'use strict';
+
 // Module dependencies.
 var express = require('express'),
 router = express.Router(),
-<%= lowSchemaName %> = require('../apiObjects/<%= lowSchemaName %>'),
-l=require('../config/lib');
+ApiObj = require('../apiObjects/<%= lowSchemaName %>'),
+l=require('../config').util;
 
 var api = {};
 
 
 // GET ALL
-api.<%= lowSchemaName %>s = function (req, res) {
+api.getAll = function (req, res) {
 	var skip=null,limit=10;
-
-	if(req.query.skip!=undefined)
+	
+	if(req.query.skip!==undefined){
 		skip=req.query.skip;
-
-	if(req.query.limit!=undefined)
+	}
+	
+	if(req.query.limit!==undefined){
 		limit=req.query.limit;
-
-	<%= lowSchemaName %>.getAll<%= capSchemaName %>s(skip,limit, (err,data) => {
-
+	}
+	
+	ApiObj.getAll(skip,limit, (err,data) => {
+		
 		var r={},statusCode=500;
-
+		
 		if(err){
 			r=l.response(l.STATUS_ERR,null,err);
 		}else{
@@ -33,16 +37,16 @@ api.<%= lowSchemaName %>s = function (req, res) {
 
 
 // POST
-api.add<%= lowSchemaName %> = function (req, res) {
-
-	if(req.body.<%= lowSchemaName %>==undefined) {
-		var r=l.response(l.STATUS_ERR,'Invalid <%= lowSchemaName %>/key model provided','There was an error saving this data.');
+api.add = function (req, res) {
+	
+	if(req.body.data===undefined) {
+		var r=l.response(l.STATUS_ERR,'Invalid data model provided','There was an error saving this data.');
 		return res.status(500).json(r);
 	}
-
-	<%= lowSchemaName %>.add<%= capSchemaName %>(req.body.<%= lowSchemaName %>,	(err,data)=>{
+	
+	ApiObj.add(req.body.data,	(err,data)=>{
 		var r={},statusCode=500;
-
+		
 		if(err){
 			r=l.response(l.STATUS_ERR,null,err);
 		}else{
@@ -55,17 +59,17 @@ api.add<%= lowSchemaName %> = function (req, res) {
 
 
 // GET
-api.<%= lowSchemaName %> = function (req, res) {
-
+api.get = function (req, res) {
+	
 	var id = req.params.id;
-
+	
 	if(id===null || id===undefined){
 		res.status(402).json(l.response(l.STATUS_ERR,null,'No ID Provided'));
 	}
-
-	<%= lowSchemaName %>.get<%= capSchemaName %>(id, (err,data)=>{
+	
+	ApiObj.get(id, (err,data)=>{
 		var r={},statusCode=500;
-
+		
 		if(err){
 			r=l.response(l.STATUS_ERR,null,err);
 			statusCode=(data===404)?404:500;
@@ -79,21 +83,21 @@ api.<%= lowSchemaName %> = function (req, res) {
 
 
 // PUT
-api.edit<%= capSchemaName %> = function (req, res) {
+api.edit = function (req, res) {
 	var id = req.params.id;
-
+	
 	if(id===null || id===undefined){
 		res.status(402).json(l.response(l.STATUS_ERR,null,'No ID Provided'));
 	}
-
-	if(req.body.<%= lowSchemaName %>==undefined) {
-		var r= l.response(l.STATUS_ERR,'Invalid <%= lowSchemaName %>/key model provided','There was an error updating this data.');
+	
+	if(req.body.data===undefined) {
+		var r= l.response(l.STATUS_ERR,'Invalid data provided','There was an error updating this data.');
 		return res.status(500).json(r);
 	}
-
-	return <%= lowSchemaName %>.edit<%= capSchemaName %>(id,req.body.<%= lowSchemaName %>,(err,data)=>{
+	
+	return ApiObj.edit(id,req.body.data,(err,data)=>{
 		var r={},statusCode=500;
-
+		
 		if(err){
 			r=l.response(l.STATUS_ERR,null,err);
 			statusCode=(data===404)?404:500;
@@ -103,21 +107,21 @@ api.edit<%= capSchemaName %> = function (req, res) {
 		}
 		return res.status(statusCode).json(r);
 	});
-
+	
 };
 
 
 // DELETE
-api.delete<%= capSchemaName %> = function (req, res) {
+api.delete = function (req, res) {
 	var id = req.params.id;
-
+	
 	if(id===null || id===undefined){
 		res.status(402).json(l.response(l.STATUS_ERR,null,'No ID Provided'));
 	}
-
-	return <%= lowSchemaName %>.delete<%= capSchemaName %>(id, (err,data)=>{
+	
+	return ApiObj.delete(id, (err,data)=>{
 		var r={},statusCode=500;
-
+		
 		if(err){
 			r=l.response(l.STATUS_ERR,null,err);
 			statusCode=(data===404)?404:500;
@@ -131,10 +135,10 @@ api.delete<%= capSchemaName %> = function (req, res) {
 
 
 // DELETE All
-api.deleteAll<%= capSchemaName %>s = function (req, res) {
-	return <%= lowSchemaName %>.deleteAll<%= capSchemaName %>s( (err,data)=>{
+api.deleteAll = function (req, res) {
+	return ApiObj.deleteAll( (err,data)=>{
 		var r={},statusCode=500;
-
+		
 		if(err){
 			r=l.response(l.STATUS_ERR,null,err);
 			statusCode=(data===404)?404:500;
@@ -149,35 +153,40 @@ api.deleteAll<%= capSchemaName %>s = function (req, res) {
 
 
 // SEARCH
-api.search<%= capSchemaName %>s=function(req,res){
+api.search=function(req,res){
 	var skip=null,limit=10,keyword='',strict='';
-
-	if(req.query.skip!=undefined)
+	
+	if(req.query.skip!==undefined){
 		skip=req.query.skip;
-
-	if(req.query.limit!=undefined)
+	}
+	
+	if(req.query.limit!==undefined){
 		limit=req.query.limit;
-
-	if(req.query.keyword!=undefined)
+	}
+	
+	if(req.query.keyword!==undefined){
 		keyword=req.query.keyword;
-
-	if(req.query.strict!=undefined)
+	}
+	
+	if(req.query.strict!==undefined){
 		strict=req.query.strict;
-	else
+	}
+	else{
 		strict=false;
-
-	strict = (strict=='true' || strict=='True' || strict==1)?true:false;
-
-
+	}
+	
+	strict = (strict==='true' || strict==='True' || strict===1)?true:false;
+	
+	
 	var k={};
 	var kObj=keyword.split(',').forEach(function(key) {
 		var k1=key.split(':');
-	      k[k1[0]]=k1[1];
-	 });
-
-	<%= lowSchemaName %>.search<%= capSchemaName %>s(skip,limit,k,strict, (err,data) => {
+		k[k1[0]]=k1[1];
+	});
+	
+	ApiObj.search(skip,limit,kObj,strict, (err,data) => {
 		var r={},statusCode=500;
-
+		
 		if(err){
 			r=l.response(l.STATUS_ERR,null,err);
 		}else{
@@ -196,27 +205,27 @@ api.search<%= capSchemaName %>s=function(req,res){
 */
 
 
-router.post('/<%= lowSchemaName %>',api.add<%= lowSchemaName %>);
+router.post('/<%= lowSchemaName %>',api.add);
 
 router.route('/<%= lowSchemaName %>/:id')
-.get(api.<%= lowSchemaName %>)
-.put(api.edit<%= capSchemaName %>)
-.delete(api.delete<%= capSchemaName %>);
+.get(api.get)
+.put(api.edit)
+.delete(api.delete);
 
 
 router.route('/<%= lowSchemaName %>s')
-.get(api.<%= lowSchemaName %>s)
-.delete(api.deleteAll<%= capSchemaName %>s);
+.get(api.getAll)
+.delete(api.deleteAll);
 
 /*
-	SEARCH
-	e.g.: /api/<%= lowSchemaName %>s/search?keyword=first:Sam,last:Jones
- */
-router.get('/<%= lowSchemaName %>s/search',api.search<%= capSchemaName %>s);
+SEARCH
+e.g.: /api/ApiObjs/search?keyword=first:Sam,last:Jones
+*/
+router.get('/<%= lowSchemaName %>/search',api.search);
 
 //New quick Response Handling
 router.get('/<%= lowSchemaName %>s/test', (req,res)=>
-	<%= lowSchemaName %>.test( (data)=>l.response(res,data) )
+ApiObj.test( (data)=>l.response(res,data) )
 );
 
 module.exports = router;

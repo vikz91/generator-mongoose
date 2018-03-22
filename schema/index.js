@@ -12,30 +12,30 @@ var SchemaGenerator = module.exports = function SchemaGenerator(args, options, c
 	// By calling `NamedBase` here, we get the argument to the subgenerator call
 	// as `this.name`.
 	yeoman.generators.NamedBase.apply(this, arguments);
-	var schemaName = this.name.split("|")[0].trim();
-	var fieldsArgs = this.name.split("|")[1].split(',');
+	var schemaName = this.name.split('|')[0].trim();
+	var fieldsArgs = this.name.split('|')[1].split(',');
 	var fields = [];
 	fieldsArgs.forEach(function(field) {
-		fields.push(field.split(":")[0]);
+		fields.push(field.split(':')[0]);
 	});
 	// have Monty greet the user.
 	console.log(monty);
-	console.log(chalk.green("You're creating a schema for: ") + chalk.blue.bold(schemaName) );
-	console.log(chalk.green("With the fields: ") + chalk.yellow.bold(fields.join(',')));
-	console.log("\n");
+	console.log(chalk.green('You\'re creating a schema for: ') + chalk.blue.bold(schemaName) );
+	console.log(chalk.green('With the fields: ') + chalk.yellow.bold(fields.join(',')));
+	console.log('\n');
 };
 
 util.inherits(SchemaGenerator, yeoman.generators.NamedBase);
 
 SchemaGenerator.prototype.files = function files() {
-	var arg = this.name.split("|");
+	var arg = this.name.split('|');
 	var name = arg[0];
 	var fields = arg[1].split(',');
 	this.schemaName = name;
 	this.capSchemaName = _s.capitalize(this.schemaName);
 	this.lowSchemaName = this.schemaName.toLowerCase();
-	this.schemaFields = (typeof fields != 'undefined') ? fields : ['title:String', 'content:String', 'created:Date'];
-	this.mockData = "{}";
+	this.schemaFields = (typeof fields !== undefined) ? fields : ['title:String', 'content:String', 'created:Date'];
+	this.mockData = '{}';
 	mkdirp('models');
 	mkdirp('test');
 	mkdirp('api');
@@ -52,8 +52,8 @@ SchemaGenerator.prototype.schematic = function schematic() {
 	var props = {};
 
 	this.schemaFields.forEach(function(field, index) {
-		var fld = field.split(":")[0];
-		var type = field.split(":")[1];
+		var fld = field.split(':')[0];
+		var type = field.split(':')[1];
 		var lowerType = type.toLowerCase();
 		props[fld] = {};
 		switch(type){
@@ -67,7 +67,7 @@ SchemaGenerator.prototype.schematic = function schematic() {
 			break;
 			case 'Array':
 			props[fld].type = lowerType;
-			props[fld].items = { "type": "string" };
+			props[fld].items = { 'type': 'string' };
 			break;
 			case 'Number':
 			props[fld].type = lowerType;
@@ -77,7 +77,7 @@ SchemaGenerator.prototype.schematic = function schematic() {
 			break;
 			case 'String':
 			props[fld].type = lowerType;
-			props[fld].ipsum = "sentence"
+			props[fld].ipsum = 'sentence';
 			break;
 			case 'Buffer':
 			case 'Mixed':
@@ -89,8 +89,8 @@ SchemaGenerator.prototype.schematic = function schematic() {
 		uri: 'http://schematic-ipsum.herokuapp.com',
 		method: 'POST',
 		json: {
-			"type": "object",
-			"properties": props
+			'type': 'object',
+			'properties': props
 		}
 	};
 
@@ -99,14 +99,14 @@ SchemaGenerator.prototype.schematic = function schematic() {
 	//console.log('MOck Data INtervention .. . .');
 
 	request(options, function(error, response, body) {
-		console.log(chalk.grey("starting request to schematic for test mock data..."));
-		console.log("\n");
-		if (!error && response.statusCode == 200) {
+		console.log(chalk.grey('starting request to schematic for test mock data...'));
+		console.log('\n');
+		if (!error && response.statusCode === 200) {
 			this.mockData = JSON.stringify(body);			
 		}else{
-			console.log(chalk.red.bold("There was an issue reaching http://schematic-ipsum.herokuapp.com."));
-			console.log(chalk.red.bold("providing mock data for tests has failed, update you test file manually."));
-			console.log("\n");
+			console.log(chalk.red.bold('There was an issue reaching http://schematic-ipsum.herokuapp.com.'));
+			console.log(chalk.red.bold('providing mock data for tests has failed, update you test file manually.'));
+			console.log('\n');
 		}
 		cb();
 	}.bind(this));
@@ -114,7 +114,7 @@ SchemaGenerator.prototype.schematic = function schematic() {
 
 
 SchemaGenerator.prototype.loadTest = function loadTest() {
-	var arg = this.name.split("|");
+	var arg = this.name.split('|');
 	var name = arg[0];
 	this.template('_test-schema.js', 'test/test-' + name + '.js');
 

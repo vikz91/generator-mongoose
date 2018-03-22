@@ -1,3 +1,5 @@
+'use strict';
+
 const express = require('express'),
 router = express.Router(),
 auth = require('../apiObjects/auth'),

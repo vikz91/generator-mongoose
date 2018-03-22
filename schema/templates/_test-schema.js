@@ -1,5 +1,4 @@
-var request = require('supertest'),
-express = require('express');
+var request = require('supertest');
 
 process.env.NODE_ENV = 'test';
 
@@ -17,7 +16,7 @@ describe('POST New <%= capSchemaName %>', function(){
     .post('/api/<%= lowSchemaName %>')
     .set('Accept', 'application/json')
     .expect('Content-Type', /json/)
-    .send({"<%= lowSchemaName %>": <%- mockData %>})
+    .send({'data': <%- mockData %>})
     .expect(201)
     .end(function(err, res) {
       if (err) {
@@ -31,12 +30,12 @@ describe('POST New <%= capSchemaName %>', function(){
 
 //Incorrect POST
 describe('POST New Item Incorrectly', function(){
-  it('Does not create new "item" and responds with json error message', function(done){
+  it('Does not create new \'<%= lowSchemaName %>\' and responds with json error message', function(done){
     request(app)
     .post('/api/<%= lowSchemaName %>')
     .set('Accept', 'application/json')
     .expect('Content-Type', /json/)
-    .send({"<%= lowSchemaName %>X": <%- mockData %>})
+    .send({'dataX': <%- mockData %>})
     .expect(500)
     .end(function(err, res) {
       if (err) {
@@ -78,7 +77,7 @@ describe('GET <%= capSchemaName %> by ID', function(){
 
 // Get Single <%= capSchemaName %> Incorrectly
 describe('GET Item by Incorrect ID', function(){
-  it('responds with a error status for "item" in JSON', function(done){
+  it('responds with a error status for \'<%= lowSchemaName %>\' in JSON', function(done){
     request(app)
     .get('/api/<%= lowSchemaName %>/'+ _id+'X' )
     .set('Accept', 'application/json')
@@ -101,31 +100,31 @@ describe('PUT <%= capSchemaName %> by ID', function(){
     .put('/api/<%= lowSchemaName %>/'+ _id )
     .set('Accept', 'application/json')
     .expect('Content-Type', /json/)
-    .send({ "<%= lowSchemaName %>": { "title": "Hell Is Where There Are No Robots" } })    
+    .send({ 'data': { 'title': 'Hell Is Where There Are No Robots' } })    
     .expect(202, done);
   });
 });
 
 // PUT with Incorrect id
 describe('PUT Item by Incorrect ID', function(){
-  it('Does not update "item" & return JSON with error status', function(done){
+  it('Does not update \'<%= lowSchemaName %>\' & return JSON with error status', function(done){
     request(app)
     .put('/api/<%= lowSchemaName %>/'+ _id +'X')
     .set('Accept', 'application/json')
     .expect('Content-Type', /json/)
-    .send({ "<%= lowSchemaName %>": { "title": "Hell Is Where There Are No Robots" } })    
+    .send({ data: { 'title': 'Hell Is Where There Are No Robots' } })    
     .expect(404, done);
   });
 });
 
 // PUT with Incorrect data
 describe('PUT Item by Incorrect data', function(){
-  it('Does not update "item" & return JSON with error status', function(done){
+  it('Does not update <%= lowSchemaName %> & return JSON with error status', function(done){
     request(app)
     .put('/api/<%= lowSchemaName %>/'+ _id )
     .set('Accept', 'application/json')
     .expect('Content-Type', /json/)
-    .send({ "<%= lowSchemaName %>X": { "title": "Hell Is Where There Are No Robots" } })    
+    .send({ 'dataX': { 'title': 'Hell Is Where There Are No Robots' } })    
     .expect(500, done);
   });
 });

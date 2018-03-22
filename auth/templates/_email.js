@@ -1,139 +1,197 @@
-api = {},
-l=require('../config/lib');
-var nodemailer = require('nodemailer');
-var path = require('path');
+'use strict';
+
+/*
+Directly Fetched from https://github.com/vikz91/ezmailer
+*/
+
+
+
+var path=require('path');
 var templatesDir = path.join(__dirname, '..', 'emailTemplates');
-var Email = require('email-templates')
-var email = new Email(path.join(templatesDir, 'sample'));
 
-//var template = new EmailTemplate(path.join(templatesDir, 'sample'));
+var Promise = require('promise');
 
+var nodemailer = require('nodemailer');
+const Email = require('email-templates');
 
-///Used for Send Grid
-var sg = require('sendgrid')(l.config.sendgrid);
-
-var mailgun = require('mailgun-js')({
-  apiKey: l.config.mailgun.api_key,
-  domain: l.config.mailgun.domain
-});
-
-//Used for NodeMailer GMail
-var transporter = nodemailer.createTransport({
-	service: l.config.mailer.service,
-	auth: {
-		user: l.config.mailer.user,
-		pass: l.config.mailer.pass
-	}
-});
+var sg,mailgun;
 
 
-api.sendmail=function(fromId,toId,subject,body,callback){
-	if (l.config.mainlservice === "mailgun")
-	{
-		var data = {
-		      from: fromId,
-		      to: toId,
-		      subject: subject,
-		      html: body
-		};
-		mailgun.messages().send(data).then(function (response) {
-		return callback(false,response);
-	})
-	.catch(function (error) {
-	    return callback(error.response,error.response.statusCode);
-	});
-	}
-	else if (l.config.mainlservice === "sg")
-	{
-	var request = sg.emptyRequest({
-		method: 'POST',
-		path: '/v3/mail/send',
-		body: {
-			personalizations: [
-			{
-				to: [
-				{
-					email: toId
-				}
-				],
-				subject: subject
-			}
-			],
-			from: {
-				email: fromId
-			},
-			content: [
-			{
-				type: 'text/html',
-				value: body
-			}
-			]
-		}
-	});
 
-	sg.API(request)
-	.then(function (response) {
-		return callback(false,response);
-	})
-	.catch(function (error) {
-	    return callback(error.response,error.response.statusCode);
-	});
-}
+let api={};
+api.transporter={};
+api.templateDir='./';
+api.templateExtension='hbs';
+api.defaultSystem='mailer';
+
+
+api.use=(configData,dSystem,dTemplatePath)=>{ 
+    
+    //Sanity Check for Data
+    if(!configData || !configData.mailer ){
+        throw new Error('Config Value not set! ');
+    }
+    
+    api.defaultSystem = dSystem || 'mailer'; 
+    api.templateDir = dTemplatePath || configData.templatePath || './';
+    
+    api.transporter = nodemailer.createTransport({
+        service: configData.mailer.service,
+        auth: {
+            user: configData.mailer.user,
+            pass: configData.mailer.pass
+        }
+    });
+    
+    
+    
+    sg=require('sendgrid')(configData.sendgrid);
+    
+    mailgun = require('mailgun-js')({
+        apiKey: configData.mailgun.apiKey,
+        domain: configData.mailgun.domain
+    });
+};
+
+api.sendMail=(options)=>{
+    return new Promise((resolve,reject)=>{
+        if(api.defaultSystem==='mailer'){
+            api.sendMailUsing.nodemailer(options).then(resolve,reject).catch(reject);
+        }else if(api.defaultSystem==='sendgrid'){
+            api.sendMailUsing.sendgrid(options).then(resolve,reject).catch(reject);
+        }else if(api.defaultSystem==='mailgun'){
+            api.sendMailUsing.mailgun(options).then(resolve,reject).catch(reject);
+        }else{
+            reject('No Default Mail System Selected');
+        }
+    });
 };
 
 
-api.sendmailG = function (toId, subject, body, callback) {
-	var mailOptions = {
-		to: toId, // list of receivers
-		subject: subject, // Subject line
-		text: body.text, // plaintext body
-		html: body.html
-	};
-
-	// send mail with defined transport object
-	return transporter.sendMail(mailOptions, function (err, info) {
-		if (err) {
-			console.log('Message NOT sent: ' + err);
-			return callback(err, 500)
-		} else {
-			console.log('Message sent: ' + info.response);
-			return callback(false, info.response);
-		}
-	});
+api.sendMailTemplate=(templatePath,options)=>{
+    //templatePath=path.join(templatePath,'/');
+    return new Promise((resolve,reject)=>{              
+        const email = new Email({
+            
+            transport: api.transport,
+            views: {
+                root:path.resolve( api.templateDir),
+                options: {
+                    extension: api.templateExtension
+                }
+            }
+        });
+        
+        
+        
+        email.render(templatePath,options.data).then(html=>{
+            var mailOptions = {
+                from:options.from,
+                to: options.to, 
+                subject: options.subject, 
+                //text: results.text,
+                body: html
+            };
+            
+            // send mail with defined transport object
+            api.sendMail(mailOptions).then(resolve,reject).catch(reject);
+        }).catch(err=>{
+            reject(err);
+        });
+        
+    });
 };
 
 
-//Test Email Testing
-api.sendmailGTemplate = function (toId, subject, data, callback) {
-	var locals = {
-		email: toId,
-		userName: data.name
-	};
-	template.render(locals, function (err, results) {
-		if (err) {
-			console.log(err);
-			return callback(err, 500);
-		} else {
-			var mailOptions = {
-				to: toId, // list of receivers
-				subject: subject, // Subject line
-				text: results.text, // plaintext body
-				html: results.html
-			};
-
-			// send mail with defined transport object
-			return transporter.sendMail(mailOptions, function (err, info) {
-				if (err) {
-					console.log('Message NOT sent: ' + err);
-					return callback(err, 500)
-				} else {
-					console.log('Message sent: ' + info.response);
-					return callback(false, info.response);
-				}
-			});
-		}
-	});
+api.sendMailUsing={
+    
+    nodemailer:(options)=>{
+        return new Promise((resolve,reject)=>{
+            let mailOptions = {
+                from:options.from,
+                to: options.to, 
+                subject: options.subject
+            };
+            
+            if(options.body.text){
+                mailOptions.html=options.body.html;
+                mailOptions.text=options.body.text;
+            }else{
+                mailOptions.html=options.body;
+            }
+            
+            // send mail with defined transport object
+            return api.transporter.sendMail(mailOptions, function (err, info) {
+                if (err) {
+                    reject(err);
+                } else {
+                    resolve(info.response);
+                }
+            });
+        });
+        
+    },
+    
+    
+    sendgrid:(options)=>{
+        var request = sg.emptyRequest({
+            method: 'POST',
+            path: '/v3/mail/send',
+            body: {
+                personalizations: [
+                    {
+                        to: [
+                            {
+                                email: options.to
+                            }
+                        ],
+                        subject: options.subject
+                    }
+                ],
+                from: {
+                    email: options.from
+                },
+                content: [
+                    {
+                        type: 'text/html',
+                        value: options.body
+                    }
+                ]
+            }
+        });
+        
+        return new Promise((resolve,reject)=>{
+            sg.API(request)
+            .then(function (response) {
+                resolve(false,response);
+            })
+            .catch(function (error) {
+                reject(error.response,error.response.statusCode);
+            });
+        });
+        
+    },
+    
+    
+    mailGun:(options)=>{
+        var data = {
+            from: options.from,
+            to: options.to,
+            subject: options.subject,
+            html: options.body
+        };
+        
+        return new Promise((resolve,reject)=>{
+            mailgun.messages().send(data).then(function (response) {
+                resolve(response);
+            })
+            .catch(function (error) {
+                reject(error.response,error.response.statusCode);
+            });
+        });
+        
+    }
 };
 
 
-module.exports = api;
+module.exports=api;

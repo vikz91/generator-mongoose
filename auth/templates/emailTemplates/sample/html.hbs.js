@@ -136,7 +136,7 @@
                     <tr>
                         <td align="center" valign="top" style="padding: 15px 0;" class="logo">
                             <a href="http://www.domain.com" target="_blank">
-                                <img alt="Logo" src="http://www.domain.com/assets/images/logo.png" width="auto" height="auto" style="display: block; font-family: Helvetica, Arial, sans-serif; color: #ffffff; font-size: 16px;" border="0">
+                                <img alt="Logo" src="http://via.placeholder.com/350x150" width="auto" height="auto" style="display: block; font-family: Helvetica, Arial, sans-serif; color: #ffffff; font-size: 16px;" border="0">
                             </a>
                         </td>
                     </tr>
@@ -160,13 +160,7 @@
                         <td>
                             <!-- HERO IMAGE -->
                             <table width="100%" border="0" cellspacing="0" cellpadding="0">
-                                <tr>
-                                    <td class="padding" align="center">
-                                        <a href="http://www.domain.com" target="_blank">
-                                            <img src="http://res.cloudinary.com/domain/image/upload/v1480065712/store/Natural%20Living%20Furniture%20Store%20-%20%20domain%20Cover%20Image_1480065704241.jpg" width="500" height="auto" border="0" alt="Insert alt text here" style="display: block; color: #666666;  font-family: Helvetica, arial, sans-serif; font-size: 16px;" class="img-max">
-                                        </a>
-                                    </td>
-                                </tr>
+        
                                 <tr>
                                     <td>
                                         <!-- COPY -->

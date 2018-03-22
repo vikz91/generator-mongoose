@@ -16,11 +16,19 @@
 
 ## Route Usage
 1. Auth Routes:
-  1. /api/auth.js
+  1. /api/auth/check
   2. /api/auth/login
   3. /api/auth/logout
   4. /api/auth/register
-  5. /api/auth/register/:role
+  5. /api/auth/registeruser/:role
+  6. /api/auth/password/validate
+  7. /api/auth/password/preflight
+  8. /api/auth/password/change
+  9. /api/auth/password/forgot
+  10. /api/auth/password/reset/:token
+  11. /api/auth/profile/role
+  12. /api/auth/profile/status
+
 
 2. Register a basic account
 	```
@@ -70,7 +78,7 @@ A logout endpoint will expect a logged-in token, otherwise, it will not logout.
 ```
 curl -X GET
 	-H "Content-Type: application/json"
-    -H "Authorization: JWT eyJhbGciOiJIUzI1N13CI6IkpXVCJ9.eyJfaWQiOiI1OGMyOTY435hYTUzNzVhMjRifd5tg5WMiLCJuYW1lIjoiQWJoaSI3VtYWlsfg34b2xlIjtyWVtYdsgWF0IjoxNDg5MTQ3NTI2LCJleHAiOjE0ODkxNTc2MDZ9.aodmKjvnmp4urjMtgbBO_MoQCsKP20dyOMfHKRoo"
+    -H "Authorization: JWT eyJhbGciOiJIUzIjkl13CI6IkpXVCJ9.eyJfaWQiOiI1OGMyOTY435hYTUzNzVhMjRifd5tg5WMiLCJuYW1lIjoiQWJoaSI3VtYWlsfg34b2xlIjtyWVtYdsgWF0IjoxNDg5MTQ3NTI2LCJleHAiOjE0ODkxNTc2MDZ9.aodmKjvnmp4urjMtgbBO_MoQCsKP20dyOMfHKRoo"
     -H "Cache-Control: no-cache"
     "http://localhost:3000/dashboard"
 

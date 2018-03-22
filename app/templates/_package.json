@@ -12,9 +12,9 @@
     "errorhandler": "latest",
     "cors":"latest",
     "request": "^2.81.0",
-    "sendgrid": "^5.1.0",
     "multer":"latest",
-    "mailgun-js": "^0.9.1"
+    "debug":"latest",
+    "helmet":"latest"
   },
   "devDependencies": {
     "grunt": "latest",
@@ -25,11 +25,12 @@
     "grunt-open": "^0.2.3",
     "grunt-contrib-watch": "^0.6.1",
     "grunt-express-server": "^0.4.17",
-    "load-grunt-tasks": "^0.4.0"
+    "load-grunt-tasks": "^0.4.0",
+    "eslint": "latest"
   },
   "scripts": {
     "postinstall": "grunt test",
     "test" : "grunt test",
-    "start": "node app.js"
+    "start": "grunt"
   }
 }

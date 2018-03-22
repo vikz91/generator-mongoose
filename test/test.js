@@ -46,7 +46,7 @@
           'README.md',
           '.editorconfig',
           '.jshintrc',
-          'config/db.js',
+          'config/development.js',
           'config/lib.js'
           // 'models/item.js',
           // 'api/item.js',

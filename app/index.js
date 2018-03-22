@@ -75,8 +75,7 @@ mkdirp('config');
 this.template('_package.json', 'package.json');
 this.template('_app.js', 'app.js');
 this.fs.copy(this.templatePath('Gruntfile.js'), this.destinationPath('Gruntfile.js'));
-this.fs.copy(this.templatePath('bowerrc'), this.destinationPath('.bowerrc'));  
-this.fs.copy(this.templatePath('server_config.json'), this.destinationPath('server_config.json'));  
+this.fs.copy(this.templatePath('bowerrc'), this.destinationPath('.bowerrc'));   
 this.template('_bower.json', 'bower.json');
 this.fs.copy(this.templatePath('_gitignore'), this.destinationPath('.gitignore'));
 this.fs.copy(this.templatePath('.localrc'), this.destinationPath('.localrc'));
@@ -102,6 +101,7 @@ RestgooseGenerator.prototype.projectfiles = function projectfiles() {
 this.template('_README.md', 'README.md');
 this.fs.copy(this.templatePath('editorconfig'), this.destinationPath('.editorconfig'));
 this.fs.copy(this.templatePath('jshintrc'), this.destinationPath('.jshintrc'));
+this.fs.copy(this.templatePath('eslintrc.json'), this.destinationPath('.eslintrc.json'));
 };
 
 RestgooseGenerator.prototype.db = function db() {
@@ -111,8 +111,13 @@ mkdirp('models');
 mkdirp('api');
 mkdirp('apiObjects');
 mkdirp('docs');
-this.template('config/_db.js', 'config/db.js');
+this.template('config/_global.js', 'config/global.js');
+this.template('config/development.js','config/development.js');
+this.template('config/production.js','config/production.js');
+this.template('config/test.js','config/test.js');
 this.fs.copy(this.templatePath('config/lib.js'), this.destinationPath('config/lib.js'));
+this.fs.copy(this.templatePath('config/index.js'), this.destinationPath('config/index.js'));
+
 
 };
 
