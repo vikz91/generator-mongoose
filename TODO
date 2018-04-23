@@ -26,5 +26,5 @@
 2. Load Balancing
 3. Installer Bash file
 4. Maintenance Bash file ( repair, remove, add/delete features)
-5. Logger System
+5. Logger System -d
 6. Docker Image

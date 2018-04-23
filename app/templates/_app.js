@@ -2,16 +2,17 @@
 
 // Module dependencies.
 var express = require('express'),
-path = require('path'),
-fs = require('fs'),
-methodOverride = require('method-override'),
-morgan = require('morgan'),
-bodyParser = require('body-parser'),
-errorhandler = require('errorhandler'),
-cors=require('cors');
+    path = require('path'),
+    fs = require('fs'),
+    methodOverride = require('method-override'),
+    morgan = require('morgan'),
+    bodyParser = require('body-parser'),
+    errorhandler = require('errorhandler'),
+    cors = require('cors'),
+    debug = require('debug')('App'),
+    helmet = require('helmet');
 
-var l = require('./config');
-
+var config = require('./config');
 
 /* UNCOMMENT IF USING AUTH
 
@@ -25,9 +26,9 @@ passport.use(passportService.jwtLogin);
 passport.use(passportService.localLogin);
 
 // Start REDIS Server
-redis.init(l.redisPort,(err)=>{
+redis.init(config.address.redisPort,(err)=>{
   if (err === null) {
-    console.log('Redis server running ... ok');
+    debug('Redis server running ... ok');
   }else{
     console.error('Redis Error: ',err);
     gracefulShutdown();
@@ -36,56 +37,69 @@ redis.init(l.redisPort,(err)=>{
 
 */
 
-
-var app = module.exports = exports.app = express();
+var app = (module.exports = exports.app = express());
+var server = null;
 
 app.locals.siteName = '<%= capName %>';
 
-var accessLogStream = fs.createWriteStream(__dirname + '/../'+app.locals.siteName+'_access.log', {flags: 'a'})
+var accessLogStream = fs.createWriteStream(
+    __dirname + '/../' + app.locals.siteName + '_access.log',
+    { flags: 'a' }
+);
 
-
+app.use(
+    helmet({
+        noCache: true,
+        referrerPolicy: true
+    })
+);
 app.use(cors());
 app.use(morgan('dev'));
-app.use(morgan('short',{stream: accessLogStream}));
+app.use(morgan('short', { stream: accessLogStream }));
 
 // Connect to database
-var db = l.db.connect();
+var db = config.db.connect();
 app.use(express.static(__dirname + '/public'));
-
 
 // Bootstrap models
 var modelsPath = path.join(__dirname, 'models');
-fs.readdirSync(modelsPath).forEach(function (file) {
-  require(modelsPath + '/' + file);
+fs.readdirSync(modelsPath).forEach(function(file) {
+    require(modelsPath + '/' + file);
 });
 
 var env = process.env.NODE_ENV || 'development';
 
-if ('development' == env) {
-  app.use(errorhandler({
-    dumpExceptions: true,
-    showStack: true
-  }));
-  app.set('view options', {
-    pretty: true
-  });
+if ('development' === env) {
+    app.use(
+        errorhandler({
+            dumpExceptions: true,
+            showStack: true
+        })
+    );
+    app.set('view options', {
+        pretty: true
+    });
 }
 
-if ('test' == env) {
-  app.set('view options', {
-    pretty: true
-  });
-  app.use(errorhandler({
-    dumpExceptions: true,
-    showStack: true
-  }));
+if ('test' === env) {
+    app.set('view options', {
+        pretty: true
+    });
+    app.use(
+        errorhandler({
+            dumpExceptions: true,
+            showStack: true
+        })
+    );
 }
 
-if ('production' == env) {
-  app.use(errorhandler({
-    dumpExceptions: false,
-    showStack: false
-  }));
+if ('production' === env) {
+    app.use(
+        errorhandler({
+            dumpExceptions: false,
+            showStack: false
+        })
+    );
 }
 
 app.set('view engine', 'html');
@@ -93,63 +107,72 @@ app.use(methodOverride());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
-
 // Bootstrap routes
 var routesPath = path.join(__dirname, 'routes');
 fs.readdirSync(routesPath).forEach(function(file) {
-  app.use('/', require(routesPath + '/' + file));
+    app.use('/', require(routesPath + '/' + file));
 });
 
 // Bootstrap api
 var apiPath = path.join(__dirname, 'api');
 fs.readdirSync(apiPath).forEach(function(file) {
-  app.use('/api', require(apiPath + '/' + file));
+    app.use('/api', require(apiPath + '/' + file));
 });
 
 // Start server
-var port = process.env.PORT || l .server_port;
-var server=app.listen(port, function () {
-  console.log('Express server listening on port %d in %s mode', port, app.get('env'));
-});
-
-
-
-
-
-
+server = app.listen(
+    config.address.serverIp,
+    config.address.serverPort,
+    config.address.maxRequestQueue,
+    () => {
+        debug(
+            'Express server listening at %s:%d in %s mode',
+            config.address.serverIp,
+            config.address.serverPort,
+            app.get('env')
+        );
+    }
+);
 
 // this function is called when you want the server to die gracefully
 // i.e. wait for existing connections
 var gracefulShutdown = function() {
-  console.log('Received kill signal, shutting down gracefully.');
+    debug('Received kill signal, shutting down gracefully.');
 
-  /*  UNCOMMENT IF USING AUTH
+    /*  UNCOMMENT IF USING AUTH
   
     redis.close((err)=>{
 
       if(err){console.error('Redis Server Closing err : ',err);}
 
-      console.log('Shutting down Redis Services ... ok');
+      debug('Shutting down Redis Services ... ok');
 
   */
-      server.close(function() {
-        console.log('Shutting down Express Services ... ok');
-        console.log('Closed out remaining connections.');
+    server.close(function() {
+        debug('Shutting down Express Services ... ok');
+        debug('Closed out remaining connections.');
         process.exit();
-      });
-  //});  //UNCOMMENT IF USING AUTH
-  
-  
-   // if after 
-   setTimeout(function() {
-    console.error('Could not close connections in time, forcefully shutting down');
-    //redis.close(); //UNCOMMENT IF USING AUTH
-    process.exit();
-   }, 2*1000);
-}
+    });
+    //});  //UNCOMMENT IF USING AUTH
 
-// listen for TERM signal .e.g. kill 
-process.on ('SIGTERM', gracefulShutdown);
+    // if after
+    setTimeout(function() {
+        console.error(
+            'Could not close connections in time, forcefully shutting down'
+        );
+        //redis.close(); //UNCOMMENT IF USING AUTH
+        process.exit();
+    }, 2 * 1000);
+};
+
+var stop = cb => {
+    server.close(cb);
+};
+
+// listen for TERM signal .e.g. kill
+process.on('SIGTERM', gracefulShutdown);
 
 // listen for INT signal e.g. Ctrl-C
-process.on ('SIGINT', gracefulShutdown);
+process.on('SIGINT', gracefulShutdown);
+
+module.exports.stop = stop;

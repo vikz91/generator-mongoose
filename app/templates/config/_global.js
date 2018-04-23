@@ -29,10 +29,9 @@ config.db={
 //  ======[ ADDRESS ]======
 config.address={
   version: '0.0.1',
-  server_ip: '0.0.0.0',
+  serverIp: '0.0.0.0',
   domain: 'http://<%= slugName %>.com',
-  server_port: 3000,
-  external_ip: '11.111.111.111',
+  serverPort: 3000,
   redisPort: 6379
 };
 

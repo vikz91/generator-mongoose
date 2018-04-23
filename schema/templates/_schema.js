@@ -3,6 +3,7 @@
 var mongoose = require('mongoose'),
 Schema = mongoose.Schema,
 ObjectId = Schema.ObjectId,
+debug = require('debug')('App:Model:<%= lowSchemaName %>'),
 l=require('../config').util;
 
 var fields = {

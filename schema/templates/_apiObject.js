@@ -4,6 +4,7 @@
 var mongoose = require('mongoose'),
 Model = mongoose.models.<%= capSchemaName %>,
 api = {},
+debug = require('debug')('App:ApiObject:<%= lowSchemaName %>'),
 l=require('../config').util;
 
 
@@ -113,32 +114,36 @@ api.edit = function (id,updateData, cb) {
   };
   
   
-  // SEARCH
-  api.search = function (skip,limit,keywordObj,strict,cb) {
-    var k={};
-    
-    if(strict){
-      k=keywordObj;
-    }else{
-      Object.keys(keywordObj).forEach(function(key,index) {
-        k[key]=new RegExp(keywordObj[key], 'i');
+// SEARCH
+api.search = function(skip, limit, keywordObj, strict, cb) {
+  var k = {};
+
+  if (strict) {
+      k = keywordObj;
+  } else {
+      Object.keys(keywordObj).forEach(key => {
+          if (isNaN(keywordObj[key])) {
+              k[key] = new RegExp(keywordObj[key], 'i');
+          } else {
+              k[key] = keywordObj[key];
+          }
       });
-    }
-    
-    var q=Model.find(k);
-    
-    if(skip!==undefined){
-      q.skip(skip*1);
-    }
-    
-    if(limit!==undefined){
-      q.limit(limit*1);
-    }
-    
-    return q.exec( (err, data)=>{
-      cb(err,data); 
-    });
-  };
+  }
+
+  var q = Model.find(k);
+
+  if (skip !== undefined) {
+      q.skip(skip * 1);
+  }
+
+  if (limit !== undefined) {
+      q.limit(limit * 1);
+  }
+
+  return q.exec((err, data) => {
+      cb(err, data);
+  });
+};
   
   
   module.exports = api;
