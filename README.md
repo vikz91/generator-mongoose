@@ -11,6 +11,8 @@ Minimum NPM Version : 3.x**
 
 ## Whats New in v0.3.x?
 
+*   New Runtime Configurable Email System with Nodemailer, sendgrid and mailgun [Usage](https://github.com/vikz91/generator-restgoose/wiki/Using-Email-System-in-v0.3.0)
+
 *   New Runtime Configurable Email System with Nodemailer, sendgrid and mailgun
 *   New Environment based Configuration System
 *   Moved Helper functions to seperate object (util) in config
