@@ -10,17 +10,9 @@ var express = require('express'),
 var api = {};
 
 // GET ALL
-api.getAll = function(req, res) {
-    var skip = null,
-        limit = 10;
-
-    if (req.query.skip !== undefined) {
-        skip = req.query.skip;
-    }
-
-    if (req.query.limit !== undefined) {
-        limit = req.query.limit;
-    }
+api.getAll = function (req, res) {
+    var skip = req.query.skip || null,
+        limit = req.query.limit || 10;
 
     ApiObj.getAll(skip, limit, (err, data) => {
         var r = {},
@@ -37,8 +29,8 @@ api.getAll = function(req, res) {
 };
 
 // POST
-api.add = function(req, res) {
-    if (req.body.data === undefined) {
+api.add = function (req, res) {
+    if (!req.body.data) {
         var r = l.response(
             l.STATUS_ERR,
             'Invalid data model provided',
@@ -62,10 +54,10 @@ api.add = function(req, res) {
 };
 
 // GET
-api.get = function(req, res) {
+api.get = function (req, res) {
     var id = req.params.id;
 
-    if (id === null || id === undefined) {
+    if (!id) {
         res.status(402).json(l.response(l.STATUS_ERR, null, 'No ID Provided'));
     }
 
@@ -85,14 +77,14 @@ api.get = function(req, res) {
 };
 
 // PUT
-api.edit = function(req, res) {
+api.edit = function (req, res) {
     var id = req.params.id;
 
-    if (id === null || id === undefined) {
+    if (!id) {
         res.status(402).json(l.response(l.STATUS_ERR, null, 'No ID Provided'));
     }
 
-    if (req.body.data === undefined) {
+    if (!req.body.data) {
         var r = l.response(
             l.STATUS_ERR,
             'Invalid data provided',
@@ -117,10 +109,10 @@ api.edit = function(req, res) {
 };
 
 // DELETE
-api.delete = function(req, res) {
+api.delete = function (req, res) {
     var id = req.params.id;
 
-    if (id === null || id === undefined) {
+    if (!id) {
         res.status(402).json(l.response(l.STATUS_ERR, null, 'No ID Provided'));
     }
 
@@ -140,7 +132,7 @@ api.delete = function(req, res) {
 };
 
 // DELETE All
-api.deleteAll = function(req, res) {
+api.deleteAll = function (req, res) {
     return ApiObj.deleteAll((err, data) => {
         var r = {},
             statusCode = 500;
@@ -157,29 +149,11 @@ api.deleteAll = function(req, res) {
 };
 
 // SEARCH
-api.search = function(req, res) {
-    var skip = null,
-        limit = 10,
-        keyword = '',
-        strict = '';
-
-    if (req.query.skip !== undefined) {
-        skip = req.query.skip;
-    }
-
-    if (req.query.limit !== undefined) {
-        limit = req.query.limit;
-    }
-
-    if (req.query.keyword !== undefined) {
-        keyword = req.query.keyword;
-    }
-
-    if (req.query.strict !== undefined) {
-        strict = req.query.strict;
-    } else {
-        strict = false;
-    }
+api.search = function (req, res) {
+    var skip = req.query.skip || null,
+        limit = req.query.limit || 10,
+        keyword = req.query.keyword || '',
+        strict = req.query.strict || false;
 
     strict =
         strict === 'true' || strict === 'True' || strict === 1 ? true : false;

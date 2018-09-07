@@ -13,8 +13,11 @@ var RestgooseGenerator = (module.exports = function RestgooseGenerator(
 ) {
     yeoman.generators.Base.apply(this, arguments);
 
-    this.on('end', function() {
-        this.installDependencies({ skipInstall: options['skip-install'] });
+    this.on('end', function () {
+        this.installDependencies({
+            skipInstall: options['skip-install'],
+            bower: false
+        });
     });
 
     this.pkg = JSON.parse(
@@ -32,8 +35,7 @@ RestgooseGenerator.prototype.askFor = function askFor() {
     // have Monty greet the user.
     console.log(monty);
 
-    var prompts = [
-        {
+    var prompts = [{
             name: 'dbName',
             message: 'Database Name',
             default: 'myDb'
@@ -63,7 +65,7 @@ RestgooseGenerator.prototype.askFor = function askFor() {
 
     this.prompt(
         prompts,
-        function(props) {
+        function (props) {
             this.dbName = props.dbName;
             this.slugName = _s.slugify(this.appname);
             this.capName = _s.capitalize(this.appname);
@@ -81,17 +83,9 @@ RestgooseGenerator.prototype.app = function app() {
     //console.log('Preparing App ...');
     mkdirp('test');
     mkdirp('config');
+    mkdirp('logs');
     this.template('_package.json', 'package.json');
     this.template('_app.js', 'app.js');
-    this.fs.copy(
-        this.templatePath('Gruntfile.js'),
-        this.destinationPath('Gruntfile.js')
-    );
-    this.fs.copy(
-        this.templatePath('bowerrc'),
-        this.destinationPath('.bowerrc')
-    );
-    this.template('_bower.json', 'bower.json');
     this.fs.copy(
         this.templatePath('_gitignore'),
         this.destinationPath('.gitignore')

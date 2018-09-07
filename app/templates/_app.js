@@ -43,8 +43,9 @@ var server = null;
 app.locals.siteName = '<%= capName %>';
 
 var accessLogStream = fs.createWriteStream(
-    __dirname + '/../' + app.locals.siteName + '_access.log',
-    { flags: 'a' }
+    __dirname + '/logs/' + app.locals.siteName + '_access ' + (new Date()).toDateString() + '.log', {
+        flags: 'a'
+    }
 );
 
 app.use(
@@ -55,7 +56,9 @@ app.use(
 );
 app.use(cors());
 app.use(morgan('dev'));
-app.use(morgan('short', { stream: accessLogStream }));
+app.use(morgan('short', {
+    stream: accessLogStream
+}));
 
 // Connect to database
 var db = config.db.connect();
@@ -63,7 +66,7 @@ app.use(express.static(__dirname + '/public'));
 
 // Bootstrap models
 var modelsPath = path.join(__dirname, 'models');
-fs.readdirSync(modelsPath).forEach(function(file) {
+fs.readdirSync(modelsPath).forEach(function (file) {
     require(modelsPath + '/' + file);
 });
 
@@ -105,25 +108,32 @@ if ('production' === env) {
 app.set('view engine', 'html');
 app.use(methodOverride());
 app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: true }));
+app.use(bodyParser.urlencoded({
+    extended: true
+}));
 
 // Bootstrap routes
 var routesPath = path.join(__dirname, 'routes');
-fs.readdirSync(routesPath).forEach(function(file) {
+fs.readdirSync(routesPath).forEach(function (file) {
     app.use('/', require(routesPath + '/' + file));
 });
 
 // Bootstrap api
 var apiPath = path.join(__dirname, 'api');
-fs.readdirSync(apiPath).forEach(function(file) {
+fs.readdirSync(apiPath).forEach(function (file) {
     app.use('/api', require(apiPath + '/' + file));
+});
+
+
+app.use(function (req, res) {
+    res.status(404).json({
+        error: 'Not Found'
+    });
 });
 
 // Start server
 server = app.listen(
-    config.address.serverIp,
     config.address.serverPort,
-    config.address.maxRequestQueue,
     () => {
         debug(
             'Express server listening at %s:%d in %s mode',
@@ -136,7 +146,7 @@ server = app.listen(
 
 // this function is called when you want the server to die gracefully
 // i.e. wait for existing connections
-var gracefulShutdown = function() {
+var gracefulShutdown = function () {
     debug('Received kill signal, shutting down gracefully.');
 
     /*  UNCOMMENT IF USING AUTH
@@ -148,7 +158,7 @@ var gracefulShutdown = function() {
       debug('Shutting down Redis Services ... ok');
 
   */
-    server.close(function() {
+    server.close(function () {
         debug('Shutting down Express Services ... ok');
         debug('Closed out remaining connections.');
         process.exit();
@@ -156,7 +166,7 @@ var gracefulShutdown = function() {
     //});  //UNCOMMENT IF USING AUTH
 
     // if after
-    setTimeout(function() {
+    setTimeout(function () {
         console.error(
             'Could not close connections in time, forcefully shutting down'
         );

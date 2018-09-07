@@ -7,8 +7,8 @@ var path = require('path'),
 var helpers = require('yeoman-generator').test;
 var assert = require('yeoman-assert');
 
-describe('🏃  running `yo restgoose`', function() {
-    before(function(done) {
+describe('🏃  running `yo restgoose`', function () {
+    before(function (done) {
         var deps = [
             [
                 helpers.createDummyGenerator(),
@@ -20,7 +20,10 @@ describe('🏃  running `yo restgoose`', function() {
         helpers
             .run(path.join(__dirname, '../app'))
             .inDir(path.join(__dirname, './temp')) // Clear the directory and set it as the CWD
-            .withOptions({ mongoose: 'app', 'skip-install': true }) // Mock options passed in
+            .withOptions({
+                mongoose: 'app',
+                'skip-install': true
+            }) // Mock options passed in
             .withPrompts({
                 dbName: 'demo',
                 dbHost: 'localhost',
@@ -33,17 +36,16 @@ describe('🏃  running `yo restgoose`', function() {
         //done();
     });
 
-    it('can be imported without blowing up', function() {
+    it('can be imported without blowing up', function () {
         var app = require('../app');
         assert(app !== undefined);
     });
 
-    it('creates express app, routes, model, and files', function(done) {
+    it('creates express app, routes, model, and files', function (done) {
         var expected = [
             // add files you expect to exist here.
             'package.json',
             'app.js',
-            'bower.json',
             'routes/index.js',
             'README.md',
             '.editorconfig',
@@ -61,24 +63,26 @@ describe('🏃  running `yo restgoose`', function() {
     });
 });
 
-describe('🏃  running `yo restgoose:schema`', function() {
-    before(function(done) {
+describe('🏃  running `yo restgoose:schema`', function () {
+    before(function (done) {
         helpers
             .run(path.join(__dirname, '../schema'))
             .inDir(path.join(__dirname, './temp')) // Clear the directory and set it as the CWD
-            .withOptions({ mongoose: 'schema' }) // Mock options passed in
+            .withOptions({
+                mongoose: 'schema'
+            }) // Mock options passed in
             .withArguments(['todo|complete:Boolean,created:Date,task:String'])
             .on('end', done);
         //done();
     });
 
-    describe('schema generator', function() {
-        it('schema can be imported without blowing up', function() {
+    describe('schema generator', function () {
+        it('schema can be imported without blowing up', function () {
             var app = require('../schema');
             assert(app !== undefined);
         });
 
-        it('created new route, model, apiObject, docs and test for todo', function(done) {
+        it('created new route, model, apiObject, docs and test for todo', function (done) {
             var expected = [
                 // add files you expect to exist here.
                 'api/todo.js',

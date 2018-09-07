@@ -1,23 +1,24 @@
 # generator-restgoose [![Build Status](https://travis-ci.org/vikz91/generator-restgoose.svg?branch=master)](https://travis-ci.org/vikz91/generator-restgoose) [![npm version](https://badge.fury.io/js/generator-restgoose.svg)](https://badge.fury.io/js/generator-restgoose) [![Join the chat at https://gitter.im/generator-restgoose/Lobby](https://badges.gitter.im/generator-restgoose/Lobby.svg)](https://gitter.im/generator-restgoose/Lobby?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 
-##### _Mongoose RESTful API generator for your NodeJS Express App_ v0.3.1
+##### _Mongoose RESTful API generator for your NodeJS Express App_ v0.3.5
 
 A [custom-built Mongoose generator](http://abhishekdeb.com/rapid-nodejs-rest-server-generator/) for [Yeoman](http://yeoman.io). The base project has been forked from afj176/generator-mongoose and has been updated with many new features, tests and tweaks to get you full fledged _out-of-the-box_ NodeJS Express API Application up and running, Route vs Model Segregation and much more.
 
 [![NPM](https://nodei.co/npm/generator-restgoose.png?downloads=true&downloadRank=true&stars=true)](https://nodei.co/npm/generator-restgoose/)
 
-**Minimum Node Version : 6.x  
-Minimum NPM Version : 3.x**
+**Minimum Node Version : 8.x  
+Minimum NPM Version : 5.x**
 
 ## Whats New in v0.3.x?
 
-*   New Runtime Configurable Email System with Nodemailer, sendgrid and mailgun [Usage](https://github.com/vikz91/generator-restgoose/wiki/Using-Email-System-in-v0.3.0)
+-   Optimized for new Node (>8) and npm versions
+-   New Runtime Configurable Email System with Nodemailer, sendgrid and mailgun [Usage](https://github.com/vikz91/generator-restgoose/wiki/Using-Email-System-in-v0.3.0)
 
-*   New Runtime Configurable Email System with Nodemailer, sendgrid and mailgun
-*   New Environment based Configuration System
-*   Moved Helper functions to seperate object (util) in config
-*   Linted all generated code
-*   [...More](CHANGELOG.md)
+-   New Runtime Configurable Email System with Nodemailer, sendgrid and mailgun
+-   New Environment based Configuration System
+-   Moved Helper functions to seperate object (util) in config
+-   Linted all generated code
+-   [...More](CHANGELOG.md)
 
 ## Quick Links
 
@@ -27,33 +28,33 @@ For more information, please refer to the [Wiki page](https://github.com/vikz91/
 
 ## Overview
 
-*   Scaffolds _out-of-the-box_ REST API Server
-*   Full blow n ready to use Authentication and Authorization (Passport + JWT + Redis)
-*   Generates All Ready to run files - Model ( Mongoose) - Api Route (endpoint) - Api Object (Business Layer, crud logic) - Documentation (API reffernce) - Test File
-*   Generates _ready-to-rock_ README file with License(MIT), etc.
-*   Runtime Configurable Email System
-*   Highly Scalable System Configuration based on environment
-*   Conforms to jSend Specs for API JSON Response
-*   Modular and based on `Seperation of Concern`
-*   Fast and readible code generation
-*   Email Templates
-*   Full Blown JWT REST Authentication
-*   ... [much more](#bucket-list)
+-   Scaffolds _out-of-the-box_ REST API Server
+-   Full blow n ready to use Authentication and Authorization (Passport + JWT + Redis)
+-   Generates All Ready to run files - Model ( Mongoose) - Api Route (endpoint) - Api Object (Business Layer, crud logic) - Documentation (API reffernce) - Test File
+-   Generates _ready-to-rock_ README file with License(MIT), etc.
+-   Runtime Configurable Email System
+-   Highly Scalable System Configuration based on environment
+-   Conforms to jSend Specs for API JSON Response
+-   Modular and based on `Seperation of Concern`
+-   Fast and readible code generation
+-   Email Templates
+-   Full Blown JWT REST Authentication
+-   ... [much more](#bucket-list)
 
 ## Table of contents
 
-*   [Generator Restgoose](#generator-restgoose)
-*   [Quick Links](#quick-links)
-*   [Overview](#overview)
-*   Table of Contents
-*   [Getting Started](#getting-started)
-*   [Command List](#command-list)
-*   [Architecture](#architecture)
-*   [ChangeLog](#changeLog)
-*   [Bucket List](#bucket-list)
-*   [Guidelines for Contribution](https://github.com/vikz91/generator-restgoose/wiki/Guidelines)
-*   [Generator Restgoose Core Team](#generator-restgoose-core-team)
-*   [License](#license)
+-   [Generator Restgoose](#generator-restgoose)
+-   [Quick Links](#quick-links)
+-   [Overview](#overview)
+-   Table of Contents
+-   [Getting Started](#getting-started)
+-   [Command List](#command-list)
+-   [Architecture](#architecture)
+-   [ChangeLog](#changeLog)
+-   [Bucket List](#bucket-list)
+-   [Guidelines for Contribution](https://github.com/vikz91/generator-restgoose/wiki/Guidelines)
+-   [Generator Restgoose Core Team](#generator-restgoose-core-team)
+-   [License](#license)
 
 ## Getting Started
 
@@ -112,11 +113,11 @@ package.json
 Readme.md
 ```
 
-*   models - contains Mongoose Schema of an entity ( Data Layer)
-*   apiObjects - Contains business logic &amp; model access for each entity ( Business Layer )
-*   api - Contains routes of each entity ( Presentation Layer / Controller )
-*   test - contains unit test cases for each entity
-*   docs - contains Detailed `markdown` formatted documentation of each Schema generated through the sub-generator.
+-   models - contains Mongoose Schema of an entity ( Data Layer)
+-   apiObjects - Contains business logic &amp; model access for each entity ( Business Layer )
+-   api - Contains routes of each entity ( Presentation Layer / Controller )
+-   test - contains unit test cases for each entity
+-   docs - contains Detailed `markdown` formatted documentation of each Schema generated through the sub-generator.
 
 Put All Configurations in concerned environment in ./config. All of them inherit from global.
 Don't forget to checkout the `require('./config').util` module which contains many useful stuff (Json Validator, image to Base64 Converter, etc).
@@ -233,14 +234,14 @@ If you'd like to get to know Yeoman better and meet some of his friends, [Grunt]
 
 ## Command List
 
-*   mkdir newAPi && cd $\_ - Create new Server Directory and cd into it.
-*   yo restgoose - initiate a project
-*   yo restgoose:auth - Install JWT and redis ready auth system
-*   Uncomment app.js sections for auth and redis
-*   yo restgoose:schema "\<schema\>|field:DataType" - Create all routers, models, test and docs for a schema
-*   yo restgoose:deleteschema "\<Schema\>" - Delete all related generated files for a schema
-*   grunt - start server with watch enabled
-*   npm test - Start Testing generated schemas
+-   mkdir newAPi && cd $\_ - Create new Server Directory and cd into it.
+-   yo restgoose - initiate a project
+-   yo restgoose:auth - Install JWT and redis ready auth system
+-   Uncomment app.js sections for auth and redis
+-   yo restgoose:schema "\<schema\>|field:DataType" - Create all routers, models, test and docs for a schema
+-   yo restgoose:deleteschema "\<Schema\>" - Delete all related generated files for a schema
+-   grunt - start server with watch enabled
+-   npm test - Start Testing generated schemas
 
 ## Architecture
 
@@ -254,24 +255,24 @@ WIP
 
 Create Test for auth and delete sub-generators
 
-*   Write Testcase checking auth sub-gen
-*   API Dynamic on-demand Doc Generator
-*   Conform to [REST API Standards](https://github.com/WhiteHouse/api-standards/blob/master/README.md)
-*   Socket.IO Generator (wohooo)
-*   Docker Scripts
-*   AutoStart Script using PM2 ( 1 click deploy)
-*   Modulraize Architecture as Plug and play and SoC - will take huge time
-*   ~~Complete ReadME file for the generated api project~~
-*   ~~Pre-defined generated docs for the generated API endpoints~~
-*   ~~Complete README file for generator-restgoose project (this one)~~
-*   ~~Write Reasons, Troubleshooting and migration for v0.1.5 to 0.1.6 in a wiki/blog~~ - NA
-*   ~~Seperate Nevironment Based Configurations~~
-*   ~~API Versioning System~~
-*   ~~out-of-the-box passportJS authentication with JWT~~ \m/-
+-   Write Testcase checking auth sub-gen
+-   API Dynamic on-demand Doc Generator
+-   Conform to [REST API Standards](https://github.com/WhiteHouse/api-standards/blob/master/README.md)
+-   Socket.IO Generator (wohooo)
+-   Docker Scripts
+-   AutoStart Script using PM2 ( 1 click deploy)
+-   Modulraize Architecture as Plug and play and SoC - will take huge time
+-   ~~Complete ReadME file for the generated api project~~
+-   ~~Pre-defined generated docs for the generated API endpoints~~
+-   ~~Complete README file for generator-restgoose project (this one)~~
+-   ~~Write Reasons, Troubleshooting and migration for v0.1.5 to 0.1.6 in a wiki/blog~~ - NA
+-   ~~Seperate Nevironment Based Configurations~~
+-   ~~API Versioning System~~
+-   ~~out-of-the-box passportJS authentication with JWT~~ \m/-
 
 ## Generator Restgoose Core Team
 
-*   Development & Maintenance : [Abhishek Deb](https://in.linkedin.com/in/debabhishek)
+-   Development & Maintenance : [Abhishek Deb](https://in.linkedin.com/in/debabhishek)
 
 ## License
 
