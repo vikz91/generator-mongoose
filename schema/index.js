@@ -19,14 +19,14 @@ var SchemaGenerator = (module.exports = function SchemaGenerator(
     var schemaName = this.name.split('|')[0].trim();
     var fieldsArgs = this.name.split('|')[1].split(',');
     var fields = [];
-    fieldsArgs.forEach(function(field) {
+    fieldsArgs.forEach(function (field) {
         fields.push(field.split(':')[0]);
     });
     // have Monty greet the user.
     console.log(monty);
     console.log(
         chalk.green("You're creating a schema for: ") +
-            chalk.blue.bold(schemaName)
+        chalk.blue.bold(schemaName)
     );
     console.log(
         chalk.green('With the fields: ') + chalk.yellow.bold(fields.join(','))
@@ -44,9 +44,8 @@ SchemaGenerator.prototype.files = function files() {
     this.capSchemaName = _s.capitalize(this.schemaName);
     this.lowSchemaName = this.schemaName.toLowerCase();
     this.schemaFields =
-        typeof fields !== undefined
-            ? fields
-            : ['title:String', 'content:String', 'created:Date'];
+        typeof fields !== undefined ?
+        fields : ['title:String', 'content:String', 'created:Date'];
     this.mockData = '{}';
     mkdirp('models');
     mkdirp('test');
@@ -57,13 +56,29 @@ SchemaGenerator.prototype.files = function files() {
     this.template('_apiObject.js', 'apiObjects/' + name + '.js');
     this.template('_schema.js', 'models/' + name + '.js');
     this.template('_doc.js', 'docs/' + name + '.md');
+
+    /* ===[ Unity SDK API ]===  */
+    var finalDir = 'sdk/unity/' + this.capSchemaName;
+    mkdirp(finalDir);
+
+    this.template('sdk/unity/_model.js', finalDir + '/Model' + this.capSchemaName + '.cs');
+    this.template('sdk/unity/_api.js', finalDir + '/Api' + this.capSchemaName + '.cs');
+
+
+    /* ===[ angular SDK API ]===  */
+    finalDir = 'sdk/angular/' + this.capSchemaName;
+    mkdirp(finalDir);
+
+    this.template('sdk/angular/_model.js', finalDir + '/Model' + this.capSchemaName + '.ts');
+    this.template('sdk/angular/_api.js', finalDir + '/Api' + this.capSchemaName + '.ts');
+
 };
 
 SchemaGenerator.prototype.schematic = function schematic() {
     this.mockData = '{}';
     var props = {};
 
-    this.schemaFields.forEach(function(field, index) {
+    this.schemaFields.forEach(function (field, index) {
         var fld = field.split(':')[0];
         var type = field.split(':')[1];
         var lowerType = type.toLowerCase();
@@ -79,7 +94,9 @@ SchemaGenerator.prototype.schematic = function schematic() {
                 break;
             case 'Array':
                 props[fld].type = lowerType;
-                props[fld].items = { type: 'string' };
+                props[fld].items = {
+                    type: 'string'
+                };
                 break;
             case 'Number':
                 props[fld].type = lowerType;
@@ -112,7 +129,7 @@ SchemaGenerator.prototype.schematic = function schematic() {
 
     request(
         options,
-        function(error, response, body) {
+        function (error, response, body) {
             console.log(
                 chalk.grey(
                     'starting request to schematic for test mock data...'

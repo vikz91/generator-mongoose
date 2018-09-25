@@ -18,6 +18,7 @@ var RestgooseGenerator = (module.exports = function RestgooseGenerator(
             skipInstall: options['skip-install'],
             bower: false
         });
+        this.spawnCommand('git', ['init']);
     });
 
     this.pkg = JSON.parse(
@@ -149,6 +150,16 @@ RestgooseGenerator.prototype.db = function db() {
         this.templatePath('config/index.js'),
         this.destinationPath('config/index.js')
     );
+
+    /* ===[ Unity SDK API ]===  */
+    mkdirp('sdk/unity');
+
+    this.template('sdk/unity/_server.js', 'sdk/unity/Server.cs');
+    this.template('sdk/unity/_JSONHelper.js', 'sdk/unity/JSONHelper.cs');
+
+    /* ===[ Angular SDK API ]===  */
+    mkdirp('sdk/angular');
+    this.template('sdk/angular/_api.js', 'sdk/angular/api.service.ts');
 };
 
 RestgooseGenerator.prototype.installItem = function installItem() {
