@@ -58,7 +58,7 @@ SchemaGenerator.prototype.files = function files() {
     this.template('_doc.js', 'docs/' + name + '.md');
 
     /* ===[ Unity SDK API ]===  */
-    var finalDir = 'sdk/unity/' + this.capSchemaName;
+    var finalDir = 'sdk/unity/' + this.lowSchemaName;
     mkdirp(finalDir);
 
     this.template('sdk/unity/_model.js', finalDir + '/Model' + this.capSchemaName + '.cs');
@@ -66,7 +66,7 @@ SchemaGenerator.prototype.files = function files() {
 
 
     /* ===[ angular SDK API ]===  */
-    finalDir = 'sdk/angular/' + this.capSchemaName;
+    finalDir = 'sdk/angular/' + this.lowSchemaName;
     mkdirp(finalDir);
 
     this.template('sdk/angular/_model.js', finalDir + '/Model' + this.capSchemaName + '.ts');

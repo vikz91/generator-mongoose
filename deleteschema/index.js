@@ -21,7 +21,7 @@ var SchemaGenerator = (module.exports = function SchemaGenerator(
     console.log(monty);
     console.log(
         chalk.green("You're deleting all files for schema: ") +
-            chalk.blue.bold(schemaName)
+        chalk.blue.bold(schemaName)
     );
     console.log('\n');
 });
@@ -35,6 +35,10 @@ SchemaGenerator.prototype.files = function files() {
     this.fs.delete(this.destinationPath('models/' + name + '.js'));
     this.fs.delete(this.destinationPath('docs/' + name + '.md'));
     this.fs.delete(this.destinationPath('test/test-' + name + '.js'));
+
+    // === SDK ===
+    this.fs.delete(this.destinationPath('sdk/unity/' + name));
+    this.fs.delete(this.destinationPath('sdk/angular/' + name));
 };
 
 SchemaGenerator.prototype.schematic = function schematic() {};

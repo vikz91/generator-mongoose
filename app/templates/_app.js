@@ -136,8 +136,7 @@ server = app.listen(
     config.address.serverPort,
     () => {
         debug(
-            'Express server listening at %s:%d in %s mode',
-            config.address.serverIp,
+            'Express server listening at localhost:%d in %s mode',
             config.address.serverPort,
             app.get('env')
         );
