@@ -4,6 +4,18 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](http://keepachangelog.com/) and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## [ 26th September 2018 ] v0.3.6
+
+This is feature upgrade
+
+-   Features
+    -   Unity SDK
+    -   Angular SDK
+    -   Git Initialization
+-   Bug Fixes
+    -   deleteAll was not working properly
+    -   couldnt find server ip variable
+
 ## [ 8th September 2018 ] v0.3.5
 
 This is package upgrade, Performance and code minimzation release

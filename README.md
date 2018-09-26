@@ -1,6 +1,6 @@
 # generator-restgoose [![Build Status](https://travis-ci.org/vikz91/generator-restgoose.svg?branch=master)](https://travis-ci.org/vikz91/generator-restgoose) [![npm version](https://badge.fury.io/js/generator-restgoose.svg)](https://badge.fury.io/js/generator-restgoose) [![Join the chat at https://gitter.im/generator-restgoose/Lobby](https://badges.gitter.im/generator-restgoose/Lobby.svg)](https://gitter.im/generator-restgoose/Lobby?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 
-##### _Mongoose RESTful API generator for your NodeJS Express App_ v0.3.5
+##### _Mongoose RESTful API generator for your NodeJS Express App_ v0.3.6
 
 A [custom-built Mongoose generator](http://abhishekdeb.com/rapid-nodejs-rest-server-generator/) for [Yeoman](http://yeoman.io). The base project has been forked from afj176/generator-mongoose and has been updated with many new features, tests and tweaks to get you full fledged _out-of-the-box_ NodeJS Express API Application up and running, Route vs Model Segregation and much more.
 
@@ -11,6 +11,7 @@ Minimum NPM Version : 5.x**
 
 ## Whats New in v0.3.x?
 
+-   SDK Codes for Unity and Angular
 -   Optimized for new Node (>8) and npm versions
 -   New Runtime Configurable Email System with Nodemailer, sendgrid and mailgun [Usage](https://github.com/vikz91/generator-restgoose/wiki/Using-Email-System-in-v0.3.0)
 
@@ -50,7 +51,7 @@ For more information, please refer to the [Wiki page](https://github.com/vikz91/
 -   [Getting Started](#getting-started)
 -   [Command List](#command-list)
 -   [Architecture](#architecture)
--   [ChangeLog](#changeLog)
+-   [ChangeLog](CHANGELOG.md)
 -   [Bucket List](#bucket-list)
 -   [Guidelines for Contribution](https://github.com/vikz91/generator-restgoose/wiki/Guidelines)
 -   [Generator Restgoose Core Team](#generator-restgoose-core-team)

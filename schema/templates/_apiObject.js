@@ -114,7 +114,7 @@ api.test = function (cb) {
 
 //DELETE ALL
 api.deleteAll = function (cb) {
-    return Model.deleteAll((err) => {
+    return Model.remove({}, (err) => {
         let data = 'All <%= lowSchemaName %>s got Deleted';
         if (err) {
             data = 'Error in deleting all <%= lowSchemaName %>s';
