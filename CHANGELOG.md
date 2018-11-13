@@ -4,6 +4,18 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](http://keepachangelog.com/) and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## [ 13th November 2018 ] v0.4.0
+
+This is Refactoring upgrade
+
+-   Features
+    -   Minimized Code footprint
+    -   Upgraded Packages
+    -   Simpler HRBAC Authorization
+    -   Advanced Search using POST
+    -   Refactored all apiObject code
+    -   Added 2 new properties to mongoose models (mutable: editable using PUT, searchable: searchable using GET/POST)
+
 ## [ 26th September 2018 ] v0.3.6
 
 This is feature upgrade

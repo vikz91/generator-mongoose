@@ -1,24 +1,22 @@
 # generator-restgoose [![Build Status](https://travis-ci.org/vikz91/generator-restgoose.svg?branch=master)](https://travis-ci.org/vikz91/generator-restgoose) [![npm version](https://badge.fury.io/js/generator-restgoose.svg)](https://badge.fury.io/js/generator-restgoose) [![Join the chat at https://gitter.im/generator-restgoose/Lobby](https://badges.gitter.im/generator-restgoose/Lobby.svg)](https://gitter.im/generator-restgoose/Lobby?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 
-##### _Mongoose RESTful API generator for your NodeJS Express App_ v0.3.6
+##### _Mongoose RESTful API generator for your NodeJS Express App_ v0.4.0
 
 A [custom-built Mongoose generator](http://abhishekdeb.com/rapid-nodejs-rest-server-generator/) for [Yeoman](http://yeoman.io). The base project has been forked from afj176/generator-mongoose and has been updated with many new features, tests and tweaks to get you full fledged _out-of-the-box_ NodeJS Express API Application up and running, Route vs Model Segregation and much more.
 
 [![NPM](https://nodei.co/npm/generator-restgoose.png?downloads=true&downloadRank=true&stars=true)](https://nodei.co/npm/generator-restgoose/)
 
-**Minimum Node Version : 8.x  
+**Minimum Node Version : 9.x  
 Minimum NPM Version : 5.x**
 
-## Whats New in v0.3.x?
+## Whats New in v0.4.x?
 
+-   Updated Clean & fully linted Code
+-   Upgraded Packages
+-   HRBAC
+-   npm audit fixed!
 -   SDK Codes for Unity and Angular
 -   Optimized for new Node (>8) and npm versions
--   New Runtime Configurable Email System with Nodemailer, sendgrid and mailgun [Usage](https://github.com/vikz91/generator-restgoose/wiki/Using-Email-System-in-v0.3.0)
-
--   New Runtime Configurable Email System with Nodemailer, sendgrid and mailgun
--   New Environment based Configuration System
--   Moved Helper functions to seperate object (util) in config
--   Linted all generated code
 -   [...More](CHANGELOG.md)
 
 ## Quick Links
@@ -119,6 +117,7 @@ Readme.md
 -   api - Contains routes of each entity ( Presentation Layer / Controller )
 -   test - contains unit test cases for each entity
 -   docs - contains Detailed `markdown` formatted documentation of each Schema generated through the sub-generator.
+-   sdk - contains rest api controllers for Unity C# and Angular 5 code
 
 Put All Configurations in concerned environment in ./config. All of them inherit from global.
 Don't forget to checkout the `require('./config').util` module which contains many useful stuff (Json Validator, image to Base64 Converter, etc).
@@ -133,30 +132,18 @@ All responses are valid [jSend](https://labs.omniti.com/labs/jsend) spec conform
 
 ### Prepare for Development Server
 
-grunt
+npm start
 
 ### Prepare for Test Server
 
-grunt test
+npm test
 
 ### Run the app
 
 Development mode
 
 ```bash
-$ grunt
-```
-
-or
-
-```bash
-$ grunt server
-```
-
-Production mode
-
-```bash
-$ grunt prod
+$ npm start
 ```
 
 ### Sub Generators
@@ -235,7 +222,7 @@ If you'd like to get to know Yeoman better and meet some of his friends, [Grunt]
 
 ## Command List
 
--   mkdir newAPi && cd $\_ - Create new Server Directory and cd into it.
+-   mkdir newAPi && cd \$\_ - Create new Server Directory and cd into it.
 -   yo restgoose - initiate a project
 -   yo restgoose:auth - Install JWT and redis ready auth system
 -   Uncomment app.js sections for auth and redis
