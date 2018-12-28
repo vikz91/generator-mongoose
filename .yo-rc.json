@@ -1,0 +1,9 @@
+{
+  "generator-node": {
+    "promptValues": {
+      "authorName": "Abhishek Deb",
+      "authorEmail": "abhishekdeb91@gmail.com",
+      "authorUrl": "www.debabhishek.com"
+    }
+  }
+}

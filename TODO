@@ -1,22 +1,6 @@
-[ Auth ]
-1. Set Expiry -d
-2. Email Verfiication
-3. Optional Mobile OTP Module
-4. Authentication config file -d
-5. Forgot Password  - d
-6. Change Password  -d
-7. Edit Profile -d
-8. Revoke Login Tokens -d
-9. Email Subscription with MailChimp
-10. Profile View -d
-11. UAC
-12. Automate enabling redis and passport in app.js -d
-
-
-[ SDK ]
-1. Angular SDK (generator-angular) service -d
-2. Unity Engine SDK -d
-3. Unreal SDK
+[Core]
+1. Doc Generation with apiDoc
+2. setup script
 
 
 [ System ]

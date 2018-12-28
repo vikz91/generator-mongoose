@@ -2,12 +2,14 @@
 
 ##### _Mongoose RESTful API generator for your NodeJS Express App_ v0.5.0
 
-A [custom-built Mongoose generator](http://abhishekdeb.com/rapid-nodejs-rest-server-generator/) for [Yeoman](http://yeoman.io). The base project has been forked from afj176/generator-mongoose and has been updated with many new features, tests and tweaks to get you full fledged _out-of-the-box_ NodeJS Express API Application up and running, Route vs Model Segregation and much more.
+A [custom-built Mongoose generator](http://debabhishek.com/writes/Rapid-NodeJS-REST-API-Server-generator-with-generator-restgoose-and-yo/) for [Yeoman](http://yeoman.io). The base project has been forked from afj176/generator-mongoose and has been updated with many new features, tests and tweaks to get you full fledged _out-of-the-box_ NodeJS Express API Application up and running, Route vs Model Segregation and much more.
 
 [![NPM](https://nodei.co/npm/generator-restgoose.png?downloads=true&downloadRank=true&stars=true)](https://nodei.co/npm/generator-restgoose/)
 
 **Minimum Node Version : 9.x  
-Minimum NPM Version : 5.x**
+Minimum NPM Version : 5.x  
+Minimum Yo Version : 2.x
+**
 
 ## Installation
 
@@ -77,6 +79,12 @@ $ npm start
 If you would like to contribute, please refer to [guidelines](https://github.com/vikz91/generator-restgoose/wiki/Guidelines) and a list of [open tasks](https://github.com/vikz91/generator-restgoose/issues?q=is%3Aopen+is%3Aissue).
 
 For more information, please refer to the [Wiki page](https://github.com/vikz91/generator-restgoose/wiki) and [FAQ](https://github.com/vikz91/generator-restgoose/wiki/FAQ)
+
+
+## Troubleshooting
+
+Try updating your yo to latest version. open a new issue in github for any problems you might face.
+
 
 ## Overview
 
