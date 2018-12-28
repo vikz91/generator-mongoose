@@ -10,7 +10,7 @@ describe('generator-restgoose-2:app', () => {
     beforeAll(() => {
         return helpers.
         run(path.join(__dirname, '../generators/app --skip-install')).
-        testDirectory(path.join(__dirname, './temp')).
+        inDir(path.join(__dirname, './temp')).
         withPrompts({
             dbName: 'demo',
             dbHost: 'localhost',
@@ -21,20 +21,20 @@ describe('generator-restgoose-2:app', () => {
     });
 
     it('can be imported without blowing up', () => {
-        assert(!require('./temp/app')); // eslint-disable-line global-require
+        assert(require('./app')); // eslint-disable-line global-require
     });
 
     it('creates express app, routes, model, and files', (done) => {
         var expected = [
             // add files you expect to exist here.
-            'package.json',
-            'app.js',
-            'routes/index.js',
-            'README.md',
-            '.editorconfig',
-            '.jshintrc',
-            'config/development.js',
-            'config/lib.js'
+            './package.json',
+            './app.js',
+            './routes/index.js',
+            './README.md',
+            './.editorconfig',
+            './.jshintrc',
+            './config/development.js',
+            './config/lib.js'
             // 'models/item.js',
             // 'api/item.js',
             // 'apiObjects/item.js',
