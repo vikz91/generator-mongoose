@@ -60,6 +60,11 @@ module.exports = class extends Generator {
             );
         }
 
+        this.fs.copyTpl(
+            this.templatePath('.localrcjs'),
+            this.destinationPath('.localrc'), this.model
+        );
+
         this.spawnCommand('git', ['init']);
     }
 
@@ -69,7 +74,7 @@ module.exports = class extends Generator {
             'api', 'apiObjects', 'models', 'tests', 'docs', 'logs', 'public', 'sdk/unity', 'sdk/angular', 'tmp'
         ];
 
-        let filesToCopy = ['.editorconfig', '.gitignore', '.jshintrc', '.localrc', 'eslintrc.json', 'routes', 'middleware'];
+        let filesToCopy = ['.editorconfig', '.gitignore', '.jshintrc', 'eslintrc.json', 'routes', 'middleware'];
 
 
         dirsToCreate.forEach(x => {
