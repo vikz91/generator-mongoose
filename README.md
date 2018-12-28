@@ -1,6 +1,6 @@
 # generator-restgoose [![Build Status](https://travis-ci.org/vikz91/generator-restgoose.svg?branch=master)](https://travis-ci.org/vikz91/generator-restgoose) [![npm version](https://badge.fury.io/js/generator-restgoose.svg)](https://badge.fury.io/js/generator-restgoose) [![Join the chat at https://gitter.im/generator-restgoose/Lobby](https://badges.gitter.im/generator-restgoose/Lobby.svg)](https://gitter.im/generator-restgoose/Lobby?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 
-##### _Mongoose RESTful API generator for your NodeJS Express App_ v0.4.0
+##### _Mongoose RESTful API generator for your NodeJS Express App_ v0.5.0
 
 A [custom-built Mongoose generator](http://abhishekdeb.com/rapid-nodejs-rest-server-generator/) for [Yeoman](http://yeoman.io). The base project has been forked from afj176/generator-mongoose and has been updated with many new features, tests and tweaks to get you full fledged _out-of-the-box_ NodeJS Express API Application up and running, Route vs Model Segregation and much more.
 
@@ -9,14 +9,67 @@ A [custom-built Mongoose generator](http://abhishekdeb.com/rapid-nodejs-rest-ser
 **Minimum Node Version : 9.x  
 Minimum NPM Version : 5.x**
 
-## Whats New in v0.4.x?
+## Installation
 
--   Updated Clean & fully linted Code
--   Upgraded Packages
--   HRBAC
+First, install [Yeoman](http://yeoman.io) and generator-restgoose2 using [npm](https://www.npmjs.com/) (we assume you have pre-installed [node.js](https://nodejs.org/)).
+
+```bash
+npm install -g yo
+npm install -g generator-restgoose
+```
+
+## Usage
+
+#### Prepare Working Directory
+
+```
+$ mkdir server && cd server
+```
+
+#### Then generate your new project:
+
+```bash
+$ yo restgoose
+```
+
+#### And generate schema:
+
+```bash
+$ yo restgoose:schema "category|name:String"
+$ yo restgoose:schema "item|name:String, price:Number, category:String>category"
+```
+
+the `category:String>category` dneotes that category field will be created with string type, which referes to previously created schema 'category'.
+
+#### Generate Authentication
+
+```bash
+$ yo restgoose:auth
+```
+
+do read the generated doc for auth before you start using it.
+
+#### Generate Delete a generated Schema
+
+```bash
+$ yo restgoose:deleteSchema "item" --force
+```
+
+#### Run the server
+
+```bash
+$ npm start
+```
+
+## Whats New in v0.5.x?
+
+-   Major Feature Release
+-   Complete re-write of architecture from scratch
+-   yo v2 complied
+-   Fully npm Audited generator & fascilitator code
 -   npm audit fixed!
 -   SDK Codes for Unity and Angular
--   Optimized for new Node (>8) and npm versions
+-   Advanced Searching out of the box
 -   [...More](CHANGELOG.md)
 
 ## Quick Links
@@ -104,6 +157,7 @@ public/
 models/
 routes/
 ... index.js
+sdk/
 test/
 views/
 bower.json
@@ -173,7 +227,7 @@ create doc/article.md
 Deletes all files (Model, APi Route, API Object, Doc, Test) for a particular schema. Run the sub generator for deleteschema:
 
 ```
-$ yo restgoose:deleteschema "article" --force
+$ yo restgoose:deleteSchema "article" --force
 ```
 
 **N.B.** You need to use --force else y=Yeoman will continue asking you to overwrite each file.  
@@ -265,7 +319,7 @@ Create Test for auth and delete sub-generators
 ## License
 
 MIT  
-Copyright 2017 Abhishek Deb
+Copyright 2016 - 2018 Abhishek Deb
 
 Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
 

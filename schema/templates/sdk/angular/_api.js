@@ -75,4 +75,47 @@ export class Api<%= capSchemaName %>Service {
             })
         );
     }
+
+
+    Search(
+        searchStr: string,
+        skip: Number = 0,
+        limit: Number = 100
+    ): Observable<Model<%= capSchemaName %>[]> {
+        const url = this.api.NormalizeEndpoint(
+            `api/${
+                this.endPoint
+            }s/search?keyword=${searchStr}&skip=${skip}&limit=${limit}`
+        );
+        return this.http
+            .get<ApiResponseList<Model<%= capSchemaName %>>>(url, this.api.httpOptions)
+            .pipe(
+                map(data => {
+                    return data.data.data;
+                })
+            );
+    }
+
+    SearchAdvanced(
+        searchObj: any,
+        skip: Number = 0,
+        limit: Number = 100
+    ): Observable<Model<%= capSchemaName %>[]> {
+        const url = this.api.NormalizeEndpoint(
+            `api/${this.endPoint}s/search?skip=${skip}&limit=${limit}`
+        );
+        return this.http
+            .post<ApiResponseList<Model<%= capSchemaName %>>>(
+                url,
+                JSON.stringify({
+                    data: searchObj
+                }),
+                this.api.httpOptions
+            )
+            .pipe(
+                map(data => {
+                    return data.data.data;
+                })
+            );
+    }
 }

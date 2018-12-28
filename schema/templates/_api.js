@@ -201,6 +201,28 @@ e.g.: /api/ApiObjs/search?keyword=first:Sam,last:Jones
 */
 router.get('/<%= lowSchemaName %>s/search', api.search);
 
+router
+    .route('/<%= lowSchemaName %>s/search')
+    .get(api.search)
+    .post(api.searchAdvanced);
+
+/*
+SEARCH
+e.g.: GET /api/<%= lowSchemaName %>s/search?keyword=first:Sam,last:Jones
+
+SEARCH ADVANCED
+e.g.: POST /api/<%= lowSchemaName %>s/search?skip=0,limit=1
+{
+    "data":{
+        "name": { "search":"single","value":"deb"},
+        "price": { "search":"range","value":[25,28]},
+        "color": {"search":"array","value":["red","green"]},
+        "visited": { "valueNot": ['Tokyo','LA']}
+    }
+}
+*/
+
+
 //New quick Response Handling
 router.get('/<%= lowSchemaName %>s/test', (req, res) =>
     ApiObj.test(data => l.response(res, data))

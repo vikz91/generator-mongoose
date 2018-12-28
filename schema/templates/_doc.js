@@ -12,6 +12,7 @@
 -   `[GET]` /api/<%= lowSchemaName %>s/test - [Quick Test <%= lowSchemaName %>](#Quick-Test-<%= lowSchemaName %>)
 -   `[DELETE]` /api/<%= lowSchemaName %>s - [Delete all *<%= lowSchemaName %>s* in the collection](#Delete-all-<%= lowSchemaName %>s)
 -   `[GET]` /api/<%= lowSchemaName %>s/search - [Searches all *<%= lowSchemaName %>s* for multiple values](#Search-<%= lowSchemaName %>s)
+-   `[POST]` /api/<%= lowSchemaName %>s/search - [Applies Advance search(like ranges, arrays) over _<%= lowSchemaName %>s_ for multiple values](#Search-<%= lowSchemaName %>s-advanced)
 
 **N.B**: The `/test` endpoint of this <%= lowSchemaName %> is for quick development testing only. Do Disable this when in production!
 
@@ -75,11 +76,11 @@ The SDKs have provider code already set
      **Optional:** None  
      **Required:**
 
-    `{<%= lowSchemaName %>:{}}` - The base <%= lowSchemaName %> data object
+    `{data:{}}` - The base <%= lowSchemaName %> data object
 
     ```
      {
-       "<%= lowSchemaName %>" : {
+       "data" : {
          <% schemaFields.forEach(function(field, index) { %><%=field.split(':')[0] %> : <%= field.split(':')[1] %><% if(schemaFields.length-1!=index){ %><%= "," %> <%} %>
          <% }) %>
        }
@@ -200,11 +201,11 @@ The SDKs have provider code already set
      **Required:**
 
     `id` - The object id of the <%= lowSchemaName %>  
-     `{<%= lowSchemaName %>:{}}` - The base <%= lowSchemaName %> data object that needs to be changed
+     `{data:{}}` - The base <%= lowSchemaName %> data object that needs to be changed
 
     ```
      {
-       "<%= lowSchemaName %>" : {
+       "data" : {
          <% schemaFields.forEach(function(field, index) { %><%=field.split(':')[0] %> : <%= field.split(':')[1] %><% if(schemaFields.length-1!=index){ %><%= "," %> <%} %>
          <% }) %>
        }
@@ -417,3 +418,69 @@ The SDKs have provider code already set
 
 -   **Notes:**
     To use Strict Search, add param ?strict=true
+
+
+
+
+    ### Search <%= lowSchemaName %>s Advanced
+
+-   **Syntax** : `[POST] /api/<%= lowSchemaName %>s/search [?skip= X & limit= Y`
+-   **URL** : `/api/<%= lowSchemaName %>s/search`
+-   **Method**: `GET`
+-   **URL Params**:  
+     **Required:**  
+     **Optional:**
+
+        `skip=[Integer]` - Offsets(Skips) index of results
+         `limit=[Integer]` - Total number of results in the current request to return
+        `{data:{}}` - The base <%= lowSchemaName %> data object that needs to be searched
+
+        ```
+
+    {
+    "data":{
+    "name": { "search":"single","value":"deb"},
+    "price": { "search":"range","value":[25,28]},
+    "color": {"search":"array","value":["red","green"]},
+    "visited": { "valueNot": ['Tokyo','LA']}
+    }
+    }
+
+        ```
+
+-   **Success Response:**
+
+    **Code:** 200 <br />
+    **Content:**
+
+    ```
+    {
+      "status": "success",
+      "data": {
+        "<%= lowSchemaName %>s": [
+          {
+            "_id": "587100001657a2bd9c5a00df",
+            name : String,
+        price : Number,
+            "__v": 0
+          },
+          .
+          .
+          .
+        ],
+        "count": 1
+      },
+      "message": null
+    }
+    ```
+
+-   **Sample Call:**
+
+    ```
+    curl -X POST \
+    http://localhost:3000/api/<%= lowSchemaName %>s/search \
+    -H 'Content-Type: application/json' \
+    -d '{ "data":{ "name": { "search":"single","value":"itm2" } } }'
+    ```
+
+    Searches <%= lowSchemaName %>s with rows with its first name 'Sam' and last name 'Jones'

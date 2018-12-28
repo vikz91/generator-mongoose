@@ -7,8 +7,12 @@ const express = require('express'),
     l = require('../config/lib');
 
 // Middleware to require login/auth
-const requireAuth = passport.authenticate('jwt', { session: false });
-const requireLogin = passport.authenticate('local', { session: false });
+const requireAuth = passport.authenticate('jwt', {
+    session: false
+});
+const requireLogin = passport.authenticate('local', {
+    session: false
+});
 
 router.post('/auth/register', auth.register); // Must disable after creating 1st root user on deployment
 
@@ -38,14 +42,12 @@ router.get('/auth/password/reset/:token', auth.resetPassword);
 router.post(
     '/auth/profile/role',
     requireAuth,
-    requireAuth,
     auth.roleAuthorization(l.REQUIRE_ADMIN),
     auth.changeRole
 );
 
 router.post(
     '/auth/profile/status',
-    requireAuth,
     requireAuth,
     auth.roleAuthorization(l.REQUIRE_ADMIN),
     auth.changeStatus

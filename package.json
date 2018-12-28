@@ -1,6 +1,6 @@
 {
     "name": "generator-restgoose",
-    "version": "0.4.0",
+    "version": "0.4.1",
     "description": "An Out-Of-Box NodeJS REST API Server generator built on top of Mongoose, Express, Cors, Passport, JWT and many more.",
     "keywords": [
         "yo",
@@ -22,7 +22,7 @@
         "abhishekdeb",
         "documentation"
     ],
-    "homepage": "http://abhishekdeb.com/rapid-nodejs-rest-server-generator/",
+    "homepage": "http://debabhishek.com/writes/Rapid-NodeJS-REST-API-Server-generator-with-generator-restgoose-and-yo/",
     "bugs": "https://github.com/vikz91/generator-restgoose/issues",
     "author": {
         "name": "Abhishek Deb",

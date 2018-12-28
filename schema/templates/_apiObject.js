@@ -2,12 +2,12 @@
 
 // Module dependencies.
 const mongoose = require('mongoose'),
-    Model = mongoose.models.
-<%= capSchemaName %>,
-api = {},
+    Model = mongoose.models.<%= capSchemaName %>,
+    api = {},
     debug = require('debug')('App:ApiObject:<%= lowSchemaName %>'),
     l = require('../config').util;
 
+const SearchOptions = Model.GetFieldsByOption('search');
 
 /*
 ========= [ CORE METHODS ] =========
@@ -71,16 +71,14 @@ api.edit = function (id, updateData, cb) {
 
         <% schemaFields.forEach(function(field, index) { %>
         if (typeof updateData.
-            <%= field.split(':')[0] %> !== undefined) {
-            data.
-            <%= field.split(':')[0] %> = updateData.
-            <%= field.split(':')[0] %>;
+            <%= field.split(':')[0] %> !== 'undefined') {
+            data.<%= field.split(':')[0] %> = 'updateData'.<%= field.split(':')[0] %>;
         }
         <% }) %>
 
 
         return data.save((err) => {
-            cb(err, data.toObject);
+            cb(err, data);
         }); //eo data.save
     }); // eo data.find
 };
@@ -147,6 +145,56 @@ api.search = function (skip, limit, keywordObj, strict, cb) {
     return q.exec((err, data) => {
         cb(err, data);
     });
+};
+
+// SEARCH ADVANCED
+api.searchAdvanced = (skip, limit, data) => {
+    let searchObj = [];
+
+    SearchOptions.forEach(prop => {
+        if (typeof data[prop] !== 'undefined') {
+            //let negate = data[prop].negate || false;
+
+            switch (data[prop].search) {
+                case 'single':
+                    searchObj.push({
+                        [prop]: new RegExp(data[prop].value, 'i')
+                    });
+                    break;
+                case 'range':
+                    searchObj.push({
+                        [prop]: {
+                            $gte: data[prop].value[0] || Number.MAX_SAFE_INTEGER
+                        }
+                    });
+
+                    searchObj.push({
+                        [prop]: {
+                            $lte: data[prop].value[1] || Number.MIN_SAFE_INTEGER
+                        }
+                    });
+                    break;
+                case 'array':
+                    searchObj.push({
+                        [prop]: {
+                            $in: [].concat(data[prop].value)
+                        }
+                    });
+                    break;
+            }
+        }
+    });
+
+    if (!searchObj || searchObj.length === 0) {
+        return Promise.resolve([]);
+    }
+
+    return Model.find({
+            $and: searchObj
+        })
+        .skip(skip * 1)
+        .limit(limit * 1)
+        .exec();
 };
 
 
