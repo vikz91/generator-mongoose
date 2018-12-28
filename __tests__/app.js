@@ -10,7 +10,8 @@ describe('generator-restgoose-2:app', () => {
     beforeAll(() => {
         return helpers.
         run(path.join(__dirname, '../generators/app --skip-install')).
-        inDir(path.join(__dirname, './temp')).
+        inDir(path.join(__dirname, '../temp')).
+        withArguments(['--skip-install']).
         withPrompts({
             dbName: 'demo',
             dbHost: 'localhost',
