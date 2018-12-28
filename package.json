@@ -1,30 +1,109 @@
 {
     "name": "generator-restgoose",
-    "description": "generator-restgoose app description here",
-    "version": "0.0.1",
-    "private": true,
-    "dependencies": {
-        "body-parser": "^1.18.3",
-        "cors": "^2.8.4",
-        "csvtojson": "^2.0.8",
-        "debug": "^4.1.0",
-        "errorhandler": "^1.5.0",
-        "express": "^4.16.3",
-        "helmet": "^3.13.0",
-        "method-override": "^3.0.0",
-        "mongoose": "^5.2.13",
-        "morgan": "^1.9.0",
-        "multer": "^1.4.1",
-        "request": "^2.81.0"
+    "version": "0.5.0",
+    "description": "Modern, Lightweight, and Powerfull Rest API Code generator. Out-Of-Box NodeJS REST API Server generator built on top of Mongoose, Express, Cors, Passport, JWT and many more.",
+    "homepage": "http://debabhishek.com/writes/Rapid-NodeJS-REST-API-Server-generator-with-generator-restgoose-and-yo/",
+    "bugs": "https://github.com/vikz91/generator-restgoose/issues",
+    "author": {
+        "name": "Abhishek Deb",
+        "email": "abhishekdeb91@gmail.com",
+        "url": "http://www.debabhishek.com"
     },
+    "files": [
+        "generators"
+    ],
+    "main": "generators/app/index.js",
+    "keywords": [
+        "yeoman-generator",
+        "yo",
+        "yeoman",
+        "generator",
+        "simple server generator",
+        "simple nodejs generator",
+        "easy node generator",
+        "easy nodejs generator",
+        "nodejs angular sdk",
+        "nodejs unity sdk",
+        "sdk generator",
+        "mongoose",
+        "mongodb",
+        "rapid",
+        "code generator",
+        "rest code genertor",
+        "rest api generator",
+        "schema",
+        "rest",
+        "cors",
+        "restgoose",
+        "generator-restgoose",
+        "abhishek",
+        "abhishekdeb",
+        "documentation"
+    ],
     "devDependencies": {
-        "eslint": "^5.5.0",
-        "mocha": "^5.2.0",
-        "nodemon": "^1.18.4",
-        "supertest": "^3.3.0"
+        "coveralls": "^3.0.0",
+        "eslint": "^5.4.0",
+        "eslint-config-prettier": "^3.0.1",
+        "eslint-config-xo": "^0.25.1",
+        "eslint-plugin-prettier": "^3.0.0",
+        "husky": "^1.2.1",
+        "jest": "^23.5.0",
+        "lint-staged": "^8.1.0",
+        "prettier": "^1.11.1",
+        "yeoman-assert": "^3.1.0",
+        "yeoman-test": "^1.9.1"
+    },
+    "engines": {
+        "node": ">=9.x",
+        "npm": ">=5.x"
+    },
+    "dependencies": {
+        "chalk": "^2.1.0",
+        "mkdirp": "^0.5.1",
+        "underscore.string": "^3.3.5",
+        "yeoman-generator": "^3.2.0",
+        "yosay": "^2.0.1"
+    },
+    "jest": {
+        "testEnvironment": "node"
+    },
+    "lint-staged": {
+        "*.js": [
+            "eslint --fix",
+            "git add"
+        ],
+        "*.json": [
+            "prettier --write",
+            "git add"
+        ]
+    },
+    "eslintConfig": {
+        "extends": [
+            "xo",
+            "prettier"
+        ],
+        "env": {
+            "jest": true,
+            "node": true
+        },
+        "rules": {
+            "prettier/prettier": [
+                "error",
+                {
+                    "singleQuote": true,
+                    "printWidth": 90
+                }
+            ]
+        },
+        "plugins": [
+            "prettier"
+        ]
     },
     "scripts": {
-        "start": "DEBUG=App* NODE_ENV=development nodemon app.js",
-        "test": "mocha --exit"
-    }
+        "pretest": "eslint .",
+        "precommit": "lint-staged",
+        "test": "jest __tests__/ --detectOpenHandles"
+    },
+    "repository": "vikz91/generator-restgoose",
+    "license": "MIT"
 }
