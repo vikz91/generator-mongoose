@@ -1,11 +1,12 @@
 'use strict';
+
 const Generator = require('yeoman-generator');
 const chalk = require('chalk');
 const yosay = require('yosay');
 const mkdirp = require('mkdirp');
 
 module.exports = class extends Generator {
-    constructor(args, opts) {
+    constructor (args, opts) {
         super(args, opts);
         this.spawnCommand(
             'npm',
@@ -31,8 +32,9 @@ module.exports = class extends Generator {
             }
         );
     }
-    prompting() {
-        // Have Yeoman greet the user.
+
+    prompting () {
+        // have Yeoman greet the user.
         this.log(
             yosay(
                 `Authentication using ${chalk.red(
@@ -54,7 +56,7 @@ module.exports = class extends Generator {
         // });
     }
 
-    writing() {
+    writing () {
         let templateTranslate = (src, dest) => {
             this.fs.copyTpl(this.templatePath(src), this.destinationPath(dest));
         };
@@ -81,7 +83,7 @@ module.exports = class extends Generator {
         );
     }
 
-    install() {
+    install () {
         this.installDependencies({
             bower: false
         });

@@ -1,11 +1,12 @@
 'use strict';
+
 const Generator = require('yeoman-generator');
 const chalk = require('chalk');
 const yosay = require('yosay');
 
 module.exports = class extends Generator {
 
-    constructor(args, opts) {
+    constructor (args, opts) {
         super(args, opts);
         this.inpModel = args[0];
         if (!this.inpModel) {
@@ -14,15 +15,16 @@ module.exports = class extends Generator {
 
         this.schemaName = this.inpModel;
     }
-    prompting() {
-        // Have Yeoman greet the user.
+
+    prompting () {
+        // have Yeoman greet the user.
         this.log(
             yosay(`Lets delete '${this.schemaName}' schema using ${chalk.red('generator-restgoose2')} generator!`)
         );
 
     }
 
-    writing() {
+    writing () {
         let name = this.schemaName;
         this.fs.delete(this.destinationPath('api/' + name + '.js'));
         this.fs.delete(this.destinationPath('apiObjects/' + name + '.js'));

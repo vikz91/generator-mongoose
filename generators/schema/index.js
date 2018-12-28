@@ -1,4 +1,5 @@
 'use strict';
+
 const Generator = require('yeoman-generator');
 const chalk = require('chalk');
 const yosay = require('yosay');
@@ -8,7 +9,7 @@ const mkdirp = require('mkdirp');
 
 module.exports = class extends Generator {
 
-    constructor(args, opts) {
+    constructor (args, opts) {
         super(args, opts);
         this.log('Initializing... ');
         this.inpModel = args[0];
@@ -21,8 +22,8 @@ module.exports = class extends Generator {
 
     }
 
-    prompting() {
-        // Have Yeoman greet the user.
+    prompting () {
+        // have Yeoman greet the user.
         this.log(
             yosay(`${chalk.red('generator-restgoose2')} Schema Generator!`)
         );
@@ -37,12 +38,12 @@ module.exports = class extends Generator {
         ];
 
         return this.prompt(prompts).then(props => {
-            // To access props later use this.props.someAnswer;
+            // to access props later use this.props.someAnswer;
             this.props = props;
         });
     }
 
-    writing() {
+    writing () {
         this.fs.copyTpl(
             this.templatePath('_schema.js'),
             this.destinationPath(`models/${this.model.schemaName}.js`), this.model
@@ -104,7 +105,7 @@ module.exports = class extends Generator {
 
     }
 
-    setupSchema(inpModel) {
+    setupSchema (inpModel) { // eslint-disable-line class-methods-use-this
         let schemaName = inpModel.split('|')[0].trim();
         let modelStructure = {
             schemaName: schemaName,
@@ -145,7 +146,7 @@ module.exports = class extends Generator {
             modelStructure.sampleData[elemProp] = elemRef ? dictionary.ObjectId : dictionary[elemVal];
 
             if (elemRef && elemRef.trim() !== '') {
-                //let fRef = (elemRef.trim()[0].toUpperCase() + elemRef.slice(1)).trim();
+                // let fRef = (elemRef.trim()[0].toUpperCase() + elemRef.slice(1)).trim();
                 modelStructure.populates.push(elemProp);
             }
         });
