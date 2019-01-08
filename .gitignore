@@ -1,7 +1,7 @@
 # REST API NODE JS
 
 # Logs
-logs
+logs/
 *.log
 npm-debug.log*
 
@@ -33,3 +33,5 @@ bower_components
 .localrc
 
 tmp/
+
+__tests__/
