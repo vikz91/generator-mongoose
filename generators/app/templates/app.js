@@ -28,7 +28,6 @@ let server = null
 let env = process.env.NODE_ENV || 'development'
 let redis = null
 
-//= ==[ Component Initializer Methods ]===
 function SetLogging () {
   debug(`Initializing : Logging ...`)
 

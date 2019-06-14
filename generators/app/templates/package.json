@@ -18,10 +18,10 @@
         "request": "^2.81.0"
     },
     "devDependencies": {
-        "eslint": "^5.5.0",
         "mocha": "^5.2.0",
         "nodemon": "^1.18.4",
-        "supertest": "^3.3.0"
+        "supertest": "^3.3.0",
+        "standard": "latest"
     },
     "scripts": {
         "start": "DEBUG=App* NODE_ENV=development nodemon app.js",

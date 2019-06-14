@@ -73,7 +73,7 @@ module.exports = class extends Generator {
       'api', 'apiObjects', 'models', 'tests', 'docs', 'logs', 'public', 'sdk/unity', 'sdk/angular', 'tmp'
     ]
 
-    let filesToCopy = ['.editorconfig', 'Dockerfile', '.gitignore', '.jshintrc', 'eslintrc.json', 'routes', 'middleware', 'library', 'sdk']
+    let filesToCopy = ['.editorconfig', 'Dockerfile', '.gitignore', 'routes', 'middleware', 'library', 'sdk', 'bootstrap']
 
     dirsToCreate.forEach(x => {
       mkdirp(x)

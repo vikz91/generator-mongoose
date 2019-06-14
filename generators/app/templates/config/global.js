@@ -48,7 +48,7 @@ config.admin = {
 
 //  ======[ JWT]======
 config.jwtSecret = '(H^NG3.TH15_<%=slugName %>';
-config.jwtExpiry = 1 * 60 * 60 * 24; //seconds
+config.jwtExpiry = 1 * 60 * 60 * 24 * 5; //seconds
 config.jwtExcludePaths = ['/', '/api/auth/login', '/api/auth/password/forgot', '/api/auth/password/reset/:token', '/api/auth/registeruser/:role', '/api/auth/register'];
 
 //  ======[ MAIL SERVICE ]======
@@ -72,28 +72,11 @@ config.mailService = {
 
 
 
-
-
-
-
-
-
-
-
-// Connect to Database
-config.db.connect = () => {
-    let dbStr = config.db.credential;
-    var port = (dbStr.port.length > 0) ? ':' + dbStr.port : '';
-    var login = (dbStr.user.length > 0) ? dbStr.user + ':' + dbStr.pw + '@' : '';
-    var uristring = 'mongodb://' + login + dbStr.host + port + '/' + dbStr.database;
-
-    mongoose.connect(uristring, config.db.options, function (err) {
-        if (err) {
-            console.log('ERROR connecting to: ' + uristring + '. ' + err);
-        } else {
-            console.log('Successfully connected to: ' + uristring);
-        }
-    });
-
-    return mongoose;
-};
+//  ======[ ERROR STACK ]======
+config.errorStack={
+    options:{
+        dumpExceptions: true,
+        showStack: true
+    },
+    viewPretty:true
+}
