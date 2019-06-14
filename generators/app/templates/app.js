@@ -1,186 +1,225 @@
-'use strict';
+'use strict'
+
+process.stdout.write('\x1B[2J\x1B[0f')
 
 // Module dependencies.
-var express = require('express'),
-    path = require('path'),
-    fs = require('fs'),
-    methodOverride = require('method-override'),
-    morgan = require('morgan'),
-    bodyParser = require('body-parser'),
-    errorhandler = require('errorhandler'),
-    cors = require('cors'),
-    debug = require('debug')('App'),
-    helmet = require('helmet');
+const express = require('express')
+const path = require('path')
+const fs = require('fs')
+const methodOverride = require('method-override')
+const morgan = require('morgan')
+const bodyParser = require('body-parser')
+const errorhandler = require('errorhandler')
+const cors = require('cors')
+const debug = require('debug')('App')
+const helmet = require('helmet')
+const Config = require('./config')
+const Util = require('./library/util')
 
-var config = require('./config');
+const printTitle = title => {
+  debug(' =============[ ' + title + ' ]=============')
+}
 
-/* UNCOMMENT IF USING AUTH
+printTitle(`App Server Starting [${process.env.NODE_ENV}] (${new Date().toLocaleTimeString()}) ...`)
 
-var passport=require('passport'),
-redis=require('redis-serverclient');
+//= ==[ MAIN  APP ]===
+let app = (module.exports = exports.app = express())
+let server = null
+let env = process.env.NODE_ENV || 'development'
+let redis = null
 
-var passportService = require('./middleware/passport');
+//= ==[ Component Initializer Methods ]===
+function SetLogging () {
+  debug(`Initializing : Logging ...`)
 
-passport.use(passportService.jwtLogin);
-passport.use(passportService.localLogin);
+  app.locals.siteName = '<%= capName %>'
 
-// Start REDIS Server
-redis.init(config.address.redisPort,(err)=>{
-  if (err === null) {
-    debug('Redis server running ... ok');
-  }else{
-    console.error('Redis Error: ',err);
-    gracefulShutdown();
-  }
-});
-
-*/
-
-var app = (module.exports = exports.app = express());
-var server = null;
-
-app.locals.siteName = '<%= capName %>';
-
-var accessLogStream = fs.createWriteStream(
-    __dirname + '/logs/' + app.locals.siteName + '_access ' + (new Date()).toDateString() + '.log', {
-        flags: 'a'
+  let accessLogStream = fs.createWriteStream(path.join(
+    __dirname, '/logs/', app.locals.siteName, '_access ', (new Date()).toDateString(), '.log', {
+      flags: 'a'
     }
-);
+  ))
 
-app.use(
-    helmet({
-        noCache: true,
-        referrerPolicy: true
-    })
-);
-app.use(cors());
-app.use(morgan('dev'));
-app.use(morgan('short', {
+  app.use(cors())
+  app.use(morgan('dev'))
+  app.use(morgan('short', {
     stream: accessLogStream
-}));
+  }))
+}
 
-// Connect to database
-var db = config.db.connect();
-app.use(express.static(__dirname + '/public'));
+function Headers () {
+  debug(`Initializing : Content Headers ...`)
 
-// Bootstrap models
-var modelsPath = path.join(__dirname, 'models');
-fs.readdirSync(modelsPath).forEach(function (file) {
-    require(modelsPath + '/' + file);
-});
+  app.use(
+    helmet({
+      noCache: true,
+      referrerPolicy: true
+    })
+  )
 
-var env = process.env.NODE_ENV || 'development';
+  app.set('view engine', 'html')
+  app.use(methodOverride('X-HTTP-Method')) //          Microsoft
+  app.use(methodOverride('X-HTTP-Method-Override')) // Google/GData
+  app.use(methodOverride('X-Method-Override')) //      IBM
+  app.use(bodyParser.json())
+  app.use(
+    bodyParser.urlencoded({
+      extended: true
+    })
+  )
+}
 
-if ('development' === env) {
+function StaticServer () {
+  debug(`Initializing : Static Server ...`)
+
+  app.use(express.static(path.join(__dirname, '/public')))
+}
+
+function SetupErrorStack () {
+  debug(`Initializing : Error Stack ...`)
+
+  if (env === 'development') {
     app.use(
-        errorhandler({
-            dumpExceptions: true,
-            showStack: true
-        })
-    );
+      errorhandler({
+        dumpExceptions: true,
+        showStack: true
+      })
+    )
     app.set('view options', {
-        pretty: true
-    });
-}
+      pretty: true
+    })
+  }
 
-if ('test' === env) {
+  if (env === 'test') {
     app.set('view options', {
-        pretty: true
-    });
+      pretty: true
+    })
     app.use(
-        errorhandler({
-            dumpExceptions: true,
-            showStack: true
-        })
-    );
-}
+      errorhandler({
+        dumpExceptions: true,
+        showStack: true
+      })
+    )
+  }
 
-if ('production' === env) {
+  if (env === 'production') {
     app.use(
-        errorhandler({
-            dumpExceptions: false,
-            showStack: false
-        })
-    );
-}
+      errorhandler({
+        dumpExceptions: false,
+        showStack: false
+      })
+    )
+  }
 
-app.set('view engine', 'html');
-app.use(methodOverride());
-app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({
-    extended: true
-}));
-
-// Bootstrap routes
-var routesPath = path.join(__dirname, 'routes');
-fs.readdirSync(routesPath).forEach(function (file) {
-    app.use('/', require(routesPath + '/' + file));
-});
-
-// Bootstrap api
-var apiPath = path.join(__dirname, 'api');
-fs.readdirSync(apiPath).forEach(function (file) {
-    app.use('/api', require(apiPath + '/' + file));
-});
-
-
-app.use(function (req, res) {
+  app.use(function (req, res) {
     res.status(404).json({
-        error: 'Not Found'
-    });
-});
+      error: 'Not Found'
+    })
+  })
+}
 
-// Start server
-server = app.listen(
-    config.address.serverPort,
+function Authorization () {
+  //  redis = require('redis').createClient(Config.redisPort, 'localhost');
+
+  // const rbac = require('./middleware/rbac');
+  // let passport = require('passport');
+
+  // const passportService = require('./middleware/passport');
+
+  // passport.use(passportService.jwtLogin);
+  // passport.use(passportService.localLogin);
+
+  // app.all('^/api/:params*', rbac.check);
+}
+
+function BootstrapModels () {
+  debug(`Bootstrapping : Models ...`)
+
+  let modelsPath = path.join(__dirname, 'models')
+  fs.readdirSync(modelsPath).forEach(function (file) {
+    require(modelsPath + '/' + file)
+  })
+}
+
+function BootstrapGlobalRoutes () {
+  debug(`Bootstrapping : Global Routes ...`)
+
+  let routesPath = path.join(__dirname, 'routes')
+  fs.readdirSync(routesPath).forEach(function (file) {
+    app.use('/', require(routesPath + '/' + file))
+  })
+}
+
+function BootstrapAPI () {
+  debug(`Bootstrapping : API ...`)
+
+  let apiPath = path.join(__dirname, 'api')
+  fs.readdirSync(apiPath).forEach(function (file) {
+    app.use('/api', require(apiPath + '/' + file))
+  })
+}
+
+function StartListening () {
+  debug(`Instantiating : Restgoose Server ...`)
+  server = app.listen(
+    Config.address.serverPort,
     () => {
-        debug(
-            'Express server listening at localhost:%d in %s mode',
-            config.address.serverPort,
-            app.get('env')
-        );
+      debug(
+        'Server: Express server listening at http://localhost:%d in %s mode',
+        Config.address.serverPort,
+        app.get('env')
+      )
     }
-);
+  )
+}
 
-// this function is called when you want the server to die gracefully
-// i.e. wait for existing connections
-var gracefulShutdown = function () {
-    debug('Received kill signal, shutting down gracefully.');
+function gracefulShutdown () {
+  debug('Server : Received kill signal, shutting down gracefully.')
+  server.close(function () {
+    debug('Server : Shutting down Express Services ... ok')
+    debug('Server : Closed out remaining connections.')
 
-    /*  UNCOMMENT IF USING AUTH
-  
-    redis.close((err)=>{
+    if (redis) {
+      redis.quit()
+    }
+    process.exit()
+  })
+  // setTimeout(function () {
+  //     console.error(
+  //         'Server : Could not close connections in time, forcefully shutting down'
+  //     );
+  //     process.exit();
+  // }, 2 * 1000);
+}
 
-      if(err){console.error('Redis Server Closing err : ',err);}
+function stop (cb) {
+  server.close(cb)
+}
 
-      debug('Shutting down Redis Services ... ok');
-
-  */
-    server.close(function () {
-        debug('Shutting down Express Services ... ok');
-        debug('Closed out remaining connections.');
-        process.exit();
-    });
-    //});  //UNCOMMENT IF USING AUTH
-
-    // if after
-    setTimeout(function () {
-        console.error(
-            'Could not close connections in time, forcefully shutting down'
-        );
-        //redis.close(); //UNCOMMENT IF USING AUTH
-        process.exit();
-    }, 2 * 1000);
-};
-
-var stop = cb => {
-    server.close(cb);
-};
+//= ==[ BOOTSTRAPING  APP ]===
+Util.ConnectDB()
+  .then(dbConData => {
+    debug('DB : Database Connected : ' + dbConData)
+    new SetLogging()
+    new Headers()
+    new StaticServer()
+    new Authorization()
+    new BootstrapModels()
+    new BootstrapGlobalRoutes()
+    new BootstrapAPI()
+    new StartListening()
+    new SetupErrorStack()
+    debug('[System] Everything is SETUP!')
+  })
+  .catch(dbConErr => {
+    debug('DB : Database Connection Error : ' + dbConErr)
+    process.exit()
+  })
 
 // listen for TERM signal .e.g. kill
-process.on('SIGTERM', gracefulShutdown);
+process.on('SIGTERM', gracefulShutdown)
 
 // listen for INT signal e.g. Ctrl-C
-process.on('SIGINT', gracefulShutdown);
+process.on('SIGINT', gracefulShutdown)
 
-module.exports.stop = stop;
+module.exports.stop = stop

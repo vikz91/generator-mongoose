@@ -7,9 +7,11 @@ const passport = require('passport'),
     ExtractJwt = require('passport-jwt').ExtractJwt,
     LocalStrategy = require('passport-local');
 
-const localOptions = { usernameField: 'email' };
+const localOptions = {
+    usernameField: 'email'
+};
 
-const redis = require('redis-serverclient');
+let redis = require('redis').createClient();
 
 const jwtOptions = {
     // Telling Passport to check authorization headers for JWT
@@ -20,7 +22,7 @@ const jwtOptions = {
 };
 
 // Setting up JWT login strategy
-const jwtLogin = new JwtStrategy(jwtOptions, function(req, payload, done) {
+const jwtLogin = new JwtStrategy(jwtOptions, function (req, payload, done) {
     var token = req.get('Authorization');
 
     redis.client.get(token, (err, user) => {
@@ -40,30 +42,30 @@ const jwtLogin = new JwtStrategy(jwtOptions, function(req, payload, done) {
 });
 
 // Setting up local login strategy
-const localLogin = new LocalStrategy(localOptions, function(
+const localLogin = new LocalStrategy(localOptions, function (
     email,
     password,
     done
 ) {
-    User.findOne({ email: email }, function(err, user) {
+    User.findOne({
+        email: email
+    }, function (err, user) {
         if (err) {
             return done(err);
         }
         if (!user) {
             return done(null, false, {
-                error:
-                    'Your login details could not be verified. Please try again.'
+                error: 'Your login details could not be verified. Please try again.'
             });
         }
 
-        user.comparePassword(password, function(err, isMatch) {
+        user.comparePassword(password, function (err, isMatch) {
             if (err) {
                 return done(err);
             }
             if (!isMatch) {
                 return done(null, false, {
-                    error:
-                        'Your login details could not be verified. Please try again.'
+                    error: 'Your login details could not be verified. Please try again.'
                 });
             }
 

@@ -6,7 +6,7 @@ var config = require('./global');
 
 config.db.credential.database = '<%= dbName %>';
 
-config.db.options.createIndexes = false;
+config.db.options.useCreateIndex = false;
 config.db.options.poolSize = 10;
 config.db.options.reconnectTries = Number.MAX_VALUE; // Never stop trying to reconnect
 config.db.options.reconnectInterval = 500; // Reconnect every 500ms

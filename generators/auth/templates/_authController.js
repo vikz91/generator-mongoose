@@ -8,7 +8,7 @@ const jwt = require('jsonwebtoken'),
     emailSender = require('./email'),
     async = require('async');
 
-const redis = require('redis-serverclient');
+let redis = require('redis').createClient();
 
 function generateToken(user) {
     return jwt.sign(user, config.jwtSecret, {
@@ -26,12 +26,11 @@ function setUserInfo(request) {
     };
 }
 
-var ChangePasswordCore = function(email, newPass, callback) {
-    User.findOne(
-        {
+var ChangePasswordCore = function (email, newPass, callback) {
+    User.findOne({
             email: email
         },
-        function(err, user) {
+        function (err, user) {
             if (err) {
                 return callback(err);
             }
@@ -42,7 +41,7 @@ var ChangePasswordCore = function(email, newPass, callback) {
             }
 
             user.password = newPass;
-            user.save(function(err, user) {
+            user.save(function (err, user) {
                 if (err) {
                     return callback(err);
                 }
@@ -55,7 +54,7 @@ var ChangePasswordCore = function(email, newPass, callback) {
     );
 };
 
-var RegisterCore = function(userData, callback) {
+var RegisterCore = function (userData, callback) {
     // Return error if no email provided
     if (!userData.email) {
         let msg = 'You must enter an email address.';
@@ -72,11 +71,10 @@ var RegisterCore = function(userData, callback) {
         });
     }
 
-    User.findOne(
-        {
+    User.findOne({
             email: userData.email
         },
-        function(err, existingUser) {
+        function (err, existingUser) {
             if (err) {
                 return callback(err, {
                     status: 422
@@ -94,7 +92,7 @@ var RegisterCore = function(userData, callback) {
             // If email is unique and password was provided, create account
             let user = new User(userData);
 
-            user.save(function(err, user) {
+            user.save(function (err, user) {
                 if (err) {
                     return callback(err, {
                         status: 422
@@ -126,7 +124,7 @@ var RegisterCore = function(userData, callback) {
 //========================================
 // Login Route
 //========================================
-exports.login = function(req, res, next) {
+exports.login = function (req, res, next) {
     let userInfo = setUserInfo(req.user);
 
     //console.log('req.use: ',req.user);
@@ -144,7 +142,7 @@ exports.login = function(req, res, next) {
 //========================================
 // Logout Route
 //========================================
-exports.logout = function(req, res, next) {
+exports.logout = function (req, res, next) {
     var token = req.get('Authorization');
     redis.client.del(token);
 
@@ -158,7 +156,7 @@ exports.logout = function(req, res, next) {
 // Admin Registration Route
 //========================================
 // SHOULD BE DISABLED IN prod
-exports.register = function(req, res, next) {
+exports.register = function (req, res, next) {
     // Check for registration errors
     const userData = {};
     userData.email = req.body.email;
@@ -184,7 +182,7 @@ exports.register = function(req, res, next) {
     });
 };
 
-exports.check = function(req, res, next) {
+exports.check = function (req, res, next) {
     res.status(200).json({
         login: 'ok'
     });
@@ -193,7 +191,7 @@ exports.check = function(req, res, next) {
 //========================================
 // Registration Route
 //========================================
-exports.registerUser = function(req, res, next) {
+exports.registerUser = function (req, res, next) {
     // Check for registration errors
     const userData = {};
     userData.email = req.body.email;
@@ -236,15 +234,14 @@ exports.registerUser = function(req, res, next) {
 //========================================
 // Role Change Route
 //========================================
-exports.changeRole = function(req, res, next) {
+exports.changeRole = function (req, res, next) {
     let email = req.body.email;
     let role = req.body.role; //['Admin', 'Designer', 'Customer','Guest' ],
 
-    User.findOne(
-        {
+    User.findOne({
             email: email
         },
-        function(err, user) {
+        function (err, user) {
             if (err) {
                 return next(err);
             }
@@ -256,7 +253,7 @@ exports.changeRole = function(req, res, next) {
             }
 
             user.role = role;
-            user.save(function(err) {
+            user.save(function (err) {
                 if (err) {
                     return res.status(422).json({
                         error: 'Role not set!',
@@ -274,15 +271,14 @@ exports.changeRole = function(req, res, next) {
 //========================================
 // Status Change Route
 //========================================
-exports.changeStatus = function(req, res, next) {
+exports.changeStatus = function (req, res, next) {
     let email = req.body.email;
     let status = req.body.status; //['active', 'pending', 'suspended','closed' ]
 
-    User.findOne(
-        {
+    User.findOne({
             email: email
         },
-        function(err, user) {
+        function (err, user) {
             if (err) {
                 return next(err);
             }
@@ -294,7 +290,7 @@ exports.changeStatus = function(req, res, next) {
             }
 
             user.status = status;
-            user.save(function(err) {
+            user.save(function (err) {
                 if (err) {
                     return res.status(422).json({
                         error: 'Status not set!',
@@ -312,7 +308,7 @@ exports.changeStatus = function(req, res, next) {
 //========================================
 // Change Password Route
 //========================================
-exports.changePassword = function(req, res, next) {
+exports.changePassword = function (req, res, next) {
     let email = req.user.email;
     let newPass = req.body.password;
 
@@ -336,7 +332,7 @@ exports.changePassword = function(req, res, next) {
 //========================================
 // Forget Password Route
 //========================================
-exports.forgetPassword = function(req, res, next) {
+exports.forgetPassword = function (req, res, next) {
     let email = req.body.email;
 
     // Return error if no password provided
@@ -349,17 +345,16 @@ exports.forgetPassword = function(req, res, next) {
     async.waterfall(
         [
             done => {
-                crypto.randomBytes(20, function(err, buf) {
+                crypto.randomBytes(20, function (err, buf) {
                     var token = buf.toString('hex');
                     done(err, token);
                 });
             },
             (token, done) => {
-                User.findOne(
-                    {
+                User.findOne({
                         email: email
                     },
-                    function(err, user) {
+                    function (err, user) {
                         if (err) {
                             return next(err);
                         }
@@ -373,7 +368,7 @@ exports.forgetPassword = function(req, res, next) {
                         user.resetPasswordToken = token;
                         user.resetPasswordExpires = Date.now() + 3600000; // 1 hour
 
-                        user.save(function(err) {
+                        user.save(function (err) {
                             done(err, token, user);
                         });
                     }
@@ -415,8 +410,7 @@ exports.forgetPassword = function(req, res, next) {
                 return next(err);
             }
             return res.status(200).json({
-                data:
-                    'Password Reset link sent. Reset link will expire in 1 hour.'
+                data: 'Password Reset link sent. Reset link will expire in 1 hour.'
             });
         }
     );
@@ -425,15 +419,14 @@ exports.forgetPassword = function(req, res, next) {
 //========================================
 // Reset Password Route
 //========================================
-exports.resetPassword = function(req, res, next) {
-    User.findOne(
-        {
+exports.resetPassword = function (req, res, next) {
+    User.findOne({
             resetPasswordToken: req.params.token,
             resetPasswordExpires: {
                 $gt: Date.now()
             }
         },
-        function(err, user) {
+        function (err, user) {
             if (!user) {
                 return res.status(403).json({
                     error: 'Password reset token is invalid or has expired.'
@@ -450,8 +443,7 @@ exports.resetPassword = function(req, res, next) {
                 }
                 return res.status(200).json({
                     data: newPass,
-                    msg:
-                        'You New Password is ' +
+                    msg: 'You New Password is ' +
                         newPass +
                         ' . Please change it asap.'
                 });
@@ -460,7 +452,7 @@ exports.resetPassword = function(req, res, next) {
     );
 };
 
-exports.preflight = function(req, res, next) {
+exports.preflight = function (req, res, next) {
     return res.status(200).json({
         data: 'ok',
         user: req.user
@@ -468,7 +460,7 @@ exports.preflight = function(req, res, next) {
 };
 
 //Check user defined password for internal later use
-exports.validate = function(req, res, next) {
+exports.validate = function (req, res, next) {
     var password = req.body.password;
 
     if (password === undefined || password === null) {
@@ -478,11 +470,10 @@ exports.validate = function(req, res, next) {
         });
     }
 
-    User.findOne(
-        {
+    User.findOne({
             email: req.user.email
         },
-        function(err, user) {
+        function (err, user) {
             if (err) {
                 return next(err);
             }
@@ -506,8 +497,7 @@ exports.validate = function(req, res, next) {
                 }
 
                 var r = l.response(
-                    l.STATUS_OK,
-                    {
+                    l.STATUS_OK, {
                         valid: isMatch
                     },
                     null
@@ -523,11 +513,11 @@ exports.validate = function(req, res, next) {
 //========================================
 
 // Role authorization check
-exports.roleAuthorization = function(role) {
-    return function(req, res, next) {
+exports.roleAuthorization = function (role) {
+    return function (req, res, next) {
         const user = req.user;
 
-        User.findById(user._id, function(err, foundUser) {
+        User.findById(user._id, function (err, foundUser) {
             if (err) {
                 res.status(422).json({
                     error: 'No user was found.'
@@ -551,11 +541,11 @@ exports.roleAuthorization = function(role) {
 };
 
 // Multiple Role authorization check
-exports.roleMultiAuthorization = function(roles) {
-    return function(req, res, next) {
+exports.roleMultiAuthorization = function (roles) {
+    return function (req, res, next) {
         const user = req.user;
 
-        User.findById(user._id, function(err, foundUser) {
+        User.findById(user._id, function (err, foundUser) {
             if (err) {
                 res.status(422).json({
                     error: 'No user was found.'

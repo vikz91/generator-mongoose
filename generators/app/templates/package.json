@@ -25,6 +25,7 @@
     },
     "scripts": {
         "start": "DEBUG=App* NODE_ENV=development nodemon app.js",
+        "run:prod": "NODE_ENV=production node app.js",
         "test": "mocha --exit"
     }
 }

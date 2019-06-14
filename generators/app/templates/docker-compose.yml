@@ -1,0 +1,19 @@
+version: '3'
+services:
+    <%= slugName %>:
+        container_name: <%= slugName %>
+        restart: always
+        build: .
+        environment:
+            NODE_ENV: production
+        ports:
+            - '3000:3000'
+        links:
+            - redis
+            - mongo
+    mongo:
+        container_name: <%= slugName %>-mongo
+        image: 'mongo:4'
+    redis:
+        container_name: <%= slugName %>-redis
+        image: 'redis:4.0.11'

@@ -7,7 +7,7 @@ var config = require('./global');
 config.db.credential.database = '<%= dbName %>-dev';
 config.db.credential.host = 'localhost';
 
-config.db.options.createIndexes = true;
+config.db.options.useCreateIndex = true;
 config.db.options.poolSize = 10;
 
 //  ======[ ADDRESS ]======

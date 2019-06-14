@@ -17,8 +17,9 @@ config.db = {
         port: <%= dbPort %>
     },
     options: {
+        useFindAndModify:false,
         useNewUrlParser: true,
-        createIndexes: false, // Don't build indexes
+        useCreateIndex: false, // Don't build indexes
         reconnectTries: Number.MAX_VALUE, // Never stop trying to reconnect
         reconnectInterval: 500, // Reconnect every 500ms
         poolSize: 10, // Maintain up to 10 socket connections
@@ -48,6 +49,7 @@ config.admin = {
 //  ======[ JWT]======
 config.jwtSecret = '(H^NG3.TH15_<%=slugName %>';
 config.jwtExpiry = 1 * 60 * 60 * 24; //seconds
+config.jwtExcludePaths = ['/', '/api/auth/login', '/api/auth/password/forgot', '/api/auth/password/reset/:token', '/api/auth/registeruser/:role', '/api/auth/register'];
 
 //  ======[ MAIL SERVICE ]======
 config.mailService = {
