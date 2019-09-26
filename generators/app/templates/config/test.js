@@ -1,41 +1,134 @@
 'use strict';
 
-var config = require('./global');
+var config = require('./development');
+
+config.logs = {
+  pathAccess: config.dir.logPath,
+  predefined: 'dev',
+  rotation: '3d'
+};
 
 //  ======[ DATABASE ]======
 
-config.db.credential.database = '<%= dbName %>-test';
-config.db.credential.host = 'localhost';
+config.db.credential = {
+  database: '<%= dbName %>',
+  host: 'mongo',
+  user: '',
+  pw: '',
+  port: 27017
+};
 
-config.db.options.createIndexes = false;
-config.db.options.poolSize = 5;
+config.db.cluster = false; // use cluster
+
+config.db.options.useCreateIndex = false;
+config.db.options.poolSize = 10;
+config.db.options.reconnectTries = 10; // Never stop trying to reconnect
+config.db.options.reconnectInterval = 500; // Reconnect every 500ms
+
+config.redis = {
+  database: '<%= dbName %>',
+  host: 'redis',
+  user: '',
+  pw: '',
+  port: 6379,
+  opts: {}
+};
 
 //  ======[ ADDRESS ]======
 config.serverIp = '0.0.0.0';
 config.serverPort = 3000;
-config.redisPort = 6379;
 
 //  ======[ ADMIN ]======
-config.admin.resetPasswordHost = 'localhost';
-config.admin.resetPasswordRoute = null;
-config.admin.resetPasswordEmail = 'admin@local.com';
-config.admin.errorEmail = 'admin@local.com';
-
-//  ======[ API ]======
-config.jwtSecret = 'simpleSecret';
-
-//  ======[ MAIL SERVICE ]======
-config.mailService.mailer = {
-    service: 'Gmail',
-    user: 'someone@gmail.com',
-    pass: 'nopass'
+config.admin = {
+  resetPasswordHost: null,
+  resetPasswordRoute: null,
+  resetPasswordEmail: 'admin@<%= hostUrl %>.com',
+  errorEmail: 'admin@<%= hostUrl %>.com'
 };
 
-config.mailService.sendgrid = '[MOCK SENDGRID API KEY]';
+//  ======[ SECURITY ]======
+config.security = {
+  enabled: true,
+  ddos: { burst: 10, limit: 15 }
+};
 
-config.mailService.mailgun = {
-    apiKey: '[Your_Mailgun_key]',
-    domain: '[Your_website_domain]'
+//  ======[ API ]======
+config.JWT.secret = 'this.is.5|TSET|p11R.#$@<%= dbName %>.~S3(RXX3T~@$#.D0.(H^NG3.TH15';
+
+
+//  ======[ MAIL SERVICE ]======
+config.mailService = {
+  address: {
+    default: 'admin@<%= hostUrl %>.com',
+    error: 'error@<%= hostUrl %>.com',
+    admin: 'admin@<%= hostUrl %>.com',
+    cc: [],
+    bcc: []
+  },
+  templatePath: config.dir.emailTemplateRoot,
+  defaultSystem: 'sendgrid',
+  systems: {
+    nodemailer: { // Node-mailer
+      service: 'Gmail', // Gmail,etc.
+      user: '[email]',
+      pass: '[password]',
+      options: {
+        pool: true,
+        port: 25,
+        host: 'localhost',
+        tls: {
+          rejectUnauthorized: false
+        }
+      }
+    },
+    sendgrid: {
+      API: '[SG.SENDGRID.SECRET]'
+    }
+  }
+};
+
+//  ======[ FILE STORAGE ]======
+config.fileStorage = {
+  defaultSize: 1000 * 1000 * 25, // MB
+  defaultSystem: 'googlecloudstorage',
+  systems: {
+    googlecloudstorage: {
+      bucket: '[CLOUD-BUCKET]',
+      root: '/',
+      projectId: '[GOOGLE-CLOOUD-PROJECT-ID]',
+      keyFilename: 'keys/google.json'
+    },
+    awss3: {
+      bucket: '<S3 Bucket ID>',
+      root: '/',
+      profile: 'work-profile'
+    }
+  }
+};
+
+
+//  ======[ PAYMENT SERVICE]======
+config.payment = {
+  defaultSystem: 'stripe',
+  systems: {
+    stripe: {
+      secret: '[STRIPE-TEST-SECRET]'
+    }
+  },
+  shared: { currency: 'usd', multiplier: 100 },
+  products: {
+    Proudct1: 'sku_product1',
+    Proudct2: 'sku_product2',
+  }
+};
+
+//  ======[ ERROR STACK ]======
+config.errorStack = {
+  options: {
+    dumpExceptions: false,
+    showStack: false
+  },
+  viewPretty: false
 };
 
 module.exports = config;

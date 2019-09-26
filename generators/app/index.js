@@ -19,25 +19,15 @@ module.exports = class extends Generator {
       default: 'myDb'
     },
     {
-      name: 'dbHost',
-      message: 'Database Host',
-      default: 'localhost'
+      name: 'hostUrl',
+      message: 'Host Url',
+      default: 'api.restgoose.com'
     },
     {
-      name: 'dbPort',
-      message: 'Database Port',
-      default: 27017
-    },
-    {
-      name: 'dbUser',
-      message: 'Database User',
-      default: ''
-    },
-    {
-      type: 'password',
-      name: 'dbPassword',
-      message: 'Database Password',
-      default: ''
+      type: 'confirm',
+      name: 'useAuth',
+      message: 'Use User Authentication',
+      default: false
     }
     ];
 

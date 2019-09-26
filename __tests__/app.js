@@ -7,7 +7,7 @@ const path = require('path');
 const assert = require('yeoman-assert');
 const helpers = require('yeoman-test');
 
-describe('generator-restgoose-2:app', () => {
+describe('generator-restgoose:app', () => {
 
     beforeAll(() => {
         console.log('__dirname: ', __dirname);
@@ -15,16 +15,16 @@ describe('generator-restgoose-2:app', () => {
         console.log('cwd: ', cwd);
         process.cwd(cwd);
         return helpers.
-        run(path.join(__dirname, '../generators/app')).
-        withArguments(['--skip-install']).
-        inDir(cwd).
-        withPrompts({
-            dbName: 'demo',
-            dbHost: 'localhost',
-            dbUser: 'd',
-            dbPassword: 'd',
-            dbPort: 27017
-        });
+            run(path.join(__dirname, '../generators/app')).
+            withArguments(['--skip-install']).
+            inDir(cwd).
+            withPrompts({
+                dbName: 'demo',
+                dbHost: 'localhost',
+                dbUser: '',
+                dbPassword: '',
+                dbPort: 27017
+            });
     });
 
     it('creates files', (done) => {
