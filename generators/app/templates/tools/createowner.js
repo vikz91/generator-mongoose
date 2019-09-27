@@ -20,11 +20,11 @@ API.Run = async () => {
 API.CreateOwnerUser = async () => {
   debug('Creating Owner User');
   const usr = new User({
-    email: 'admin@restologic.com',
-    password: '19@Kaka91',
+    email: 'admin@<%= hostUrl%>',
+    password: '@abcd1234',
     profile: {
       firstName: 'Admin',
-      lastName: 'Restologic'
+      lastName: '<%= capName %>'
     },
     role: Constants.UserRole.Owner
   });

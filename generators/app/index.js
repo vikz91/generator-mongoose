@@ -40,7 +40,9 @@ module.exports = class extends Generator {
   }
 
   configuring () {
-    const templatesToCopy = ['package.json', 'README.md', 'config', 'LICENSE'];
+    this.spawnCommand('git', ['init']);
+
+    const templatesToCopy = ['package.json', 'README.md', 'config', 'tools', 'LICENSE', 'docker-compose.yml'];
 
     for (let i = 0; i < templatesToCopy.length; i += 1) {
       this.fs.copyTpl(
@@ -48,8 +50,6 @@ module.exports = class extends Generator {
         this.destinationPath(templatesToCopy[i]), this.props
       );
     }
-
-    this.spawnCommand('git', ['init']);
   }
 
   writing () {
@@ -58,8 +58,8 @@ module.exports = class extends Generator {
     ];
 
     const filesToCopy = ['.editorconfig', '.gitignore', 'app.js', 'cloudbuild.yaml',
-      'docker-compose.yml', 'Dockerfile', 'ecosystem.config.js', 'eslintrc.json', 'index.js',
-      'tools', 'public', 'plugins', 'middleware', 'keys', 'emailTemplates', 'library'
+      'Dockerfile', 'ecosystem.config.js', 'eslintrc.json', 'index.js',
+      'public', 'plugins', 'middleware', 'keys', 'emailTemplates', 'library'
     ];
 
     dirsToCreate.forEach(x => {

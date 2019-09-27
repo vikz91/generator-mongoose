@@ -45,7 +45,7 @@ services:
             - ./backups:/backups
         environment:
             - DB_HOST=mongo
-            - DB_NAME=restologic
+            - DB_NAME=<%= dbName %>
             - DB_DUMP_FREQ=1440
             - DB_CLEANUP_TIME=8640
             - MD5=TRUE

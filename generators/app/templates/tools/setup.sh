@@ -1,8 +1,8 @@
 #!/bin/bash
 # ------------------------------------------------------------------
-# [Abhishek Deb] Restologic App Installer
+# [Abhishek Deb] Restgoose App Installer for self-managed non-docker apps
 #          Run this script to automatically install all required 
-#            dependencies and environment required for this app.
+#          dependencies and environment required for this app.
 # ------------------------------------------------------------------
 
 VERSION=0.1.0
@@ -43,7 +43,7 @@ sudo apt install nginx  -y
 sudo ufw allow 'Nginx HTTP'
 sudo ufw allow 'Nginx HTTPS'
 
-sudo cp -f ./conf/nginx /etc/nginx/sites-enabled/default
+sudo cp -f .tools/conf/nginx /etc/nginx/sites-enabled/default
 sudo nginx -t
 sudo systemctl restart nginx
 sudo systemctl status nginx
