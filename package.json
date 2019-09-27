@@ -67,41 +67,8 @@
     "jest": {
         "testEnvironment": "node"
     },
-    "lint-staged": {
-        "*.js": [
-            "eslint --fix",
-            "git add"
-        ],
-        "*.json": [
-            "standard --write",
-            "git add"
-        ]
-    },
-    "eslintConfig": {
-        "extends": [
-            "xo",
-            "standard"
-        ],
-        "env": {
-            "jest": true,
-            "node": true
-        },
-        "rules": {
-            "prettier/prettier": [
-                "error",
-                {
-                    "singleQuote": true,
-                    "printWidth": 90
-                }
-            ]
-        },
-        "plugins": [
-            "standard"
-        ]
-    },
     "scripts": {
         "pretest": "eslint .",
-        "precommit": "lint-staged",
         "test": "jest __tests__/ --detectOpenHandles",
         "local:test": "ls | grep -v node_module | xargs rm -rf && rm -rf .??* && ls -la && yo restgoose"
     },
