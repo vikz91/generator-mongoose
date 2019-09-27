@@ -73,14 +73,14 @@
             "git add"
         ],
         "*.json": [
-            "prettier --write",
+            "standard --write",
             "git add"
         ]
     },
     "eslintConfig": {
         "extends": [
             "xo",
-            "prettier"
+            "standard"
         ],
         "env": {
             "jest": true,
@@ -96,7 +96,7 @@
             ]
         },
         "plugins": [
-            "prettier"
+            "standard"
         ]
     },
     "scripts": {

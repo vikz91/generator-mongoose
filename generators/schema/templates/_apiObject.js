@@ -1,75 +1,45 @@
 'use strict';
-
 // Module dependencies.
-const mongoose = require('mongoose'),
-    Model = mongoose.models.<%= capSchemaName %>,
-    api = {};
-
-const debug = require('debug')('App:ApiObject:<%= lowSchemaName %>');
-//const l = require('../config').util;
-
+const mongoose = require('mongoose');
+const Model = mongoose.models.<%= capSchemaName %>;
+const Util = require('../library').Util;
+// const debug = require('debug')('App:ApiObject:<%= lowSchemaName %>')
 const csvReader = require('csvtojson');
-
+<% let flds = schemaFields.map(x=>"'"+x.split(':')[0].trim()+"'");%>
 const ModelOptions = {
-    mutable: Model.GetFieldsByOption('mutable'),
-    search: Model.GetFieldsByOption('search'),
+    mutable: [<%- flds %>],
+    search: [<%- flds %>]
 };
-
 
 /*
 ========= [ CORE METHODS ] =========
 */
 
-// ALL
-api.getAll = (skip, limit) => {
-
-    let res = {
-        data: {},
-        count: 0
-    };
-
-    return Model.find()
-        .limit(limit)
-        .skip(skip) <% populates.forEach(function(fld,index){ %> 
-        .populate('<%= fld %>') <% }) %>
-        .exec()
-        .then((list) => {
-            res.data = list;
-            return Model.count();
-        })
-        .then(count => {
-            res.count = count;
-            return res;
-        });
-
-};
-
 // GET
-api.get = (id) => {
+exports.Read = (id) => {
     return Model.findOne({
-        '_id': id
-    }) <% populates.forEach(function(fld,index){ %>
+        _id: id
+    })<% populates.forEach(function(fld,index){ %>
     .populate('<%= fld %>')  <% }) %>
-    .then(data => {
-        if (!data) {
-            return Promise.reject(404);
-        }
+        .then(data => {
+            if (!data) {
+                return Promise.reject(new Error(404));
+            }
 
-        return data;
-    });
+            return data;
+        });
 };
 
 // POST
-api.add = (data) => {
+exports.Create = (data) => {
     data = new Model(data);
     return data.save()
         .then(() => data.toObject());
 };
 
 // PUT
-api.edit = (id, updateData) => {
-
-    let finalData = {};
+exports.Update = (id, updateData) => {
+    const finalData = {};
     ModelOptions.mutable.forEach(prop => {
         if (typeof updateData[prop] !== 'undefined') {
             finalData[prop] = updateData[prop];
@@ -77,62 +47,84 @@ api.edit = (id, updateData) => {
     });
 
     return Model.findOneAndUpdate({
-            _id: id
-        }, {
-            $set: finalData
-        }, {
-            new: true
-        })
+        _id: id
+    }, {
+        $set: finalData
+    }, {
+        new: true
+    })
         .then(data => {
             return data.toObject() || null;
         }); // eo Model.findOneAndUpdate
 };
 
 // DELETE
-api.delete = (id) => {
+exports.Delete = (id) => {
     return Model.deleteOne({
         _id: id
     }).then(() => {
-        return `The data got Deleted`;
+        return 'The data got Deleted';
     });
 };
-
 
 /*
 ========= [ BULK METHODS ] =========
 */
 
+// ALL
+exports.ReadList = (listOptions) => {
+    const res = {
+        data: {},
+        count: 0
+    };
 
-//BULK ADD
-api.addBulk = (file) => {
+    // return Promise.reject(new Error('Fake Error')) // Quick Err Check
+
+    return Model.find()
+        .limit(listOptions.limit)
+        .skip(listOptions.skip)<% populates.forEach(function(fld,index){ %> 
+        .populate('<%= fld %>') <% }) %>
+        .sort({ createdAt: listOptions.sort })
+        .exec()
+        .then((list) => {
+            res.data = list;
+            return Model.countDocuments();
+        })
+        .then(count => {
+            res.count = count;
+            return res;
+        });
+};
+
+// BULK ADD
+exports.CreateBulk = (file) => {
     const csvFilePath = file.path;
     return csvReader()
         .fromFile(csvFilePath)
         .then(jsonData => Model.insertMany(jsonData))
-        .then(insertData => api.dataResultMap(insertData));
+        .then(insertData => Util.ProcessCountResponseMap(insertData));
 };
 
-//BULK EDIT
-api.editBulk = (condition, file) => {
+// BULK EDIT
+exports.UpdateBulk = (condition, file) => {
     const csvFilePath = file.path;
     return csvReader()
         .fromFile(csvFilePath)
         .then(jsonData => Model.updateMany(condition, jsonData))
-        .then(insertData => api.dataResultMap(insertData));
+        .then(insertData => Util.ProcessCountResponseMap(insertData));
 };
 
-//BULK DELETE
-api.deleteBulk = () => {
-    return Model.remove({}).then(() => `All items got Deleted`);
+// BULK DELETE
+exports.DeleteBulk = () => {
+    return Model.remove({}).then(() => 'All data got Deleted');
 };
-
 
 /*
 ========= [ SEARCH METHODS ] =========
 */
 
 // SEARCH
-api.search = (skip, limit, keywordObj, strict) => {
+exports.Search = (listOptions, keywordObj, strict) => {
     let k = {};
 
     if (strict) {
@@ -148,18 +140,19 @@ api.search = (skip, limit, keywordObj, strict) => {
     }
 
     return Model.find(k)
-        .limit(limit * 1)
-        .skip(skip * 1)
+        .limit(listOptions.limit)
+        .skip(listOptions.skip)
+        .sort({ createdAt: listOptions.sort })
         .exec();
 };
 
 // SEARCH ADVANCED
-api.searchAdvanced = (skip, limit, data) => {
-    let searchObj = [];
+exports.SearchAdvanced = (listOptions, data) => {
+    const searchObj = [];
 
     ModelOptions.search.forEach(prop => {
         if (typeof data[prop] !== 'undefined') {
-            //let negate = data[prop].negate || false;
+            // let negate = data[prop].negate || false;
 
             switch (data[prop].search) {
                 case 'single':
@@ -198,32 +191,12 @@ api.searchAdvanced = (skip, limit, data) => {
     if (!searchObj || searchObj.length === 0) {
         return Promise.resolve([]);
     }
-    
+
     return Model.find({
-            $and: searchObj
-        })
-        .skip(skip * 1)
-        .limit(limit * 1)
+        $and: searchObj
+    })
+        .skip(listOptions.skip)
+        .limit(listOptions.limit)
+        .sort({ createdAt: listOptions.sort })
         .exec();
 };
-
-//TEST
-//New Callback System in TEST, which returns a ResponseClass object's Output
-api.test = () => {
-    return new Promise.resolve({
-        msg: 'yo'
-    });
-};
-
-/*
-========= [ TOOLS ] =========
-*/
-
-api.dataResultMap = (jsonObjArr) => {
-    return {
-        total: jsonObjArr.length,
-        _ids: jsonObjArr.map(x => x._id)
-    };
-};
-
-module.exports = api;

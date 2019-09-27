@@ -35,7 +35,6 @@ let fields = {
 		case 'Buffer':
 		case 'Boolean':
 		case 'ObjectId':
-			console.log('writing ...');
 			fActualVal = `{ 
 				type: ${fVal}${fRef ? ',\n\t\tref: \'' + fRef + '\'' : ''}
 			}`;
@@ -54,7 +53,6 @@ let fields = {
 	}
 
 	let modelLine = fProp + ': ' + fActualVal;
-	console.log('modelLine: ', modelLine);
 	if (schemaFields.length - 1 !== index) {
 		modelLine += ',';
 	}
