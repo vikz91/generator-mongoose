@@ -1,0 +1,58 @@
+version: '3'
+services:
+    nginx:
+        container_name: nginx
+        volumes:
+            - ./keys/nginx:/etc/nginx/conf.d
+            - ./keys/local-ssl:/certificates
+        image: 'nginx'
+        ports:
+            - "80:80"
+            - "443:443"
+        restart: always
+    mongo:
+        container_name: mongo
+        volumes:
+            - vol_data_serverapp:/data/db
+        image: 'mongo:4'
+        ports:
+            - "27017:27017"
+        restart: always
+    redis:
+        container_name: redis
+        image: 'redis:4.0.11'
+        ports:
+            - "6379:6379"
+        restart: always
+    serverapp:
+        container_name: serverapp
+        restart: always
+        build: .
+        volumes:
+            - .:/app
+        ports:
+            - '3000:3000'
+        links:
+            - redis
+            - service_dbbackup
+            - nginx
+    service_dbbackup:
+        container_name: service_dbbackup
+        image: tiredofit/mongodb-backup
+        links:
+            - mongo
+        volumes:
+            - ./backups:/backups
+        environment:
+            - DB_HOST=mongo
+            - DB_NAME=restologic
+            - DB_DUMP_FREQ=1440
+            - DB_CLEANUP_TIME=8640
+            - MD5=TRUE
+            - COMPRESSION=XZ
+            - DB_CLEANUP_TIME=10080
+            - DB_DUMP_BEGIN=7200
+        restart: always
+
+volumes:
+    vol_data_serverapp: 

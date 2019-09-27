@@ -42,8 +42,8 @@ config.serverPort = 3000;
 config.admin = {
   resetPasswordHost: null,
   resetPasswordRoute: null,
-  resetPasswordEmail: 'admin@<%= hostUrl %>.com',
-  errorEmail: 'admin@<%= hostUrl %>.com'
+  resetPasswordEmail: 'admin@<%= hostUrl %>',
+  errorEmail: 'admin@<%= hostUrl %>'
 };
 
 //  ======[ SECURITY ]======
@@ -59,9 +59,9 @@ config.JWT.secret = 'this.is.5|TSET|p11R.#$@<%= dbName %>.~S3(RXX3T~@$#.D0.(H^NG
 //  ======[ MAIL SERVICE ]======
 config.mailService = {
   address: {
-    default: 'admin@<%= hostUrl %>.com',
-    error: 'error@<%= hostUrl %>.com',
-    admin: 'admin@<%= hostUrl %>.com',
+    default: 'admin@<%= hostUrl %>',
+    error: 'error@<%= hostUrl %>',
+    admin: 'admin@<%= hostUrl %>',
     cc: [],
     bcc: []
   },

@@ -40,7 +40,7 @@ module.exports = class extends Generator {
   }
 
   configuring () {
-    const templatesToCopy = ['package.json', 'README.md', 'app.js', 'config'];
+    const templatesToCopy = ['package.json', 'README.md', 'config', 'LICENSE'];
 
     for (let i = 0; i < templatesToCopy.length; i += 1) {
       this.fs.copyTpl(
@@ -49,20 +49,18 @@ module.exports = class extends Generator {
       );
     }
 
-    this.fs.copyTpl(
-      this.templatePath('.localrcjs'),
-      this.destinationPath('.localrc'), this.model
-    );
-
     this.spawnCommand('git', ['init']);
   }
 
   writing () {
     const dirsToCreate = [
-      'api', 'apiObjects', 'models', 'tests', 'docs', 'logs', 'public', 'sdk/unity', 'sdk/angular', 'tmp'
+      'api', 'apiObjects', 'models', 'tests', 'docs', 'logs', 'public', 'sdk/unity', 'sdk/angular', 'tmp', ''
     ];
 
-    const filesToCopy = ['.editorconfig', '.gitignore', '.jshintrc', 'eslintrc.json', 'routes', 'middleware', 'sdk'];
+    const filesToCopy = ['.editorconfig', '.gitignore', 'app.js', 'cloudbuild.yaml',
+      'docker-compose.yml', 'Dockerfile', 'ecosystem.config.js', 'eslintrc.json', 'index.js',
+      'tools', 'public', 'plugins', 'middleware', 'keys', 'emailTemplates', 'library'
+    ];
 
     dirsToCreate.forEach(x => {
       mkdirp(x);

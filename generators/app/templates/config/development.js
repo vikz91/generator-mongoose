@@ -65,8 +65,8 @@ config.address = {
 config.admin = {
   resetPasswordHost: null,
   resetPasswordRoute: null,
-  resetPasswordEmail: 'admin@<%= hostUrl %>.com',
-  errorEmail: 'admin@<%= hostUrl %>.com'
+  resetPasswordEmail: 'admin@<%= hostUrl %>',
+  errorEmail: 'admin@<%= hostUrl %>'
 };
 
 //  ======[ JWT]======
@@ -134,9 +134,9 @@ config.auth = {
 //  ======[ MAIL SERVICE ]======
 config.mailService = {
   address: {
-    default: 'admin@<%= hostUrl %>.com',
-    error: 'error@<%= hostUrl %>.com',
-    admin: 'admin@<%= hostUrl %>.com',
+    default: 'admin@<%= hostUrl %>',
+    error: 'error@<%= hostUrl %>',
+    admin: 'admin@<%= hostUrl %>',
     cc: [],
     bcc: []
   },
