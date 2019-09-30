@@ -170,7 +170,7 @@ config.fileStorage = {
     googlecloudstorage: {
       bucket: '[CLOUD-BUCKET]',
       root: '/',
-      projectId: '[GOOGLE-CLOOUD-PROJECT-ID]',
+      projectId: '[GOOGLE-CLOUD-PROJECT-ID]',
       keyFilename: 'keys/google.json'
     },
     awss3: {

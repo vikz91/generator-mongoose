@@ -1,6 +1,6 @@
 {
     "name": "generator-restgoose",
-    "version": "0.5.2",
+    "version": "0.5.9",
     "description": "Modern, Lightweight, and Powerfull Rest API Code generator. Out-Of-Box NodeJS REST API Server generator built on top of Mongoose, Express, Cors, Passport, JWT and many more.",
     "homepage": "http://debabhishek.com/writes/Rapid-NodeJS-REST-API-Server-generator-with-generator-restgoose-and-yo/",
     "bugs": "https://github.com/vikz91/generator-restgoose/issues",

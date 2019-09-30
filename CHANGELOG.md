@@ -4,6 +4,22 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](http://keepachangelog.com/) and this project adheres to [Semantic Versioning](http://semver.org/).
 
+
+## [ 29 Sep 2019 ] v0.5.9
+
+Immediate Major Release
+- Features
+  - Docker Support
+  - Database Auto Backup
+  - nginx with SSL
+  - pm2 keymetrics support
+  - NEW APIs
+  - Email Verification for user sign up
+  - Standard Mongoose models 
+  - Crispy Template Generation
+
+
+
 ## [ 8th Jan 2019 ] v0.5.2
 
 This is Minor Feature Release
