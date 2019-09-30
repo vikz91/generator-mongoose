@@ -68,7 +68,6 @@
         "testEnvironment": "node"
     },
     "scripts": {
-        "pretest": "eslint .",
         "test": "jest __tests__/ --detectOpenHandles",
         "local:test": "ls | grep -v node_module | xargs rm -rf && rm -rf .??* && ls -la && yo restgoose"
     },
