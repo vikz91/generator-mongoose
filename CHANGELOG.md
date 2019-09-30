@@ -5,7 +5,7 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/) and this project adheres to [Semantic Versioning](http://semver.org/).
 
 
-## [ 29 Sep 2019 ] v0.5.9
+## [ 29 Sep 2019 ] v0.5.91
 
 Immediate Major Release
 - Features
@@ -17,6 +17,7 @@ Immediate Major Release
   - Email Verification for user sign up
   - Standard Mongoose models 
   - Crispy Template Generation
+  - DDoS Prevention
 
 
 

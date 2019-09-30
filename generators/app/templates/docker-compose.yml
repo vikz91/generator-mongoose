@@ -4,7 +4,7 @@ services:
         container_name: nginx
         volumes:
             - ./keys/nginx:/etc/nginx/conf.d
-            - ./keys/local-ssl:/certificates
+            - ./keys/ssl:/certificates
         image: 'nginx'
         ports:
             - "80:80"

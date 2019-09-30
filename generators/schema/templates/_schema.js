@@ -13,22 +13,6 @@ let fields = {
 
 	let fActualVal = `{type:${fVal}}`;
 
-	// console.log('fProp: ' + fProp + ', fval: ' + fVal);
-
-	// if (fVal === 'Date') {
-	// 	fActualVal = `{
-	// 	type: ${fVal},
-	// 	default: Date.now, 
-	// 	}`
-	// }
-	// if (fVal === 'Mixed') {
-	// 	fActualVal = '{ }'
-	// }
-
-	// if (fRef) {
-	// 	 ? ',\n\t\tref: \'' + fRef + '\'' : '' 
-	// }
-
 	switch (fVal) {
 		case 'String':
 		case 'Number':
@@ -42,9 +26,7 @@ let fields = {
 		case 'Date':
 			fActualVal = `{ 
 				type: ${fVal},
-				default: Date.now, 
-				mutable: true, 
-				search: true 
+				default: Date.now
 			}`;
 			break;
 		case 'Mixed':
@@ -62,12 +44,5 @@ let fields = {
 	};
 
 let ModelSchema = new Schema(fields, { timestamps: true });
-
-// Helper Functions 
-ModelSchema.statics.GetFieldsByOption = function (fieldOptionName) {
-	return Object.keys(this.schema.paths).filter(fld =>
-		this.schema.paths[fld].options[fieldOptionName]
-	);
-};
 
 module.exports = mongoose.model('<%= capSchemaName %>', ModelSchema);
