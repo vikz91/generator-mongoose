@@ -13,7 +13,7 @@ Minimum Yo Version : 2.x
 
 ## Installation
 
-First, install [Yeoman](http://yeoman.io) and generator-restgoose2 using [npm](https://www.npmjs.com/) (we assume you have pre-installed [node.js](https://nodejs.org/)).
+First, install [Yeoman](http://yeoman.io) and generator-restgoose using [npm](https://www.npmjs.com/) (we assume you have pre-installed [node.js](https://nodejs.org/)).
 
 ```bash
 npm install -g yo

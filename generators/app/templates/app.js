@@ -101,8 +101,8 @@ module.exports = exports = class {
         });
     }
 
-    Authorization(enabled) {
-        enabled = !!enabled;
+    Authorization() {
+        const enabled = Config.account.useAuth;
         debug(`Initializing : Authorization ... ${enabled}`);
         if (!enabled) {
             return;
@@ -230,7 +230,7 @@ module.exports = exports = class {
                 this.SetHealthCheck();
                 this.Headers();
                 this.StaticServer();
-                this.Authorization(false);
+                this.Authorization();
                 this.ServicePlugins(true);
                 this.BootstrapModels();
                 this.BootstrapAPI();

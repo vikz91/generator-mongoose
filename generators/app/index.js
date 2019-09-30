@@ -10,7 +10,7 @@ module.exports = class extends Generator {
   prompting () {
     // have Yeoman greet the user.
     this.log(
-      yosay(`Welcome to the Rapid Rest API Generator ${chalk.red('generator-restgoose2')}!`)
+      yosay(`Welcome to the Rapid Rest API Generator ${chalk.red('generator-restgoose')}!`)
     );
 
     const prompts = [{
@@ -78,5 +78,11 @@ module.exports = class extends Generator {
     this.installDependencies({
       bower: false
     });
+  }
+
+  end () {
+    if(this.props.useAuth){
+      this.composeWith('restgoose:auth',{});
+    }
   }
 };

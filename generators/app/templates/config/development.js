@@ -81,8 +81,7 @@ config.JWT = {
     '/api/auth/password/forgot/:email',
     '/api/auth/password/forgot/:email/:token',
     '/api/auth/register',
-    '/api/auth/account/verify/:token',
-    '/api/items', '/api/item'
+    '/api/auth/account/verify/:token'
   ]
 };
 
@@ -94,11 +93,12 @@ config.security = {
 
 //  ======[ Account]======
 config.account = {
+  useAuth:false,
   tokenExpiry: {
     resetPassword: 1 * 60 * 60 * 24 * 2, // Seconds,
     verifyEmail: 1 * 60 * 60 * 24 * 2 // Seconds,
   },
-  sendEmailVerificationOnRegistration: true
+  sendEmailVerificationOnRegistration: false
 };
 
 //  ======[ Authorization]======

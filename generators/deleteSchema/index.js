@@ -19,7 +19,7 @@ module.exports = class extends Generator {
     prompting () {
         // have Yeoman greet the user.
         this.log(
-            yosay(`Lets delete '${this.schemaName}' schema using ${chalk.red('generator-restgoose2')} generator!`)
+            yosay(`Lets delete '${this.schemaName}' schema using ${chalk.red('generator-restgoose')} generator!`)
         );
 
     }

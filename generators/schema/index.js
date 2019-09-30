@@ -25,7 +25,7 @@ module.exports = class extends Generator {
     prompting () {
         // have Yeoman greet the user.
         this.log(
-            yosay(`${chalk.red('generator-restgoose2')} Schema Generator!`)
+            yosay(`${chalk.red('generator-restgoose')} Schema Generator!`)
         );
 
         const prompts = [

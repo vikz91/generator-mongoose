@@ -32,7 +32,7 @@ module.exports = class extends Generator {
         this.log(
             yosay(
                 `Authentication using ${chalk.red(
-                    'generator-restgoose2'
+                    'generator-restgoose'
                 )} generator!`
             )
         );
