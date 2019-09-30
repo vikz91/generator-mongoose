@@ -1,165 +1,169 @@
 'use strict';
 
-var mongoose = require('mongoose'),
-    Schema = mongoose.Schema,
-    bcrypt = require('bcrypt-nodejs');
+const mongoose = require('mongoose');
+const Schema = mongoose.Schema;
+const bcrypt = require('bcryptjs');
+const Config = require('../config');
+const Util = require('../library').Util;
+const Constants = require('../library').Constants;
 
 const AddressSchema = new Schema({
-    label: String, //home,work
-    primary: {
-        type: Boolean,
-        default: false
-    },
-    address: {
-        line1: String,
-        line2: String,
-        city: String,
-        state: String,
-        pincode: String,
-        country: {
-            type: String,
-            default: 'India'
-        }
+  label: String, // home,work
+  primary: {
+    type: Boolean,
+    default: false
+  },
+  address: {
+    line1: String,
+    line2: String,
+    city: String,
+    state: String,
+    pincode: String,
+    country: {
+      type: String,
+      default: 'India'
     }
+  }
 });
 
 const PhoneSchema = new Schema({
-    label: String, //home,work
-    primary: {
-        type: Boolean,
-        default: false
-    },
-    countrycode: String,
-    phone: Number
+  label: String, // home,work
+  primary: {
+    type: Boolean,
+    default: false
+  },
+  countrycode: String,
+  phone: Number
 });
 
-//================================
+const OAuthSchema = new Schema({
+  provider: {
+    type: String,
+    enum: Object.keys(Constants.OAuthProviders).map(x => Constants.OAuthProviders[x]),
+    default: Constants.OAuthProviders.Local
+  },
+  oAuthUserId: {
+    type: String
+  }
+});
+
+//= ===============================
 // User Schema
-//================================
+//= ===============================
 const ModelSchema = new Schema({
-    email: {
-        type: String,
-        lowercase: true,
-        unique: true,
-        required: true,
-        mutable: false,
-        search: true
-    },
-    password: {
-        type: String,
-        required: true,
-        mutable: false,
-        search: false
-    },
+  auth: [OAuthSchema],
+  oAuthAvatar: String,
+  email: {
+    type: String,
+    lowercase: true,
+    unique: true,
+    required: true,
+    index: true
+  },
+  password: {
+    type: String,
+    required: true
+  },
 
-    profile: {
-        firstName: {
-            type: String,
-            mutable: true,
-            search: true
-        },
-        lastName: {
-            type: String,
-            mutable: true,
-            search: true
-        },
-        dob: {
-            type: Date,
-            default: Date.now,
-            mutable: true,
-            search: true
-        },
-        gender: {
-            type: String,
-            enum: ['Male', 'Female', 'Other'],
-            default: 'Male',
-            mutable: true,
-            search: true
-        },
+  profile: {
+    firstName: String,
+    lastName: String,
+    dob: {
+      type: Date,
+      default: Date.now
     },
+    gender: {
+      type: String,
+      enum: ['Male', 'Female', 'Transgender', 'Other'],
+      default: 'Other'
+    },
+    bio: String
+  },
 
-    contact: {
-        address: [AddressSchema],
-        phone: [PhoneSchema],
-        email: [String]
-    },
+  contact: {
+    address: [AddressSchema],
+    phone: [PhoneSchema],
+    email: [String]
+  },
 
-    role: {
-        type: String,
-        enum: ['Admin', 'Manager', 'Member'],
-        default: 'Member',
-        mutable: false,
-        search: true
-    },
+  role: {
+    type: String,
+    enum: Config.auth.roles,
+    default: Constants.UserRole.Customer
+  },
 
-    status: {
-        type: String,
-        enum: ['active', 'pending', 'suspended', 'closed'],
-        default: 'active',
-        mutable: false,
-        search: true
-    },
+  status: {
+    type: String,
+    enum: Object.values(Constants.Status),
+    default: Constants.Status.Active
+  },
 
-    description: {
-        type: String,
-        mutable: true,
-        search: true
-    },
+  onboarding: {
+    isOnboarded: { type: Boolean, default: false },
+    finishedTutorial: { type: Boolean, default: false }
+  },
 
-    resetPasswordToken: {
-        type: String,
-        mutable: false,
-        search: true
-    },
-    resetPasswordExpires: {
-        type: Date,
-        mutable: false,
-        search: true
-    }
+  resetPasswordToken: {
+    type: String
+  },
+  resetPasswordExpires: {
+    type: Date
+  },
+  verifyEmailToken: {
+    type: String
+  },
+  verifyEmailExpires: {
+    type: Date
+  }
 }, {
-    timestamps: true
+  timestamps: true
 });
 
 // Pre-save of user to database, hash password if password is modified or new
 ModelSchema.pre('save', function (next) {
-    const user = this,
-        SALT_FACTOR = 5;
+  const user = this;
 
-    if (!user.isModified('password')) {
-        return next();
+  const SALT_FACTOR = 5;
+
+  if (!user.isModified('password')) {
+    return next();
+  }
+
+  bcrypt.genSalt(SALT_FACTOR, function (err, salt) {
+    if (err) {
+      return next(err);
     }
 
-    bcrypt.genSalt(SALT_FACTOR, function (err, salt) {
-        if (err) {
-            return next(err);
-        }
-
-        bcrypt.hash(user.password, salt, null, function (err, hash) {
-            if (err) {
-                return next(err);
-            }
-            user.password = hash;
-            next();
-        });
+    bcrypt.hash(user.password, salt, function (err, hash) {
+      if (err) {
+        return next(err);
+      }
+      user.password = hash;
+      next();
     });
+  });
 });
 
 // Method to compare password for login
 ModelSchema.methods.comparePassword = function (candidatePassword, cb) {
-    bcrypt.compare(candidatePassword, this.password, function (err, isMatch) {
-        if (err) {
-            return cb(err);
-        }
+  bcrypt.compare(candidatePassword, this.password, function (err, isMatch) {
+    if (err) {
+      return cb(err);
+    }
 
-        cb(null, isMatch);
-    });
+    cb(null, isMatch);
+  });
 };
 
+ModelSchema.pre('save', function (next) {
+  const user = this;
 
-ModelSchema.statics.GetFieldsByOption = function (fieldOptionName) {
-    return Object.keys(this.schema.paths).filter(fld =>
-        this.schema.paths[fld].options[fieldOptionName]
-    );
-};
+  if (!user.isModified('profile')) return next();
+  if (!user.profile.lastName || user.profile.lastName === 'undefined' || typeof user.profile.lastName === 'undefined') {
+    user.profile.lastName = '';
+  }
+  user.profile.name = user.profile.firstName;
+  next();
+});
 
 module.exports = mongoose.model('User', ModelSchema);

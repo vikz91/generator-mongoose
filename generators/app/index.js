@@ -42,7 +42,7 @@ module.exports = class extends Generator {
   configuring () {
     this.spawnCommand('git', ['init']);
 
-    const templatesToCopy = ['package.json', 'README.md', 'config', 'tools', 'LICENSE', 'docker-compose.yml'];
+    const templatesToCopy = ['package.json', 'README.md', 'config', 'api','tools', 'LICENSE', 'docker-compose.yml'];
 
     for (let i = 0; i < templatesToCopy.length; i += 1) {
       this.fs.copyTpl(

@@ -1,578 +1,296 @@
 'use strict';
 
-const jwt = require('jsonwebtoken'),
-    crypto = require('crypto'),
-    User = require('../models/user'),
-    config = require('../config'),
-    l = config.util,
-    emailSender = require('./email'),
-    async = require('async');
+// Module dependencies.
+const jwt = require('jsonwebtoken');
+const crypto = require('crypto');
+const UserService = require('./user');
+const Config = require('../config');
+const Util = require('../library').Util;
+const Constants = require('../library').Constants;
+const requestClient = require('request-promise-native');
+const redis = require('redis');
+const redisClient = redis.createClient(
+  Config.redis.port,
+  Config.redis.host,
+  Config.redis.opts
+);
+const { Email } = require('../plugins');
 
-const redis = require('redis-serverclient');
-
-function generateToken(user) {
-    return jwt.sign(user, config.jwtSecret, {
-        expiresIn: config.jwtExpiry // in seconds
-    });
-}
-
-// Set user info from request
-function setUserInfo(request) {
-    return {
-        _id: request._id,
-        name: request.profile.name,
-        email: request.email,
-        role: request.role
-    };
-}
-
-var ChangePasswordCore = function(email, newPass, callback) {
-    User.findOne(
-        {
-            email: email
-        },
-        function(err, user) {
-            if (err) {
-                return callback(err);
-            }
-
-            // If user is not found, return error
-            if (!user) {
-                callback('Invalid User');
-            }
-
-            user.password = newPass;
-            user.save(function(err, user) {
-                if (err) {
-                    return callback(err);
-                }
-                return callback(
-                    false,
-                    'Password has been changed. You may need to re-login.'
-                );
-            }); //eo user.save
-        }
-    );
+/*
+========= [ Tools ] =========
+*/
+const Tools = {};
+Tools.AssertOnEmpty = stringData => {
+  stringData += ' ';
+  stringData = stringData.trim();
+  if (!stringData) {
+    return Promise.reject(new Error('Invalid Data : ', stringData));
+  }
+};
+Tools.GenerateAccessToken = user => {
+  return jwt.sign(user, Config.JWT.secret, {
+    expiresIn: Config.JWT.expiry // in seconds
+  });
+};
+Tools.SetUserInfo = (request) => {
+  return {
+    _id: request._id,
+    name: request.profile.name,
+    email: request.email,
+    role: request.role
+  };
+};
+Tools.ChangePasswordCore = async (email, newPass) => {
+  return UserService.ModifyUser.Password(email, newPass);
 };
 
-var RegisterCore = function(userData, callback) {
-    // Return error if no email provided
-    if (!userData.email) {
-        let msg = 'You must enter an email address.';
-        return callback(msg, {
-            status: 422
-        });
-    }
+Tools.RegisterCore = async (email, password, firstName, lastName, role) => {
+  // Force re-check data
+  if (!email || !password) {
+    return Promise.reject(new Error('Unspecified emailid/password', 'Please provide Email ID and password for registration'));
+  }
 
-    // Return error if full name not provided
-    if (!userData.profile) {
-        let msg = 'You must enter your profile data.';
-        return callback(msg, {
-            status: 422
-        });
-    }
+  const isUserExists = await UserService.ModifyUser.FindEmail(email);
 
-    User.findOne(
-        {
-            email: userData.email
-        },
-        function(err, existingUser) {
-            if (err) {
-                return callback(err, {
-                    status: 422
-                });
-            }
+  if (isUserExists) {
+    return Promise.reject(new Error('User Already Registered.', `User is already registered (${email})`));
+  }
 
-            // If user is not unique, return error
-            if (existingUser) {
-                let msg = 'That email address is already in use.';
-                return callback(msg, {
-                    status: 422
-                });
-            }
-
-            // If email is unique and password was provided, create account
-            let user = new User(userData);
-
-            user.save(function(err, user) {
-                if (err) {
-                    return callback(err, {
-                        status: 422
-                    });
-                }
-
-                // Subscribe member to Mailchimp list
-                // mailchimp.subscribeToNewsletter(user.email);
-
-                // Respond with JWT if user was created
-
-                let userInfo = setUserInfo(user);
-                let token = 'JWT ' + generateToken(userInfo);
-
-                //redis.client.set(token,JSON.stringify(userInfo));
-
-                return callback(false, {
-                    status: 201,
-                    data: {
-                        token: token,
-                        user: userInfo
-                    }
-                });
-            });
-        }
-    );
+  return UserService.Create({ email: email, password: password, profile: { firstName: firstName, lastName: lastName }, role: role, status: Constants.Status.Pending });
 };
+Tools.RegisterOAuth = async (provider, token) => {
+  let verifiedUser = {};
+  return Tools.VerifyOAuthToken(provider, token)
+    .then(user => {
+      verifiedUser = user;
+      return Tools.CheckUserExists(user.email);
+    })
+    .then(existingUser => {
+      if (existingUser) {
+        return UserService.UpdateOAuth(existingUser._id, provider, verifiedUser.id)
+          .then(updatedUser => Tools.CreateUserSession(updatedUser));
+      } else {
+        const userData = {
+          email: verifiedUser.email,
+          profile: { firstName: verifiedUser.firstName, lastName: verifiedUser.lastName },
+          role: Constants.UserRole.Customer,
+          oAuthAvatar: verifiedUser.picture
+        };
 
-//========================================
-// Login Route
-//========================================
-exports.login = function(req, res, next) {
-    let userInfo = setUserInfo(req.user);
+        userData.auth.push({ provider: provider, oAuthUserId: verifiedUser.id });
 
-    //console.log('req.use: ',req.user);
-
-    let token = 'JWT ' + generateToken(userInfo);
-
-    redis.client.set(token, JSON.stringify(userInfo));
-
-    res.status(200).json({
-        token: token,
-        user: userInfo
+        return UserService.Create(userData);
+      }
     });
 };
+Tools.VerifyOAuthToken = async (provider, token) => {
+  let verifyUrl = '';
+  let tokenResult = {};
 
-//========================================
-// Logout Route
-//========================================
-exports.logout = function(req, res, next) {
-    var token = req.get('Authorization');
-    redis.client.del(token);
+  if (!provider || !token) {
+    return Promise.reject(new Error('Provider/token not provided.'));
+  }
+  provider = provider.toLowerCase().trim();
+  if (!Config.auth.oauth.hasOwnProperty(provider)) {
+    return Promise.reject(new Error('Provider not configured.'));
+  }
+  verifyUrl = Config.auth.oauth[provider].url + token;
 
-    res.status(200).json({
-        token: token,
-        login: false
-    });
+  try {
+    tokenResult = JSON.parse(await requestClient.get(verifyUrl));
+
+    if (tokenResult.error) {
+      return Promise.reject(new Error('TokenRequest Error : ', tokenResult.error));
+    }
+  } catch (e) {
+    return Promise.reject(new Error('TokenVerification Error : ', e));
+  }
+
+  return Promise.resolve(Util.TransformOAuthProviderTokenData(provider, tokenResult));
 };
 
-//========================================
-// Admin Registration Route
-//========================================
-// SHOULD BE DISABLED IN prod
-exports.register = function(req, res, next) {
-    // Check for registration errors
-    const userData = {};
-    userData.email = req.body.email;
-    userData.profile = req.body.profile;
-    userData.password = req.body.password;
-    userData.role = 'Admin';
+Tools.CheckUserExists = async (email) => {
+  email += ' ';
+  email = email.toLowerCase().trim();
+  if (!email) {
+    return Promise.reject(new Error('Email not Provided'));
+  }
 
-    // Return error if no password provided
-    if (!userData.password) {
-        return res.status(422).send({
-            error: 'You must enter a password.'
-        });
-    }
+  return UserService.Exists(email);
+};
 
-    new RegisterCore(userData, (err, data) => {
+Tools.CreateUserSession = async (user) => {
+  const userInfo = Tools.SetUserInfo(user);
+
+  const token = 'JWT ' + Tools.GenerateAccessToken(userInfo);
+
+  redisClient.set(token, JSON.stringify(userInfo));
+  // console.log('JWT: ', token);
+  return Promise.resolve({
+    token: token,
+    user: userInfo
+  });
+};
+
+Tools.GenerateToken = {
+  Access: user => {
+    return jwt.sign(user, Config.JWT.secret, {
+      expiresIn: Config.JWT.expiry // in seconds
+    });
+  },
+  Recovery: async () => {
+    return new Promise((resolve, reject) => {
+      return crypto.randomBytes(20, (err, buf) => {
+        const token = buf.toString('hex');
         if (err) {
-            res.status(data.status).json({
-                error: err
-            });
+          return reject(new Error('Unbale to generate Token : ', err));
         }
-
-        res.status(data.status).json(data.data);
+        return resolve(token);
+      });
     });
-};
+  },
+  Coupon: async () => {
+    return new Promise((resolve, reject) => {
+      return crypto.randomBytes(5, (err, buf) => {
+        const token = buf.toString('dec');
 
-exports.check = function(req, res, next) {
-    res.status(200).json({
-        login: 'ok'
-    });
-};
-
-//========================================
-// Registration Route
-//========================================
-exports.registerUser = function(req, res, next) {
-    // Check for registration errors
-    const userData = {};
-    userData.email = req.body.email;
-    userData.password = req.body.password;
-
-    userData.profile = req.body.profile;
-
-    userData.address = req.body.address;
-    userData.contact = req.body.contact;
-    userData.description = req.body.description;
-
-    if (!req.params.role) {
-        return res.status(422).send({
-            error: 'You must enter a role as parameter.'
-        });
-    }
-
-    userData.role =
-        req.params.role.charAt(0).toUpperCase() +
-        req.params.role.substr(1).toLowerCase();
-
-    // Return error if no password provided
-    if (!userData.password) {
-        return res.status(422).send({
-            error: 'You must enter a password.'
-        });
-    }
-
-    new RegisterCore(userData, (err, data) => {
         if (err) {
-            res.status(data.status).json({
-                error: err
-            });
+          return reject(new Error('Unbale to generate Token : ', err));
         }
 
-        res.status(data.status).json(data.data);
+        return resolve(token);
+      });
     });
-};
+  },
+  VerifyEmail: async () => {
+    return new Promise((resolve, reject) => {
+      return crypto.randomBytes(11, (err, buf) => {
+        const token = buf.toString('hex');
 
-//========================================
-// Role Change Route
-//========================================
-exports.changeRole = function(req, res, next) {
-    let email = req.body.email;
-    let role = req.body.role; //['Admin', 'Designer', 'Customer','Guest' ],
-
-    User.findOne(
-        {
-            email: email
-        },
-        function(err, user) {
-            if (err) {
-                return next(err);
-            }
-
-            if (!user) {
-                return res.status(404).send({
-                    error: 'User with this email does not exists.'
-                });
-            }
-
-            user.role = role;
-            user.save(function(err) {
-                if (err) {
-                    return res.status(422).json({
-                        error: 'Role not set!',
-                        data: err
-                    });
-                }
-                return res.status(200).json({
-                    data: 'Role changed to ' + role
-                });
-            });
-        }
-    );
-};
-
-//========================================
-// Status Change Route
-//========================================
-exports.changeStatus = function(req, res, next) {
-    let email = req.body.email;
-    let status = req.body.status; //['active', 'pending', 'suspended','closed' ]
-
-    User.findOne(
-        {
-            email: email
-        },
-        function(err, user) {
-            if (err) {
-                return next(err);
-            }
-
-            if (!user) {
-                return res.status(404).send({
-                    error: 'User with this email does not exists.'
-                });
-            }
-
-            user.status = status;
-            user.save(function(err) {
-                if (err) {
-                    return res.status(422).json({
-                        error: 'Status not set!',
-                        data: err
-                    });
-                }
-                return res.status(200).json({
-                    data: 'Status changed to ' + status
-                });
-            });
-        }
-    );
-};
-
-//========================================
-// Change Password Route
-//========================================
-exports.changePassword = function(req, res, next) {
-    let email = req.user.email;
-    let newPass = req.body.password;
-
-    // Return error if no password provided
-    if (!newPass) {
-        return res.status(422).send({
-            error: 'You must enter valid  new password.'
-        });
-    }
-
-    new ChangePasswordCore(email, newPass, (err, data) => {
         if (err) {
-            return next(err);
+          return reject(new Error('Unable to generate Token : ', err));
         }
-        return res.status(200).json({
-            data: 'Password has been changed. You may need to re-login.'
-        });
+
+        return resolve(token);
+      });
+    });
+  }
+};
+
+Tools.SendTokenEmail = async (email, token, context) => {
+  console.log(`[${email}] (${context}) : ${token}`);
+  const tokenVerifyLink = `${Config.address.domain}:${Config.address.serverPort}/api/auth/account/verify/${token}`;
+  const body = `<h1>${context}</h1><br><br><a href="${tokenVerifyLink}">Verifiy Email</a><br>If the link doesnot work, please visit this url : ${tokenVerifyLink}`;
+  const subject = `${context}`;
+  const mailOpts = new Email.MailOptions(email, subject, body, {});
+  return Email.SendMail(mailOpts);
+};
+
+/*
+========= [ CORE ] =========
+*/
+exports.Check = (user) => {
+  return Promise.resolve(user);
+};
+exports.Register = async (email, password, firstName, lastName) => {
+  const user = await Tools.RegisterCore(
+    email,
+    password,
+    firstName,
+    lastName,
+    Constants.UserRole.Customer
+  );
+  if (Config.account.sendEmailVerificationOnRegistration) {
+    const genToken = await Tools.GenerateToken.VerifyEmail();
+    await UserService.SaveToken.VerifyEmail(email, genToken, Util.AddSeconds(Date.now(), Config.account.tokenExpiry.verifyEmail));
+    await Tools.SendTokenEmail(email, genToken, 'Verify Email');
+  }
+  return Tools.CreateUserSession(user);
+};
+exports.RegisterTeam = async (email, password, firstName, lastName) => {
+  return Tools.RegisterCore(
+    email,
+    password,
+    firstName,
+    lastName,
+    Constants.UserRole.Team
+  );
+};
+exports.RegisterVendor = (email, password, firstName, lastName) => {
+  return Tools.RegisterCore(
+    email,
+    password,
+    firstName,
+    lastName,
+    Constants.UserRole.Vendor
+  );
+};
+exports.Login = (user) => {
+  return Tools.CreateUserSession(user);
+};
+exports.Logout = (token) => {
+  redisClient.del(token);
+
+  return Promise.resolve({
+    token: token,
+    login: false
+  });
+};
+
+exports.OAuth = async (provider, token) => {
+  if (!provider || !token) {
+    return Promise.reject(new Error('Provider, Token is required'));
+  }
+  return Tools.RegisterOAuth(provider, token)
+    .then(userModel => Tools.CreateUserSession(userModel));
+};
+exports.OAuthCallback = (provider, query) => {
+  return Promise.resolve({
+    data: 'ok',
+    provider: provider,
+    query: query
+  });
+};
+
+/*
+      ========= [ PASSWORD ] =========
+      */
+exports.ValidatePassword = async (user, password) => {
+  return UserService.Validate.Password(user._id, password);
+};
+exports.ChangePassword = (user, oldPassword, newPassword) => {
+  return exports.ValidatePassword(user, oldPassword)
+    .then(isMatch => {
+      if (!isMatch) {
+        return Promise.reject(new Error('Invalid Old Password.'));
+      }
+      return UserService.ModifyUser.Password(user.email, newPassword);
     });
 };
-
-//========================================
-// Forget Password Route
-//========================================
-exports.forgetPassword = function(req, res, next) {
-    let email = req.body.email;
-
-    // Return error if no password provided
-    if (!email) {
-        return res.status(422).send({
-            error: 'You must enter valid email.'
-        });
-    }
-
-    async.waterfall(
-        [
-            done => {
-                crypto.randomBytes(20, function(err, buf) {
-                    var token = buf.toString('hex');
-                    done(err, token);
-                });
-            },
-            (token, done) => {
-                User.findOne(
-                    {
-                        email: email
-                    },
-                    function(err, user) {
-                        if (err) {
-                            return next(err);
-                        }
-
-                        if (!user) {
-                            return res.status(404).send({
-                                error: 'User with this email does not exists.'
-                            });
-                        }
-
-                        user.resetPasswordToken = token;
-                        user.resetPasswordExpires = Date.now() + 3600000; // 1 hour
-
-                        user.save(function(err) {
-                            done(err, token, user);
-                        });
-                    }
-                );
-            },
-            (token, user, done) => {
-                let resetPasswordUrl = config.admin.resetPasswordHost;
-                if (
-                    resetPasswordUrl === null ||
-                    resetPasswordUrl === undefined
-                ) {
-                    resetPasswordUrl = 'http://' + req.headers.host;
-                }
-                // if(config.admin.resetPasswordRoute===null || config.admin.resetPasswordRoute===undefined){
-                //   resetPasswordUrl+=config.admin.resetPasswordRoute;
-                // }
-
-                let body =
-                    'You are receiving this because you (or someone else) have requested the reset of the password for your account.\n\n' +
-                    'Please click on the following link, or paste this into your browser to complete the process:\n\n' +
-                    resetPasswordUrl +
-                    '/api/auth/password/reset/' +
-                    token +
-                    '\n\n' +
-                    'If you did not request this, please ignore this email and your password will remain unchanged.\n';
-                emailSender.sendmail(
-                    config.admin.resetPasswordEmail,
-                    user.email,
-                    'Password Reset for your account',
-                    body,
-                    (err, data) => {
-                        done(err, data);
-                    }
-                );
-            }
-        ],
-        (err, data) => {
-            if (err) {
-                return next(err);
-            }
-            return res.status(200).json({
-                data:
-                    'Password Reset link sent. Reset link will expire in 1 hour.'
-            });
-        }
-    );
+exports.RequestForgotPasswordToken = async (email) => {
+  const genToken = await Tools.GenerateToken.Recovery();
+  await UserService.SaveToken.ForgotPassword(email, genToken, Util.AddSeconds(Date.now(), Config.account.tokenExpiry.resetPassword));
+  return Tools.SendTokenEmail(email, genToken, 'Password Recovery');
+};
+exports.ResetWithToken = (email, token, password) => {
+  return UserService.Validate.ChangeForgotPasswordWithToken(token, password);
+};
+exports.ResetByAdmin = (email, password) => {
+  return Tools.ChangePasswordCore(email, password);
 };
 
-//========================================
-// Reset Password Route
-//========================================
-exports.resetPassword = function(req, res, next) {
-    User.findOne(
-        {
-            resetPasswordToken: req.params.token,
-            resetPasswordExpires: {
-                $gt: Date.now()
-            }
-        },
-        function(err, user) {
-            if (!user) {
-                return res.status(403).json({
-                    error: 'Password reset token is invalid or has expired.'
-                });
-            }
-
-            let newPass = Math.random()
-                .toString(36)
-                .slice(-8);
-
-            new ChangePasswordCore(user.email, newPass, (err, data) => {
-                if (err) {
-                    return next(err);
-                }
-                return res.status(200).json({
-                    data: newPass,
-                    msg:
-                        'You New Password is ' +
-                        newPass +
-                        ' . Please change it asap.'
-                });
-            });
-        }
-    );
+/*
+========= [ ACCOUNT ] =========
+*/
+exports.VerifyEmail = (token) => {
+  return UserService.Validate.VerifyEmail(token);
 };
-
-exports.preflight = function(req, res, next) {
-    return res.status(200).json({
-        data: 'ok',
-        user: req.user
-    });
+exports.ChangeRole = (userId, newRole) => {
+  return UserService.ModifyUser.Role(userId, newRole);
 };
-
-//Check user defined password for internal later use
-exports.validate = function(req, res, next) {
-    var password = req.body.password;
-
-    if (password === undefined || password === null) {
-        return res.status(402).json({
-            status: l.STATUS_ERR,
-            data: 'Invalid PAssword supplied'
-        });
-    }
-
-    User.findOne(
-        {
-            email: req.user.email
-        },
-        function(err, user) {
-            if (err) {
-                return next(err);
-            }
-
-            if (!user) {
-                return res.status(404).json({
-                    status: 'error',
-                    data: 'User with this email does not exist'
-                });
-            }
-
-            user.comparePassword(password, function checkPassword(
-                err,
-                isMatch
-            ) {
-                if (err) {
-                    return res.status(404).json({
-                        status: 'error',
-                        data: 'Oops! Womething is wrong with password.'
-                    });
-                }
-
-                var r = l.response(
-                    l.STATUS_OK,
-                    {
-                        valid: isMatch
-                    },
-                    null
-                );
-                return res.status(200).json(r);
-            });
-        }
-    );
+exports.ChangeStatus = (userId, newStatus) => {
+  return UserService.ModifyUser.Status(userId, newStatus);
 };
-
-//========================================
-// Authorization Middleware
-//========================================
-
-// Role authorization check
-exports.roleAuthorization = function(role) {
-    return function(req, res, next) {
-        const user = req.user;
-
-        User.findById(user._id, function(err, foundUser) {
-            if (err) {
-                res.status(422).json({
-                    error: 'No user was found.'
-                });
-                return next(err);
-            }
-
-            //console.log('foundUser: ', foundUser + ', role: ' + role);
-
-            // If user is found, check role.
-            if (foundUser.role === role) {
-                return next();
-            }
-
-            res.status(401).json({
-                error: 'You are not authorized to view this content.'
-            });
-            return next('Unauthorized');
-        });
-    };
-};
-
-// Multiple Role authorization check
-exports.roleMultiAuthorization = function(roles) {
-    return function(req, res, next) {
-        const user = req.user;
-
-        User.findById(user._id, function(err, foundUser) {
-            if (err) {
-                res.status(422).json({
-                    error: 'No user was found.'
-                });
-                return next(err);
-            }
-
-            // If user is found, check role.
-            let found = roles.indexOf(foundUser.role);
-            if (found >= 0) {
-                return next();
-            }
-
-            res.status(401).json({
-                error: 'You are not authorized to view this content.'
-            });
-            return next('Unauthorized');
-        });
-    };
+exports.SuspendAccount = (userId) => {
+  return UserService.ModifyUser.Suspend(userId);
 };

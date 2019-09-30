@@ -197,7 +197,7 @@ exports.GenerateHash = async (data) => {
         return reject(new Error(err));
       }
 
-      bcrypt.hash(data, salt, null, (err, hash) => {
+      bcrypt.hash(data, salt, (err, hash) => {
         if (err) {
           return reject(new Error(err));
         }

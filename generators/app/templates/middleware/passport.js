@@ -47,7 +47,11 @@ const localLogin = new LocalStrategy(localOptions, function (
   password,
   done
 ) {
-  User.findOne({ email: email, status: Constants.Status.Active }, function (err, user) {
+  const searchObj = { email: email };
+  if (Config.account.sendEmailVerificationOnRegistration) {
+    searchObj.status = Constants.Status.Active;
+  }
+  User.findOne(searchObj, function (err, user) {
     if (err) {
       return done(err);
     }
