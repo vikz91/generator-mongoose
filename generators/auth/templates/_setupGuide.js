@@ -11,8 +11,11 @@
 2. Open ``app.js`` from root directory and uncomment the lines where it is written ``UNCOMMENT IF USING AUTH``. For reference, the line no.s are 16-36, 125-133, 139, 145.
 3. [*Optional*] Change redis port if its not runnig on the defult one, in ``config/lib.js``.
 4. [*Optional*, **Recommended**] Change jwt secret and Sendgrid API key in ``config/lib.js``.
-5. That's it. Your authentication system is up and running.
+5. Enable *useAuth* in config/development.
+6. That's it. Your authentication system is up and running.
 
+## Securing APIs
+By Default All created APIs will be decured by JWT Auth. You can add exceptions in *config*.
 
 ## Route Usage
 1. Auth Routes:
@@ -20,12 +23,10 @@
   2. /api/auth/login
   3. /api/auth/logout
   4. /api/auth/register
-  5. /api/auth/registeruser/:role
   6. /api/auth/password/validate
-  7. /api/auth/password/preflight
   8. /api/auth/password/change
-  9. /api/auth/password/forgot
-  10. /api/auth/password/reset/:token
+  9. /api/auth/password/forgot/:email
+  10. /api/auth/password/forgot/:email/:token
   11. /api/auth/profile/role
   12. /api/auth/profile/status
 
