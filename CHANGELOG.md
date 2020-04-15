@@ -4,6 +4,14 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](http://keepachangelog.com/) and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## [ 15 April 2020 ] v0.5.95
+Long awaited fixes and updates
+- Issues
+  - elintrc file not found
+  - mocha updated
+  - removed unused APIs. 
+  - removed unnecessary health check.
+
 
 ## [ 29 Sep 2019 ] v0.5.91
 

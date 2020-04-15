@@ -89,68 +89,7 @@ const APISearch = {
     }
 };
 
-/*
-    =====================[  FILE API  ]=====================
-*/
-const ApiGallery = {
-    ReadAll: async (req, res) => {
-        const result = await Execute(Service.GetFileList(req.params.id));
-        res.status(result.err ? 404 : 200).json(Response(result.err, result.data));
-    },
-    Read: async (req, res) => {
-        const result = await Execute(Service.GetFileInfo(req.params.id + '/' + req.params.gid));
-        res.status(result.err ? 404 : 200).json(Response(result.err, result.data));
-    },
-    Create: async (req, res) => {
-        const result = await Execute(Service.UploadFile(req.params.id, req.file));
-        res.status(result.err ? 404 : 200).json(Response(result.err, result.data));
-    },
-    Delete: async (req, res) => {
-        const result = await Execute(Service.DeleteFile(req.params.id + '/' + req.params.gid));
-        res.status(result.err ? 404 : 200).json(Response(result.err, result.data));
-    },
-    Download: async (req, res) => {
-        await Execute(Service.DownloadFile(req.params.id + '/' + req.params.gid, res));
-        // res.status(result.err ? 404 : 200).json(Response(result.err, result.data));
-    }
 
-};
-
-/*
-    =====================[  EMAIL API  ]=====================
-*/
-const ApiEmail = {
-    SendMail: async (req, res) => {
-        const system = req.params.system;
-        const template = req.query.template;
-        const result = await Execute(Service.SendEmail(req.params.id, system, template || null));
-        res.status(result.err ? 404 : 200).json(Response(result.err, result.data));
-    }
-};
-
-/*
-    =====================[  PAYMENT  ]=====================
-*/
-const ApiPayment = {
-    QuickPurchase: async (req, res) => {
-        var data = req.body.data;
-        const result = await Execute(Service.QuickPurchase(data.packageName, data.email, data.currency, data.token));
-        res.status(result.err ? 500 : 200).json(Response(result.err, result.data));
-    },
-
-    CreateOrder: async (req, res) => {
-        var data = req.body.data;
-        const result = await Execute(Service.CreateOrder(data.packageName, data.email, data.currency, data.token));
-        res.status(result.err ? 500 : 200).json(Response(result.err, result.data));
-    },
-
-    ProcessOrder: async (req, res) => {
-        var data = req.body.data;
-        const result = await Execute(Service.ProcessOrder(data.orderId, data.token, data.processType));
-        res.status(result.err ? 500 : 200).json(Response(result.err, result.data));
-    }
-
-};
 
 /*
     =====================[  ROUTES  ]=====================

@@ -18,7 +18,6 @@
         "errorhandler": "^1.5.0",
         "express": "^4.16.3",
         "express-list-endpoints": "^4.0.1",
-        "express-status-monitor": "git://github.com/YasharF/express-status-monitor.git#dependencyUpdate",
         "helmet": "^3.21.1",
         "jsonwebtoken": "^8.5.1",
         "lodash": "^4.17.15",
@@ -38,7 +37,7 @@
         "uuid": "^3.3.3"
     },
     "devDependencies": {
-        "mocha": "^5.2.0",
+        "mocha": "^7.1.1",
         "nodemon": "^1.19.2",
         "semistandard": "^14.2.0",
         "supertest": "^3.3.0"
